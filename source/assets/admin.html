@@ -1,0 +1,30 @@
+<section class="admin-container">
+
+  <div>
+
+    <div class="introduction">
+        <header>
+        <i class="fa fa-question-circle"></i><span>HELP</span>
+        </header>
+        <p>Gebruik de checkboxes om permissies aan dit apparaat te geven. Klik vervolgens op Start.</p>
+    </div>
+   
+    <div class="block password">
+      
+      <label class="dark-grey" data-load="labels.edit_password"></label><br>
+    
+      <input type="password" data-load="labels.old_password">
+    
+      <input type="password" data-load="labels.old_password">
+    
+      <input type="password" data-load="labels.new_password">
+    
+    </div>
+
+    <div class="block permissions" data-load="users.load_permissions"></div>
+
+    <button class="content-button blue" data-load="labels.save" data-click="sessions.check_passwords"></button>
+
+  </div>
+
+</section>

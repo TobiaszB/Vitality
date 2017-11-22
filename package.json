@@ -1,0 +1,30 @@
+{
+  "name": "tsr",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "brunch watch --server"
+  },
+  "author": "",
+  "license": "ISC",
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "dependencies": {
+    "babel-preset-es2015": "*",
+    "bcryptjs": "^2.4.3",
+    "mime": "^1.4.0",
+    "mongodb": "^2.2.33"
+  },
+  "devDependencies": {
+    "auto-reload-brunch": "*",
+    "autoprefixer": "*",
+    "babel-brunch": "*",
+    "babel-preset-latest": "*",
+    "brunch": "*",
+    "sass-brunch": "*",
+    "uglify-js-brunch": "*"
+  }
+}

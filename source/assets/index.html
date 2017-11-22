@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+
+		<meta name="viewport" content="width=device-width">
+
+		<meta property="og:title" content="Textiel Service Rijnmond">
+
+		<title>Vitality One</title>
+
+		<link rel="icon" href="/favicon.png">
+		
+		<link href="/style.css" rel="stylesheet" type="text/css" />
+
+    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	</head>
+
+	<body>
+
+		<nav>
+		
+			<div class="logo" data-click="sessions.load_page" data-page="courses"></div>
+
+		    <a data-click="sessions.load_page" data-page="courses">Courses</a>
+
+		    <a data-click="sessions.load_page" data-page="about">About</a>
+			
+			<div class="container">
+
+				<div class="divider vertical"></div>
+				
+				<span class="flag nl"></span>
+
+				<span class="flag en"></span>
+
+				<div class="divider vertical"></div>
+
+		    	<a data-click="sessions.sign_out">Sign out</a>
+
+			</div>
+
+		</nav>
+	
+		<main></main>
+
+		<footer>
+			<div class="content">
+				<button data-click="sessions.sign_out" data-load="labels.sign_out"></button><!--
+			 --><button class="blue" data-click="orders.add" data-load="labels.add"></button><!--
+			 --><button class="blue" data-click="users.add" data-load="labels.add"></button><!--
+			 --><button class="blue" data-click="customers.add" data-load="labels.add"></button>
+			</div>
+		</footer>
+		
+		<script src="/script.js"></script>
+
+	</body>
+
+</html>
