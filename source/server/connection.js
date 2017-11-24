@@ -433,9 +433,15 @@ function database() {
 
     db.collection('users').findAndModify({ key: 'users_admin' }, [], {
       $set: {
-        email: 'marcel@digizone.nl',
+        email: 'joris@vitalityone.nl',
         password: '',
-        tasks: ['WASSEN', 'DROGEN', 'STRIJKEN', 'OPVOUWEN', '']
+      }
+    }, { upsert: true }, ()=>{});
+
+    db.collection('users').findAndModify({ key: 'users_admin' }, [], {
+      $set: {
+        email: 'merel@vitalityone.nl',
+        password: '',
       }
     }, { upsert: true }, ()=>{});
 

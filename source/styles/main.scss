@@ -2,11 +2,12 @@
 
 @import "imports";
 
-@import url('https://fonts.googleapis.com/css?family=Changa|Raleway:400,700,900" rel="stylesheet');
+@import url('<link href="https://fonts.googleapis.com/css?family=Changa|Open+Sans:400,600|Raleway:400,700,900" rel="stylesheet">');
 
 /* Typography */
 $raleway: 'Raleway', Helvetica, Arial, sans-serif;
 $changa: 'Changa', Helvetica, Arial, sans-serif;
+$os: 'Open Sans', Helvetica, Arial sans-serif;
 
 /* Colors */
 $blue: #78c5b9;
@@ -54,6 +55,13 @@ a {
   &.vertical {
     width: 1px;
   }
+  &.horizontal {
+    height: 2px;
+    width: 100%;
+  }
+  &.grey {
+    background-color: #ccc;
+  }
 }
 
 body > nav {
@@ -68,11 +76,10 @@ body > nav {
     outline: none;
     border: none;
     height: 60px;
-    margin: 5px 20px 0 0;
+    margin: 0;
     background-image: url('/logo.png');
     background-repeat: no-repeat;
     width: 200px;
-    background-color: black;
     background-position: top;
   }
   a { 
@@ -95,6 +102,25 @@ body > nav {
     display: inline-block;
     vertical-align: top;
   }
+  .sub-nav {
+    text-align: center;
+    background-color: #f6f6f6;
+    border-bottom: 3px solid #ccc;
+  }
+  .row {
+    display: inline-block;
+    padding: 0 40px;
+    cursor: pointer;
+    &:hover {
+      > span { color: $blue; }
+    }
+    > i { padding-right: 8px; }
+    > span {
+      white-space: nowrap;
+      font-family: $changa;
+      font-size: 16px;
+    }
+  }
 }
 
 .flag {
@@ -116,9 +142,10 @@ body > nav {
 
 
 h2 {
-  font-family: $changa;
-  font-size: 18px;
+  font-family: $os;
+  font-size: 20px;
   display: inline-block;
+  margin: 0 10px 0 0;
 }
 
 label {
@@ -143,6 +170,14 @@ button {
   font-family: $changa;
   font-weight: 500;
   font-size: 14px; 
+  &.primary {
+    background-color: $blue;
+    color: white;
+    border-radius: 2px;
+    font-family: $changa;
+    font-size: 16px;
+    margin: 10px;
+  }
   &.blue { 
     background-color: $blue; 
     border: 1px solid lighten($blue, 10);
@@ -151,6 +186,7 @@ button {
       background-color: lighten($blue, 5);
     }
   }
+  &.circle { border-radius: 50%; width: 40px; height: 40px; line-height: 40px; text-align: center; }
   &.dark-grey { 
     background-color: $dark-grey; 
     color: white; 
@@ -171,16 +207,15 @@ input {
   font-weight: 700;
 }
 
-body.klanten-page main,
-body.gebruikers-page main {
-  padding-top: 117px;
-}
 main {
   height: 100%;
   width: 100%;
   padding-top: 76px;
   &[data-load="admin.html"] + footer [data-click="orders.add"] {
     display: none;
+  }
+  &[data-load="courses.html"] {
+    padding: 96px 20px 20px 20px;
   }
   > input {
     width: 100%;
@@ -206,419 +241,7 @@ main {
   }
 }
 
-section {
-    position: relative;
-  > div {
-    background-color: white;
-    -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.1);
-    -moz-box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.1);
-    box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.1);
-    border-radius: 4px;
-    background-color: white;
-    padding: 20px 20px 60px 20px;
-    width: 100%;
-    > .introduction {
-      position: absolute;
-      width: calc(50% - 40px);
-      bottom: 60px;
-      padding: 5px 10px 10px 10px;
-      left: 20px;
-      background-color: #f3f3f3;
-      border-radius: 2px;
-      font-family: $raleway;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 24px;
-      > header {
-        text-align: center;
-        border-bottom: 1px solid white;
-        span { padding: 0 0 0 5px;}
-      }
-      > p { padding: 5px 0 0 0; }
-    }
-    .content-button {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 40px;
-      line-height: 40px;
-    }
-  }
-  &.login-container {
-    > form {
-      text-align: left;
-      max-width: 300px;
-      top: 20px;
-      left: 50%;
-      border-radius: 4px;
-      transform: translate(-50%, 0);
-      position: absolute;
-      background-color: white;
-      padding: 20px 20px 60px 20px;
-      display: block;
-      > button { position: absolute; left: 0; width: 100%; bottom: 0; height: 40px; line-height: 40px;}
-    }
-    input { padding: 0 10px; }
-  }
-  &.admin-container {
-    padding: 20px;
-    > div {
-      position: relative;
-      max-width: 550px;
-      min-height: 380px;
-      top: 0;
-      left: 50%;
-      font-size: 0;
-      transform: translate(-50%, 0);
-    }
-    .block {
-      display: inline-block;
-      position: relative;
-      vertical-align: top;
-      width: 50%;
-      &.permissions {
-        white-space: nowrap;
-      }
-    }
-    .row {
-      position: relative;
-      display: block;
-      height: 40px;
-      overflow: visible;
-      vertical-align: top;
-      padding: 0 0 0 30px;
-      margin: 0 0 5px 0;
-    }
-    input[type="checkbox"] {
-      height: 20px;
-      width: 20px;
-      line-height: 20px;
-      position: absolute;
-      cursor: pointer;
-      left: 0;
-      bottom: 10px;
-    }
-    input[type="text"] {
-      height: 40px;
-      display: inline-block;
-      vertical-align: top;
-      padding: 0 8px;
-      width: 120px;
-      text-transform: uppercase;
-    }
-    input[type="password"] {
-      display: block;
-      margin: 0 0 5px 0;
-      padding: 0 8px;
-      width: 162px;
-    }
-    .task {
-      display: inline-block;
-      width: 40px;
-      vertical-align: top;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-      color: #ffffff;
-      background-color: $grey;
-      padding: 0;
-      &.task-1 { background-color: $purple; }
-      &.task-2 { background-color: $red; }
-      &.task-3 { background-color: $orange; }
-      &.task-4 { background-color: $green; }
-      &.task-5 { background-color: $pink; }
-      &.task-6 { background-color: $yellow; }
-      &.task-7 { background-color: $dark-blue; }
-      &.task-8 { background-color: $dark-grey; }
-      &.fa { display: inline-block; margin: 0 0 5px 0; width: 40px; text-align: center; line-height: 40px; color: white; }
-    }
-    .task-button {
-      height: 24px;
-      width: 24px;
-      margin-top: 8px;
-      line-height: 24px;
-      padding: 0;
-      background: none;
-      opacity: 0.5;
-      outline: none;
-      vertical-align: top;
-      display: inline-block;
-      border: none;
-      &.green { color: $green; }
-      &.red { color: $red; }
-      &:hover {
-        opacity: 1;
-      }
-    }
-  }
-}
-
-body.authenticated footer {
-  display: block;
-}
-
-.klanten-page {
-  .header p, .list > div > div {
-    width: 33%;
-    overflow: hidden;
-  }
-}
-
-.bestellingen-page {
-  .header p, .list > div > div {
-    width: 10%;
-    overflow: hidden;
-  }
-}
-
-.gebruikers-page {
-  .header p, .list > div > div {
-    width: 20%;
-    overflow: hidden;
-  }
-}
-
-.header {
-  font-size: 0;
-  background: $blue;
-  white-space: nowrap;
-  position: absolute;
-  top: 46px;
-  width: 100%;
-  left: 0;
-  p {
-    color: white;
-    padding: 0 20px;
-    height: 30px;
-    line-height: 30px;
-    border-top: 0;
-    font-weight: bold;
-    font-family: $raleway;
-    font-weight: 900;
-    text-transform: uppercase;
-    font-size: 12px;
-    cursor: pointer;
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    &:hover {
-      background: lighten($blue, 10);
-    }
-  }
-}
-
-.prefiller {
-
-  ul {
-    position: absolute;
-    top: 60px;
-    z-index: 1;
-    background: $blue;
-    line-height: 12px;
-    list-style: none;
-    width: 80%;
-    left: 10%;
-    padding: 0;
-    &:empty {
-      border-color: transparent;
-    }
-    li {
-      font-size: 13px;
-      color: white;
-      padding: 3px;
-      border-top: 1px solid lighten($blue, 10);
-      &:first-child { background: darken($blue, 10); }
-    }
-    &:hover {
-      li:first-child { background-color: transparent; }
-      li:hover { background-color: darken($blue, 10); }
-    }
-  }
-}
-
-.list {
-  padding: 0;
-  position: relative;
-  width: 100%;
-  white-space: nowrap;
-  background: white;
-  min-height: 100%;
-  &:after {
-    content: attr(data-title);
-    display: block;
-    font-size: 15px;
-    padding: 20px;
-    font-family: sans-serif;
-  }
-  i { padding: 0 5px 0 0; font-size: 14px;}
-  span {
-    font-size: 12px;
-    text-transform: uppercase;
-  }
-  > div {
-    display: block;
-    font-size: 0;
-    width: 100%;
-    position: relative;
-    height: auto;
-    text-align: left;
-    padding: 0;
-    line-height: 100px;
-    height: 100px;
-    white-space: nowrap;
-    border-bottom: 1px solid lighten($blue, 30);
-    font-family: $changa;
-    font-weight: 500;
-    cursor: pointer;
-    background: white;
-    &:hover {
-      color:#000;
-    }
-    > div, .customer-container, .task-container {
-      padding: 0 15px;
-      text-align: left;
-      width: 14%;
-      display: inline-block;
-      vertical-align: top;
-      height: 100%;
-      position: relative;
-      font-size: 13px;
-      [type="submit"] { display: none; }
-    }
-    .task-container.grouped {
-      padding-top: 15px;
-    }
-    .date-container {
-      display: inline-block;
-      &[data-clicked="true"] {
-        cursor: auto;
-        padding: 0 1px;
-        min-width: 190px;
-      }
-      input {
-        display: inline-block;
-        height: 30px;
-        top: 33px;
-        line-height: 40px;
-        text-align: center;
-        padding: 0;
-        background: white;
-      }
-      button {
-        display: inline-block;
-        width: 100%;
-        margin-top: 80px;
-        height: 20px;
-        line-height: 20px;
-        color: white;
-        cursor: pointer;
-        position: absolute;
-        bottom: 20px;
-        left: 0;
-      }
-    }
-  }
-  .tag {
-    margin: 5px 2px;
-    height: 30px;
-    line-height: 30px;
-    background-color: #ccc;
-    padding: 0 8px;
-    text-transform: uppercase;
-    border-radius: 4px;
-    display: inline-block;
-    vertical-align: middle;
-    color: $dark-grey;
-    opacity: 0.5;
-    user-select: none;
-    &.small {
-      margin: 1px;
-      height: 12px;
-      line-height: 12px;
-      padding: 0 4px;
-      border-radius: 3px;
-      display: block;
-      vertical-align: middle;
-      font-size: 10px;
-      max-width: 80px;
-      text-align: center;
-    }
-    &.active {
-      opacity: 1;
-      background-color: #bbb;
-    }
-    &:hover { opacity: 1; }
-
-    &[data-index="0"] { color: white; background-color: $purple; &:hover { background-color: lighten($purple, 5); } }
-
-    &[data-index="1"] { color: white; background-color: $orange; &:hover { background-color: lighten($orange, 5); } }
-
-    &[data-index="2"] { color: white; background-color: $green; &:hover { background-color: lighten($green, 5); } }
-
-    &[data-index="3"] { color: white; background-color: $pink; &:hover { background-color: lighten($pink, 5); } }
-
-    &[data-index="4"] { color: white; background-color: $yellow; &:hover { background-color: lighten($yellow, 5); } }
-
-    &[data-index="5"] { color: white; background-color: $dark-blue; &:hover { background-color: lighten($dark-blue, 5); } }
-
-    &[data-index="6"] { color: white; background-color: $dark-grey; &:hover { background-color: lighten($dark-grey, 5); } }
-
-    &[data-index="7"] { color: white; background-color: $red; &:hover { background-color: lighten($red, 5); } }
-    
-  }
-  select, input {
-    height: 100%;
-    background: none;
-    outline: none;
-    border: none;
-    padding: 0 8px;
-    &[type="text"] {
-      padding: 0;
-    }
-  }
-  select {
-    cursor: pointer;
-    
-    option { color: $dark-grey; }
-  }
-  
- }
-
-body.gebruikers-page button[data-click="users.add"],
-body.bestellingen-page button[data-click="orders.add"],
-body.klanten-page button[data-click="customers.add"] {
-  display: block;
-  float: right;
-}
-
-footer {
-  height: 40px;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  overflow: hidden;
-  display: none;
-
-  .content {
-    position: relative;
-    width: 100%;
-    display: inline-block;
-    text-align: right;
-    button {
-      display: none;
-      &[data-click="sessions.sign_out"] {
-        float: left;
-        display: block;
-      }
-    }
-  }
-
-  button {
-    max-width: 250px;
-    -webkit-box-shadow: 0px 0px 3px 0px rgba(0,0,0,1);
-    -moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,1);
-    box-shadow: 0px 0px 3px 0px rgba(0,0,0,1);
-    width: 50%;
-  }
+.course {
+  height: 200px;
+  margin: 20px;
 }

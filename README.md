@@ -1,4 +1,4 @@
-# TSR
+# Vitality One
 HTML5 / CSS3 / Javascript (ES6)
 
 ## Getting Started
