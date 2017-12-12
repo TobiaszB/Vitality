@@ -147,6 +147,8 @@ body > nav {
     text-align: center;
     background-color: #f6f6f6;
     border-bottom: 3px solid #ccc;
+    background-image: url('/pattern-ruffles.png');
+    background-repeat: repeat;
     z-index: 1;
   }
   .row {
@@ -158,13 +160,13 @@ body > nav {
     &:hover {
       > span, i { color: $blue; }
     }
-    > i { padding-right: 8px; }
+    > i { padding-right: 8px; color: $dark-grey; }
     > span {
       white-space: nowrap;
       font-family: $changa;
       font-size: 15px;
-      font-weight: bold;
-      color: #222;
+      font-weight: 600;
+      color: $dark-grey;
     }
   }
 }
@@ -283,6 +285,7 @@ input {
   	&:hover {
   		border-bottom: 2px solid $blue;
   	}
+  	&[data-mode="cards"] { border-bottom: 2px solid $blue; }
   }
   input {
   	background-color: $grey;
@@ -333,6 +336,10 @@ main {
   width: 100%;
   padding-top: 12px;
   position: relative;
+  &[data-mode="lists"] a {
+  		&[data-mode="lists"] { border-bottom: 2px solid $blue; }
+  		&[data-mode="cards"] { border-bottom: 2px solid transparent; }
+  }
   &[data-load="courses.html"] {
     padding: 96px 20px 20px 200px;
   }
