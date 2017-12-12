@@ -399,8 +399,8 @@ main {
 
 // landing 
 [data-load="landing.html"], [data-load="about.html"] {
-positon: relative;
-padding: 0;
+	positon: relative;
+	padding: 0;
 
 	section {
 		background-repeat: no-repeat;
@@ -433,8 +433,18 @@ padding: 0;
 			padding: 0 0 0 5px;
 			display: inline-block;
 		}
+		
+		.content {
+			position: relative;
+			overflow: hidden;
+			padding: 50px 0;
+			max-width: 1400px;
+			margin: 0 auto;
+		}
+		
 		&.landing { background-image: url('/photo-joris-merel-1.jpg'); min-height: 100vh; }
 		&.about { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh; }
+
 		&[data-index="2"] { 
 			background-color: $cyan; 
 
@@ -442,7 +452,8 @@ padding: 0;
 				width: 400px;
 				background-size: contain;
 				display: inline-block;
-				margin: 50px 0 30px 50px;
+				margin: 0 30px 50px 50px;
+				float: left;
 			}
 
 			h2 {
@@ -451,9 +462,6 @@ padding: 0;
 				display: inline-block;
 				vertical-align: top;
 				font-family: $raleway;
-				margin: 60px 0 20px;
-				position: absolute;
-				left: 500px;
 			}
 			
 			p {
@@ -463,11 +471,23 @@ padding: 0;
 				line-height: 30px;
 				font-family: $raleway;
 				font-weight: 400;
-				max-width: 50%;
 				vertical-align: top;
-				position: absolute;
-				left: 500px;
-				top: 100px;
+				padding: 10px 0 0 0;
+				max-width: calc(100% - 500px);
+			}
+
+			.content {
+				padding: 50px 0 0 0;
+				&.joris {
+					img { float: left; }
+				}
+				&.merel {
+					img { float: none; }
+					p {
+						padding: 10px 0 0 50px;
+					}
+					h2 { padding: 0 0 0 50px; }
+				}
 			}
 		}
 
@@ -609,7 +629,7 @@ padding: 0;
 			width: 40%;
 			margin-bottom: 10px;
 			color: $dark-grey;
-			&[data-modal="courses.view"]:before {
+			&[data-click="courses.view"]:before {
 				font-family: FontAwesome;
 				content: "\f06e";
 				padding: 0 5px 0 0;
