@@ -470,8 +470,9 @@ padding: 0;
 				top: 100px;
 			}
 		}
+
 		&[data-index="3"]{
-			padding: 50px;
+			padding: 30px 50px;
 			h2 { 
 				color: $dark-grey; 
 				text-transform: uppercase;
@@ -506,12 +507,14 @@ padding: 0;
 		
 		&[data-index="4"] { 
 			background-color: $cyan; 
+			padding: 50px;
 
 			img {
 				width: 400px;
 				background-size: contain;
 				display: inline-block;
-				margin: 50px 0 30px 50px;
+				margin: 0 0 30px 50px;
+				float: right;
 			}
 
 			h2 {
@@ -520,9 +523,7 @@ padding: 0;
 				display: inline-block;
 				vertical-align: top;
 				font-family: $raleway;
-				margin: 60px 0 20px;
-				position: absolute;
-				left: 500px;
+				margin: 20px 0 20px;
 			}
 			
 			p {
@@ -534,9 +535,6 @@ padding: 0;
 				font-weight: 400;
 				max-width: 50%;
 				vertical-align: top;
-				position: absolute;
-				left: 500px;
-				top: 100px;
 			}
 		}
 
