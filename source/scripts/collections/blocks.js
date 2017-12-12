@@ -1,0 +1,40 @@
+let blocks = module.exports = {
+
+  memory: [],
+
+  load: (element) => {
+
+    element.innerHTML = Object.keys(blocks.memory).reduce((html, key) => `${ html }
+      <div><a data-key="${ key }" data-load="blocks.render_one"></a></div>`, '');
+      
+  },
+
+  render_one: (element) => {
+
+    element.innerHTML = `${ element.dataset.key }`;
+    
+    element.addEventListener('mousedown', (e)=>{
+
+      blocks.drag_x = e.clientX;
+
+      blocks.drag_y = e.clientY;
+
+      blocks.drag_block = element;
+console.log(element)
+    });
+
+  }
+
+};
+
+document.body.addEventListener('mousemove', (e)=>{
+
+  if(!blocks.drag_block) return e;
+
+  blocks.drag_block.style.right = `${ blocks.drag_x - e.clientX }px`;
+
+  blocks.drag_block.style.top = `${ e.clientY - blocks.drag_y }px`;
+
+});
+
+document.body.addEventListener('mouseup', (e)=>blocks.drag_block = null);

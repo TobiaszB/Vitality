@@ -147,6 +147,51 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
+require.register("source/scripts/collections/blocks.js", function(exports, require, module) {
+'use strict';
+
+var blocks = module.exports = {
+
+  memory: [],
+
+  load: function load(element) {
+
+    element.innerHTML = Object.keys(blocks.memory).reduce(function (html, key) {
+      return html + '\n      <div><a data-key="' + key + '" data-load="blocks.render_one"></a></div>';
+    }, '');
+  },
+
+  render_one: function render_one(element) {
+
+    element.innerHTML = '' + element.dataset.key;
+
+    element.addEventListener('mousedown', function (e) {
+
+      blocks.drag_x = e.clientX;
+
+      blocks.drag_y = e.clientY;
+
+      blocks.drag_block = element;
+      console.log(element);
+    });
+  }
+
+};
+
+document.body.addEventListener('mousemove', function (e) {
+
+  if (!blocks.drag_block) return e;
+
+  blocks.drag_block.style.right = blocks.drag_x - e.clientX + 'px';
+
+  blocks.drag_block.style.top = e.clientY - blocks.drag_y + 'px';
+});
+
+document.body.addEventListener('mouseup', function (e) {
+  return blocks.drag_block = null;
+});
+});
+
 require.register("source/scripts/collections/courses.js", function(exports, require, module) {
 'use strict';
 
@@ -1021,6 +1066,22 @@ var users = module.exports = {
 })();
 });
 
+require.register("source/scripts/components/editor.js", function(exports, require, module) {
+"use strict";
+
+var editor = module.exports = {
+
+  load_course: function load_course(element) {
+
+    var key = history.state.course,
+        course = root.courses.memory[key];
+
+    console.log(course);
+  }
+
+};
+});
+
 require.register("source/scripts/components/labels.js", function(exports, require, module) {
 'use strict';
 
@@ -1538,11 +1599,15 @@ window.root = {
 
   courses: require('./collections/courses.js'),
 
+  blocks: require('./collections/blocks.js'),
+
   sessions: require('./collections/sessions.js'),
 
   labels: require('./components/labels.js'),
 
   modal: require('./components/modal.js'),
+
+  editor: require('./components/editor.js'),
 
   prefill: require('./components/prefill.js'),
 

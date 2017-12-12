@@ -231,6 +231,18 @@ console.log(msg);
 
     },
 
+    load_blocks: (ws, msg, session) => {
+
+      db.collection('blocks').find().toArray((err, blocks) => {
+
+        if(err) console.log(err);
+
+        ws.send(JSON.stringify(blocks));
+
+      });
+
+    },
+
     load_tickets: (ws, msg, session) => {
 
       db.collection('tickets').find().toArray((err, tickets) => {
@@ -376,11 +388,15 @@ function Connection(ws) {
 
       ws.send(JSON.stringify(session));
 
+      handler('load_tickets')(ws, {}, session);
+
+      if(!user || user.role != 'admin') return;
+
       handler('load_courses')(ws, {}, session);
 
       handler('load_users')(ws, {}, session);
-
-      handler('load_tickets')(ws, {}, session);
+      
+      handler('load_blocks')(ws, {}, session);
 
     });
 
@@ -433,6 +449,32 @@ function database() {
         course: 'courses_test',
         user: 'users_joris',
         admin: 'users_joris'
+      }
+    }, { upsert: true }, ()=>{});
+
+    db.collection('blocks').findAndModify({ key: 'blocks_test' }, [], {
+      $set: {
+        html: `
+          <h1 data-load="editor.load_element" data-element="title"></h1>
+          <p data-load="editor.load_element" data-element="text"></p>
+          <a data-load="editor.load_element" data-element="button_primary"></a>
+          <a data-load="editor.load_element" data-element="button_secondary"></a>
+          <div data-load="editor.load_element" data-element="overlay"></div>
+          <div data-load="editor.load_element" data-element="background"></div>
+        `,
+        created_at: new Date(),
+        options: {
+          show_title: 'boolean',
+          show_text: 'boolean',
+          show_buttons: 'boolean',
+          show_arrow: 'boolean',
+          content_align: 'align',
+          background_image: 'url',
+          parallax: 'boolean',
+          background_color: 'color',
+          background_video: 'video',
+          overlay: 'overlay'
+        }
       }
     }, { upsert: true }, ()=>{});
 
