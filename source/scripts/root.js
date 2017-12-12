@@ -10,15 +10,17 @@ window.root = {
   
   templates: require('./collections/templates.js'),
   
-  customers: require('./collections/customers.js'),
+  courses: require('./collections/courses.js'),
 
   sessions: require('./collections/sessions.js'),
 
   labels: require('./components/labels.js'),
   
+  modal: require('./components/modal.js'),
+  
   prefill: require('./components/prefill.js'),
 
-  orders: require('./collections/orders.js'),
+  tickets: require('./collections/tickets.js'),
 
   users: require('./collections/users.js')
 
@@ -63,7 +65,7 @@ function create_websocket() {
 
   new WebSocket(DEV_MODE ?
     `ws://localhost:443/${ query }` :
-    `wss://tsr.fearless-apps.com/${ query }`
+    `wss://vitalityone.fearless-apps.com/${ query }`
   ).addEventListener('message', function listener(e){
 
     root.ws = e.target;
@@ -108,8 +110,6 @@ function incoming(message, callbacks){
 
   if(message instanceof Array) {
 
-	if(Object.keys(root.orders.memory).length) root.updated = true;
-
   	for(let m in message) merge(message[m]);
 
 	return;
@@ -138,10 +138,6 @@ function incoming(message, callbacks){
 
   if(!message.token) root.sessions.url('/');
 
-  else if(localStorage.getItem('authenticated') && !message.launched) root.sessions.url('/');
-
-  else if(history.state && history.state.page == 'admin') root.sessions.url('/');
-
   localStorage.setItem('authenticated', message.token || '');
 
   root.sessions.load_page(null, { prevent_url: true });
@@ -161,6 +157,8 @@ function merge(message){
   if(!message.key) return;
 
   let collection = message.key.split('_').slice(0, -1).join('_');
+
+  if(!root[collection]) return console.log(`collection <${ collection }> not found`);
 
   if(!root[collection].memory[message.key]) {
 

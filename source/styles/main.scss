@@ -22,6 +22,7 @@ $dark-blue: hsl(250, 100%, 39%);
 $light-grey: #efefef;
 $grey: #ccc;
 $dark-grey: #444;
+$black: black;
 
 // general
 html {
@@ -29,7 +30,7 @@ html {
 }
 
 body {
-  padding: 0 0 0 0;
+  padding: 148px 0 0 0;
   background-color: $light-grey;
   position: relative;
   height: 100%;
@@ -40,6 +41,23 @@ body {
   }
   &.start-page {
     background-color: #fff;
+  }
+}
+
+body.profile-page [data-page="profile"],
+body.courses-page [data-page="courses"],
+body.invites-page [data-page="invites"],
+body.stats-page [data-page="stats"] {
+    border-bottom: 3px solid $blue;
+}
+
+body.courses-page {
+
+  .thumbnail {
+    height: 200px;
+    width: 400px;
+    background-size: contain;
+    background-repeat: no-repeat;
   }
 }
 
@@ -83,9 +101,11 @@ body.authenticated {
 
 body > nav {
   background-color: $dark-grey;
-  height: 70px;
-  border-bottom: 3px solid #ccc;
   line-height: 70px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   .logo { 
     display: inline-block;
     vertical-align: top;
@@ -127,19 +147,24 @@ body > nav {
     text-align: center;
     background-color: #f6f6f6;
     border-bottom: 3px solid #ccc;
+    z-index: 1;
   }
   .row {
     display: inline-block;
     padding: 0 40px;
     cursor: pointer;
+    margin-bottom: -3px;
+    border-botom: 3px solid transparent;
     &:hover {
-      > span { color: $blue; }
+      > span, i { color: $blue; }
     }
     > i { padding-right: 8px; }
     > span {
       white-space: nowrap;
       font-family: $changa;
-      font-size: 16px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #222;
     }
   }
 }
@@ -234,12 +259,27 @@ input {
   font-weight: 700;
 }
 
+.side-nav {
+  position: absolute;
+  left: 0;
+  border-right: 1px solid $grey;
+  top: 73px;
+  width: 200px;
+  padding: 12px;
+  [data-load="courses.load_managers"] > div {
+  	&.active {
+  		background-color: red;
+  	}
+  }
+}
+
 main {
   height: 100%;
   width: 100%;
   padding-top: 12px;
+  position: relative;
   &[data-load="courses.html"] {
-    padding: 96px 20px 20px 20px;
+    padding: 96px 20px 20px 200px;
   }
   > input {
     width: 100%;
@@ -268,4 +308,113 @@ main {
 .course {
   height: 200px;
   margin: 20px;
+}
+
+
+body {
+	&.modal-open {
+		text-align: center;
+		
+		footer {display: none;}
+
+		main {position: fixed;}
+
+		#modal-container {display: block}
+
+		.black-layer {
+			background: rgba(#000, .9);
+			display: block;
+			max-height: 100vh;
+		}
+	}
+
+}
+
+
+
+.black-layer {
+	position: fixed;
+	z-index: 7;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(#000, 0);
+	max-height: 0;
+	width: 100%;
+	height: 100%;
+	transition: .3s background linear;
+}
+
+
+#modal-container {
+	display: none;
+	position: absolute;
+	z-index: 9;
+	top: 12px;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	padding-bottom: 12px;
+	width: calc(100vw - 24px);
+	pointer-events: none;
+}
+	
+.modal {
+	position: relative;
+	display: inline-block;
+	border-radius: 3px;
+	pointer-events: auto;
+	min-width: 220px;
+
+	i.close-modal {
+		cursor: pointer;
+		position: absolute;
+		z-index: 1;
+		top: 10px;
+		right: 10px;
+		font-size: 16px;
+		padding: 10px;
+		border-radius: 8px;
+		transition: all .15s ease;
+		color: #fff;
+		background: rgba(#000,.1);
+		
+		&:hover {
+			color: $black;
+			background: rgba(#fff,.3);
+		}
+	}
+
+	.content {
+		position: relative;
+		text-align: left;
+		background: #fff;
+		padding: 16px 24px;
+		p {margin-bottom: 16px;}
+	}
+
+	.img {height: 240px;}
+
+	h1 {
+		border-top-left-radius: 3px;
+		border-top-right-radius: 3px;
+		margin-bottom: 5px;
+		color: $black;
+	}
+
+	nav {
+		display: inline-block;
+		width: 100%;
+		border-bottom-left-radius: 3px;
+		border-bottom-right-radius: 3px;
+		background: #fff;
+		padding: 1px 20px 12px;
+
+		.button {
+			display: block;
+			width: 100%;
+			margin-top: 10px;
+		}
+	}
 }

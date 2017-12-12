@@ -1,4 +1,18 @@
 <div class="side-nav">
+  
+  <h3 data-load="labels.view_mode"></h3>
+
+  <a data-click="courses.view_mode" data-mode="cards" class="fa fa-address-card-o"></a>
+
+  <a data-click="courses.view_mode" data-mode="lists" class="fa fa-list"></a>
+
+  <h3 data-load="labels.search"></h3>
+
+  <input type="search" data-input="courses.save_search" data-load="labels.placeholder_search">
+  
+  <h3 data-load="labels.managers"></h3>
+
+  <div data-load="courses.load_managers"></div>
 
 </div>
 
@@ -10,11 +24,7 @@
 
   <div class="divider horizontal grey"></div>
 
-  <div class="course">
-  
-    <h2>Beweeg je wel genoeg?</h2>
-
-  </div>
+  <div data-load="courses.list"></div>
 
   <button class="primary">SAVE THIS COURSE</button>
 

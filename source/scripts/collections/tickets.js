@@ -251,10 +251,8 @@ let orders = module.exports = {
 
   if(!orders.updated) return setTimeout(updater, 300);
 
-  if(root.me.launched) orders.list(document.querySelector('[data-load="orders.list"]'));
-
   orders.updated = false;
 
-  updater();
+  // updater(); turn this on if you want to use this updater
 
 }());

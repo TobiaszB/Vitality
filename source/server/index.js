@@ -29,7 +29,7 @@ function Server(config, callback) {
 
   if(folder) http.createServer((req, res) => {
 
-    res.writeHead(302, { Location: 'https://tsr.fearless-apps.com' + req.url });
+    res.writeHead(302, { Location: 'https://vitalityone.fearless-apps.com' + req.url });
 
     res.end();
 

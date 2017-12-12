@@ -74,7 +74,7 @@ console.log(msg);
 
             callback(updated.value);
 
-            handler('load_orders')(ws, msg, updated.value);
+            handler('load_courses')(ws, msg, updated.value);
 
           });
 
@@ -128,11 +128,11 @@ console.log(msg);
 
       }
 
-      db.collection('orders').findAndModify({
-        key: `orders_${ Math.floor(Math.random() * 99999999) }`
+      db.collection('courses').findAndModify({
+        key: `courses_${ Math.floor(Math.random() * 99999999) }`
       }, [], {
         $set: {
-          customer: '',
+          ticket: '',
           status: status,
           extra: '',
           tasks: session.tasks,
@@ -146,19 +146,19 @@ console.log(msg);
 
         handler('broadcast')(ws, [updated.value], session);
 
-        handler('load_orders')(ws, msg, session);
+        handler('load_courses')(ws, msg, session);
 
       });
 
     },
 
-    new_customer: (ws, msg, session) => {
+    new_ticket: (ws, msg, session) => {
 
       if(!session.add_permission)
         return ws.send(JSON.stringify({ error: 'geen permissie' }));
 
-      db.collection('customers').findAndModify({
-        key: `customers_${ Math.floor(Math.random() * 99999999) }`
+      db.collection('tickets').findAndModify({
+        key: `tickets_${ Math.floor(Math.random() * 99999999) }`
       }, [], {
         $set: {
           name: '',
@@ -221,17 +221,17 @@ console.log(msg);
 
     },
 
-    load_orders: (ws, msg, session) => {
+    load_courses: (ws, msg, session) => {
 
       let sort = {};
 
       sort[session.sort_attribute] = session.sort_direction;
 
-      db.collection('orders').find({}).sort(sort).limit(1000).toArray((err, orders) => {
+      db.collection('courses').find({}).sort(sort).limit(1000).toArray((err, courses) => {
 
         if(err) console.log(err);
 
-        ws.send(JSON.stringify(orders));
+        ws.send(JSON.stringify(courses));
 
       });
 
@@ -249,29 +249,13 @@ console.log(msg);
 
     },
 
-    load_customers: (ws, msg, session) => {
+    load_tickets: (ws, msg, session) => {
 
-      db.collection('customers').find().toArray((err, customers) => {
+      db.collection('tickets').find().toArray((err, tickets) => {
 
         if(err) console.log(err);
 
-        ws.send(JSON.stringify(customers));
-
-      });
-
-    },
-
-    launch: (ws, msg, session, callback) => {
-
-      db.collection('sessions').findAndModify({ key: session.key }, [], {
-        $set: { launched: true }
-      }, { new: true }, (err, updated) => {
-
-        if(msg.callback) updated.value.callback = msg.callback;
-
-        ws.send(JSON.stringify(updated.value));
-
-        callback(updated.value);
+        ws.send(JSON.stringify(tickets));
 
       });
 
@@ -410,11 +394,11 @@ function Connection(ws) {
 
       ws.send(JSON.stringify(session));
 
-      handler('load_orders')(ws, {}, session);
+      handler('load_courses')(ws, {}, session);
 
       handler('load_users')(ws, {}, session);
 
-      handler('load_customers')(ws, {}, session);
+      handler('load_tickets')(ws, {}, session);
 
     });
 
@@ -425,63 +409,39 @@ function Connection(ws) {
 function database() {
 
   // database setup
-  require('mongodb').MongoClient.connect(`mongodb://127.0.0.1:27017/tsr`, (err, database) => {
+  require('mongodb').MongoClient.connect(`mongodb://127.0.0.1:27017/vitalityone`, (err, database) => {
 
     if(err) throw err;
 
     db = database;
 
-    db.collection('users').findAndModify({ key: 'users_joris' }, [], {
+    db.collection('users').findAndModify({ key: 'users_jorin' }, [], {
       $set: {
-        email: 'joris@vitalityone.nl',
+        name: 'Jorin Boon',
+        avatar: '',
+        email: 'jorin@vitalityone.nl',
         password: '',
+        role: 'admin'
       }
     }, { upsert: true }, ()=>{});
 
     db.collection('users').findAndModify({ key: 'users_merel' }, [], {
       $set: {
+        name: 'Merel Witkamp',
+        avatar: '',
         email: 'merel@vitalityone.nl',
         password: '',
+        role: 'admin'
       }
     }, { upsert: true }, ()=>{});
 
-    db.collection('orders').drop((err) => {
-
-      db.collection('orders').insertMany([{
-        key: 'orders_test',
-        customer: 'Makro B.V.',
-        status: 'WASSEN',
-        arrival: tmp = new Date(Math.random() * 99999999999 + 1420070400000),
-        departure: new Date(tmp.valueOf() + Math.random() * 299999999),
-        tasks: ['WASSEN', 'DROGEN', 'STRIJKEN', 'OPVOUWEN'],
-        extra: ''
-      }, {
-        key: 'orders_test1',
-        customer: 'Aldi B.V.',
-        status: 'DROGEN',
-        arrival: tmp = new Date(Math.random() * 99999999999 + 1420070400000),
-        departure: new Date(tmp.valueOf() + Math.random() * 299999999),
-        tasks: ['', 'DROGEN', 'STRIJKEN', 'OPVOUWEN'],
-        extra: ''
-      }, {
-        key: 'orders_test2',
-        customer: 'Perry Sports B.V.',
-        status: 'STRIJKEN',
-        arrival: tmp = new Date(Math.random() * 99999999999 + 1420070400000),
-        departure: new Date(tmp.valueOf() + Math.random() * 299999999),
-        tasks: ['', '', 'STRIJKEN', 'OPVOUWEN'],
-        extra: ''
-      }, {
-        key: 'orders_test3',
-        customer: 'Makro B.V.',
-        status: 'OPVOUWEN',
-        arrival: tmp = new Date(Math.random() * 99999999999 + 1420070400000),
-        departure: new Date(tmp.valueOf() + Math.random() * 299999999),
-        tasks: ['', '', '', 'OPVOUWEN'],
-        extra: ''
-      }], ()=>{});
-
-    });
+    db.collection('courses').findAndModify({ key: 'courses_test' }, [], {
+      $set: {
+        name: 'Test',
+        thumbnail: 'https://ak4.picdn.net/shutterstock/videos/12666344/thumb/1.jpg',
+        admin: 'users_jorin'
+      }
+    }, { upsert: true }, ()=>{});
 
   });
 

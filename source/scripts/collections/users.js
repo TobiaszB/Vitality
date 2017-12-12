@@ -289,10 +289,8 @@ let users = module.exports = {
 
   if(!users.updated) return setTimeout(updater, 300);
 
-  if(root.me.launched) users.list(document.querySelector('[data-load="users.list"]'));
-
   users.updated = false;
 
-  updater();
+  // updater();
 
 }());

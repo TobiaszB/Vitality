@@ -147,143 +147,427 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
-require.register("source/scripts/collections/customers.js", function(exports, require, module) {
+require.register("source/scripts/collections/courses.js", function(exports, require, module) {
 'use strict';
 
-var customers = module.exports = {
+var _module$exports;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var courses = module.exports = (_module$exports = {
+
+  // here we save all courses in client memory
+  // { [key]: OBJECT }
+  memory: {},
+
+  // button is placed to the right of the title of the page
+  add: function add(element) {
+
+    // root.send is used to talk to the server
+    root.send({ request: 'new_course' });
+  },
+
+  // view mode can be cards or list, it has a button in the left top of the interface
+  view_mode: function view_mode(element) {
+
+    courses.mode = element.dataset.mode;
+
+    // we put the mode also in the main, to support CSS styling
+    root.main.dataset.mode = element.dataset.mode;
+
+    // see update loop at the bottom of this file
+    courses.updated = true;
+  },
+
+  // anytime the user triggers the data-input of the search field, we execute this
+  save_search: function save_search(element) {
+
+    // used inside of courses.render()
+    courses.search_query = String(element.value || '').toLowerCase();
+
+    // see update loop at the bottom of this file
+    courses.updated = true;
+  },
+
+  // goes off anytime course-related data-input is fired
+  edit: function edit(element, options) {
+
+    // we always need to provide a request string and the key of the object we are editing
+    var request = {
+      request: 'edit',
+      key: element.dataset.course
+    };
+
+    // but the value we are changing shall be added dynamically,
+    // so we can use this edit function straight from the HTML
+    // <input data-input="courses.edit" data-key="[KEY]">
+    var v = options ? options.value : element.value;
+
+    request[element.dataset.property] = v;
+
+    // options.callback can only be used when this function is fired manually in Javascript
+    // since we cannot write a function inside of the HTML tag
+    root.send(request, options ? options.callback : null);
+  },
+
+  list: function list(element) {
+
+    // we are lazy developers that do not want to select the list over and over
+    // whenever we use this list function manually
+    if (!element) element = document.querySelector('[data-load="courses.list"]');
+
+    // we clean out the old HTML should this function be fired after the list already rendered
+    element.innerHTML = '';
+
+    // we show a loading text
+    root.labels.loading(element);
+
+    // and start the render loop!
+    courses.render(element);
+  },
+
+  render: function render(element, keys, iteration) {
+
+    // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
+    if (!element) return;
+
+    // we need to make sure we only run 1 loop at the same time
+    // every time render is called outside of its own loop, iteration will be undefined
+    // so we use this condition to also update the dataset of the element
+    // in order for the old loop to kill itself...
+    if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
+
+    // if it turns out this execution is an outdated iteration,
+    // the element has updated its dataset.iteration outside of this loop
+    // we have to bring this loop to the white shores
+    // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
+    if (element.dataset.iteration != iteration) return;
+
+    // every time render is called outside of its own loop, keys will be undefined
+    if (!keys) keys = Object.keys(courses.memory);
+
+    // the loop has finished
+    if (!keys.length) {
+
+      // sadly, no children are found inside of the element
+      // this can only mean there were no results
+      if (!element.children.length) return root.labels.no_results(element);
+
+      // we had results, and are no longer loading, so lets clear that loading message
+      return element.dataset.message = '';
+    }
+
+    var search = courses.search_query,
+        // search value is changed by courses.save_search()
+    course = courses.memory[keys.shift()];
+
+    if (!course || course.archived || search && String(course.name).toLowerCase().indexOf(search) == -1 || courses.manager_filter.length && courses.manager_filter.indexOf(course.admin) == -1) {
+
+      if (keys.length % 100 == 0) return requestAnimationFrame(function () {
+
+        courses.render(element, keys, iteration);
+      });
+
+      return courses.render(element, keys, iteration);
+    }
+
+    requestAnimationFrame(function () {
+
+      courses.render(element, keys, iteration);
+    });
+
+    var elem = document.createElement('div');
+
+    elem.dataset.load = 'courses.render_one';
+
+    elem.dataset.course = course.key;
+
+    element.appendChild(elem);
+  },
+
+  archive: function archive(element) {
+
+    var course = courses.memory[element.dataset.key];
+
+    root.send({ request: 'archive', key: course.key }, function () {
+
+      // see update loop at the bottom of this file
+      courses.updated = true;
+    });
+  },
+
+  manager_filter: [],
+
+  toggle_manager: function toggle_manager(element) {
+
+    var key = element.dataset.key,
+        filter = courses.manager_filter,
+        index = filter.indexOf(key);
+
+    element.classList.toggle('active');
+
+    if (index > -1) filter.splice(index, 1);else filter.push(key);
+
+    courses.updated = true;
+  },
+
+  load_managers: function load_managers(element) {
+
+    element.innerHTML = Object.keys(root.users.memory).reduce(function (html, key) {
+
+      var user = root.users.memory[key];
+
+      if (user.role == 'admin') html += '<div data-click="courses.toggle_manager" data-key="' + user.key + '">\n        <span style="background-image: url(' + user.avatar + ');"></span>\n        <span data-load="users.memory.' + user.key + '.name"></span>\n      </div>';
+
+      return html;
+    }, '');
+  },
+
+  render_one: function render_one(element) {
+
+    var course = courses.memory[element.dataset.course];
+
+    element.dataset.key = element.dataset.course;
+
+    element.innerHTML = courses.mode == 'lists' ? '\n      <span data-load="courses.memory.' + element.dataset.key + '.name"></span>\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <span data-load="users.memory.' + course.admin + '.name"></span>\n    ';
+
+    if (!course.name) element.querySelector('input').focus();
+
+    function format(date) {
+
+      date = new Date(date);
+
+      var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+
+      if (!date || String(date).toLowerCase() == 'invalid date') return '';
+
+      return '\n        ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + '\n        ' + date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes() + '\n      ';
+    }
+  },
+
+  course_nav: function course_nav(element) {
+
+    return '<div>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.view" data-load="labels.view"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.edit" data-load="labels.edit"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.copy" data-load="labels.copy"></button>\n      </div>';
+  },
+
+  view: function view(element) {
+
+    var course = root.courses.memory[element.dataset.key];
+
+    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.view"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
+  },
+
+  invite: function invite(element) {
+
+    var course = root.courses.memory[element.dataset.key];
+
+    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.invite"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
+  },
+
+  stats: function stats(element) {
+
+    var course = root.courses.memory[element.dataset.key];
+
+    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.stats"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
+  }
+
+}, _defineProperty(_module$exports, 'edit', function edit(element) {
+
+  var course = root.courses.memory[element.dataset.key];
+
+  element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.edit"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
+}), _defineProperty(_module$exports, 'copy', function copy(element) {
+
+  var course = root.courses.memory[element.dataset.key];
+
+  element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.copy"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
+}), _module$exports);
+
+(function updater() {
+
+  if (!courses.updated) return setTimeout(updater, 300);
+
+  courses.updated = false;
+
+  courses.list();
+
+  updater();
+})();
+});
+
+require.register("source/scripts/collections/sessions.js", function(exports, require, module) {
+'use strict';
+
+module.exports = {
 
     memory: {},
 
-    add: function add(element) {
+    load: function load() {
 
-        root.send({ request: 'new_customer' });
+        root.main = document.querySelector('main');
+
+        if (!root.main) return setTimeout(load, 0);
     },
 
-    save_search: function save_search(element) {
+    sign_in: function sign_in(element) {
 
-        localStorage.setItem('search', element.value);
-
-        customers.updated = true;
-    },
-
-    edit: function edit(element, options) {
-
-        var request = {
-            request: 'edit',
-            key: element.dataset.customer
-        };
-
-        var v = options ? options.value : element.value;
-
-        request[element.dataset.property] = v;
-
-        root.send(request, options ? options.callback : null);
-    },
-
-    list: function list(element) {
-
-        if (!element) return;
-
-        element.innerHTML = '';
-
-        root.labels.loading(element);
-
-        requestAnimationFrame(function () {
-
-            var search = String(localStorage.getItem('search') || '').toLowerCase();
-
-            customers.render(element, search);
+        root.send({
+            request: 'sign_in',
+            email: element.parentElement.querySelector('[type="email"]').value || '',
+            password: element.parentElement.querySelector('[type="password"]').value || ''
         });
     },
 
-    render: function render(element, search, keys, iteration) {
+    sign_out: function sign_out(element) {
 
-        if (!element) return;
+        root.ws.send(JSON.stringify({ request: 'sign_out' }));
+    },
 
-        if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
+    check_passwords: function check_passwords(element) {
 
-        if (element.dataset.iteration != iteration) return;
+        var inputs = root.main.querySelectorAll('input[type="password"]');
 
-        keys = keys || Object.keys(customers.memory);
+        if (!inputs[0].value && !inputs[2].value) return root.sessions.launch();
 
-        if (!keys.length) {
+        if (inputs[0].value != inputs[1].value) return alert('not equal');
 
-            if (!element.children.length) return root.labels.no_results(element);
+        root.send({
+            request: 'set_password',
+            old_password: inputs[0].value,
+            password: inputs[2].value || ''
+        }, function (res) {
 
-            return element.dataset.title = '';
+            root.sessions.launch();
+        });
+    },
+
+    launch: function launch() {
+
+        root.send({ request: 'launch' });
+    },
+
+    load_page: function load_page(elem, options) {
+
+        if (!root.main) return setTimeout(root.main, 0, elem, options);
+
+        var page = elem ? elem.dataset.page : history.state ? history.state.page : 'landing';
+
+        if (!localStorage.getItem('authenticated') && ['landing', 'login', 'about'].indexOf(page) == -1) {
+            page = 'landing';
         }
 
-        var customer = customers.memory[keys.shift()];
+        document.body.classList.forEach(function (c) {
 
-        if (!customer || customer.archived || search && String(customer.name).toLowerCase().indexOf(search) == -1) {
+            if (c.indexOf('-page') == -1) return;
 
-            if (keys.length % 100 == 0) return requestAnimationFrame(function () {
+            document.body.classList.remove(c);
+        });
 
-                customers.render(element, search, keys, iteration);
-            });
+        document.body.classList.remove('notified');
 
-            return customers.render(element, search, keys, iteration);
+        document.body.classList.add(page + '-page');
+
+        root.main.dataset.load = page + '.html';
+
+        if (!options || !options.prevent_url) root.sessions.url('/' + page);
+
+        window.scrollTo(0, 0);
+    },
+
+    url: function url(state, options) {
+
+        var defaulted = 'landing';
+
+        var operation = options && options.replace ? 'replaceState' : 'pushState';
+
+        var url = typeof state == 'string' ? decode() : location.pathname;
+
+        return history[operation](state ? state : decode(), options ? options.title : document.title, state ? encode() : pathname);
+
+        function encode() {
+
+            var page = state ? state.page || defaulted : defaulted;
+
+            return Object.keys(state).reduce(function (url, key) {
+
+                if (key == 'page') return url;
+
+                return url + '/' + key + '/' + state[key];
+            }, '/' + (page == defaulted ? '' : page));
         }
 
-        requestAnimationFrame(function () {
+        function decode() {
 
-            customers.render(element, search, keys, iteration);
-        });
+            var parts = (state || location.pathname).split(/\//g);
 
-        var elem = document.createElement('div');
+            state = {};
 
-        elem.dataset.load = 'customers.render_one';
+            for (var i = 0; i < parts.length; i += 2) {
 
-        elem.dataset.customer = customer.key;
+                state[parts[i] || 'page'] = parts[i + 1];
+            }
 
-        element.appendChild(elem);
-    },
+            state.page = state.page || 'landing';
 
-    archive: function archive(element) {
-
-        var customer = customers.memory[element.dataset.key];
-
-        root.send({ request: 'archive', key: customer.key }, function () {
-
-            customers.updated = true;
-        });
-    },
-
-    render_one: function render_one(element) {
-
-        var customer = customers.memory[element.dataset.customer];
-
-        element.innerHTML = '\n      <div class="customer-container">\n        <input placeholder="Naam" data-property="name" data-customer="' + customer.key + '" data-input="customers.edit" type="text" value="' + customer.name + '">\n      </div>\n      <div class="customer-container">\n        <input placeholder="Adres" data-property="address" data-customer="' + customer.key + '" data-input="customers.edit" type="text" value="' + customer.address + '">\n      </div>\n      <div>\n        <button data-key="' + customer.key + '" data-click="customers.archive">ARCHIVEER</button>\n      </div>\n    ';
-
-        if (!customer.name) element.querySelector('input').focus();
-
-        function format(date) {
-
-            date = new Date(date);
-
-            var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
-
-            if (!date || String(date).toLowerCase() == 'invalid date') return '';
-
-            return '\n        ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + '\n        ' + date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes() + '\n      ';
+            return state;
         }
     }
 
 };
-
-(function updater() {
-
-    if (!customers.updated) return setTimeout(updater, 300);
-
-    if (root.me.launched) customers.list(document.querySelector('[data-load="customers.list"]'));
-
-    customers.updated = false;
-
-    updater();
-})();
 });
 
-require.register("source/scripts/collections/orders.js", function(exports, require, module) {
+require.register("source/scripts/collections/templates.js", function(exports, require, module) {
+'use strict';
+
+module.exports = {
+
+  change_language: function change_language(element) {
+
+    localStorage.setItem('language', element.dataset.language);
+
+    location.reload();
+  },
+
+  highlight_lang: function highlight_lang(element) {
+
+    if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
+
+    element.classList.add('active');
+  },
+
+  format_date: function format_date(element) {
+
+    var date = new Date(element.dataset.date),
+        months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+
+    if (!date || String(date).toLowerCase() == 'invalid date') return;
+
+    element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+  },
+
+  format_time: function format_time(element) {
+
+    var date = new Date(element.dataset.date);
+
+    if (!date || String(date).toLowerCase() == 'invalid date') return;
+
+    element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
+  },
+
+  start: function start(element) {
+
+    console.log('e', element);
+  },
+
+  hide_notification: function hide_notification(element) {
+
+    document.querySelector('body').classList.remove('notified');
+  }
+
+};
+});
+
+require.register("source/scripts/collections/tickets.js", function(exports, require, module) {
 'use strict';
 
 var tmp = void 0;
@@ -474,184 +758,10 @@ var orders = module.exports = {
 
   if (!orders.updated) return setTimeout(updater, 300);
 
-  if (root.me.launched) orders.list(document.querySelector('[data-load="orders.list"]'));
-
   orders.updated = false;
 
-  updater();
+  // updater(); turn this on if you want to use this updater
 })();
-});
-
-require.register("source/scripts/collections/sessions.js", function(exports, require, module) {
-'use strict';
-
-module.exports = {
-
-    memory: {},
-
-    load: function load() {
-
-        root.main = document.querySelector('main');
-
-        if (!root.main) return setTimeout(load, 0);
-    },
-
-    sign_in: function sign_in(element) {
-
-        root.send({
-            request: 'sign_in',
-            email: element.parentElement.querySelector('[type="email"]').value || '',
-            password: element.parentElement.querySelector('[type="password"]').value || ''
-        });
-    },
-
-    sign_out: function sign_out(element) {
-
-        root.ws.send(JSON.stringify({ request: 'sign_out' }));
-    },
-
-    check_passwords: function check_passwords(element) {
-
-        var inputs = root.main.querySelectorAll('input[type="password"]');
-
-        if (!inputs[0].value && !inputs[2].value) return root.sessions.launch();
-
-        if (inputs[0].value != inputs[1].value) return alert('not equal');
-
-        root.send({
-            request: 'set_password',
-            old_password: inputs[0].value,
-            password: inputs[2].value || ''
-        }, function (res) {
-
-            root.sessions.launch();
-        });
-    },
-
-    launch: function launch() {
-
-        root.send({ request: 'launch' });
-    },
-
-    load_page: function load_page(elem, options) {
-
-        if (!root.main) return setTimeout(root.main, 0, elem, options);
-
-        var page = elem ? elem.dataset.page : history.state ? history.state.page : 'landing';
-
-        if (!localStorage.getItem('authenticated') && ['landing', 'login', 'about'].indexOf(page) == -1) {
-            page = 'landing';
-        }
-
-        document.body.classList.forEach(function (c) {
-
-            if (c.indexOf('-page') == -1) return;
-
-            document.body.classList.remove(c);
-        });
-
-        document.body.classList.remove('notified');
-
-        document.body.classList.add(page + '-page');
-
-        root.main.dataset.load = page + '.html';
-
-        if (!options || !options.prevent_url) root.sessions.url('/' + page);
-
-        window.scrollTo(0, 0);
-    },
-
-    url: function url(state, options) {
-
-        var defaulted = 'landing';
-
-        var operation = options && options.replace ? 'replaceState' : 'pushState';
-
-        var url = typeof state == 'string' ? decode() : location.pathname;
-
-        return history[operation](state ? state : decode(), options ? options.title : document.title, state ? encode() : pathname);
-
-        function encode() {
-
-            var page = state ? state.page || defaulted : defaulted;
-
-            return Object.keys(state).reduce(function (url, key) {
-
-                if (key == 'page') return url;
-
-                return url + '/' + key + '/' + state[key];
-            }, '/' + (page == defaulted ? '' : page));
-        }
-
-        function decode() {
-
-            var parts = (state || location.pathname).split(/\//g);
-
-            state = {};
-
-            for (var i = 0; i < parts.length; i += 2) {
-
-                state[parts[i] || 'page'] = parts[i + 1];
-            }
-
-            state.page = state.page || 'landing';
-
-            return state;
-        }
-    }
-
-};
-});
-
-require.register("source/scripts/collections/templates.js", function(exports, require, module) {
-'use strict';
-
-module.exports = {
-
-  change_language: function change_language(element) {
-
-    localStorage.setItem('language', element.dataset.language);
-
-    location.reload();
-  },
-
-  highlight_lang: function highlight_lang(element) {
-
-    if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
-
-    element.classList.add('active');
-  },
-
-  format_date: function format_date(element) {
-
-    var date = new Date(element.dataset.date),
-        months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
-
-    if (!date || String(date).toLowerCase() == 'invalid date') return;
-
-    element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
-  },
-
-  format_time: function format_time(element) {
-
-    var date = new Date(element.dataset.date);
-
-    if (!date || String(date).toLowerCase() == 'invalid date') return;
-
-    element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
-  },
-
-  start: function start(element) {
-
-    console.log('e', element);
-  },
-
-  hide_notification: function hide_notification(element) {
-
-    document.querySelector('body').classList.remove('notified');
-  }
-
-};
 });
 
 require.register("source/scripts/collections/users.js", function(exports, require, module) {
@@ -875,20 +985,14 @@ var users = module.exports = {
 
     if (!users.updated) return setTimeout(updater, 300);
 
-    if (root.me.launched) users.list(document.querySelector('[data-load="users.list"]'));
-
     users.updated = false;
 
-    updater();
+    // updater();
 })();
 });
 
 require.register("source/scripts/components/labels.js", function(exports, require, module) {
 'use strict';
-
-var _labels;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var LANGS = ['nl', 'en'];
 
@@ -896,9 +1000,10 @@ var index = LANGS.indexOf(localStorage.getItem('language'));
 
 if (index == -1) index = 0;
 
-var labels = (_labels = {
+var labels = {
   landing: ['Welkom', 'Landing'],
   add: ['Toevoegen', 'Add'],
+  invite: ['Uitnodigen', 'Invite'],
   about: ['Over Ons', 'About'],
   sign_in: ['Inloggen', 'Sign in'],
   sign_out: ['Uitloggen', 'Sign out'],
@@ -908,12 +1013,23 @@ var labels = (_labels = {
   stats: ['Statistieken', 'Statistics'],
   no_results: [title('Geen resultaten'), title('No results')],
   loading: [title('Laden...'), title('Loading...')],
+  archive: ['Archiveer', 'Archive'],
+  view: ['Bekijk', 'View'],
+  view_mode: ['VIEW MODE', 'VIEW MODE'],
+  search: ['ZOEKEN', 'SEARCH'],
+  managers: ['MANAGERS', 'MANAGERS'],
+  edit: ['Aanpassen', 'Edit'],
+  stats_short: ['Stats', 'Stats'],
+  copy: ['Kopi&#xEB;ren', 'Copy'],
+  viewed: ['Bekeken:', 'Viewed:'],
+  published: ['Gepubliceerd', 'Published'],
+  unpublished: ['Niet Gepubliceerd', 'Unpublished'],
   placeholder_search: [placeholder('zoeken'), placeholder('search')],
   password: ['WACHTWOORD', 'PASSWORD'],
-  permissions: ['PERMISSIES', 'PERMISSIONS'],
-  configure_ipad: ['CONFIGUREER DEZE IPAD', 'CONFIGURE THIS IPAD'],
-  save: ['START DE APP', 'LAUNCH THE APP']
-}, _defineProperty(_labels, 'password', ['WACHTWOORD', 'PASSWORD']), _defineProperty(_labels, 'edit_password', ['WACHTWOORD WIJZIGEN', 'CHANGE PASSWORD']), _defineProperty(_labels, 'old_password', [placeholder('oud wachtwoord'), placeholder('old password')]), _defineProperty(_labels, 'new_password', [placeholder('nieuw wachtwoord'), placeholder('new password')]), _labels);
+  edit_password: ['WACHTWOORD WIJZIGEN', 'CHANGE PASSWORD'],
+  old_password: [placeholder('oud wachtwoord'), placeholder('old password')],
+  new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')]
+};
 
 for (var n in labels) {
 
@@ -939,7 +1055,52 @@ function title(label) {
 }
 });
 
-;require.register("source/scripts/components/prefill.js", function(exports, require, module) {
+;require.register("source/scripts/components/modal.js", function(exports, require, module) {
+'use strict';
+
+var modal = module.exports = {
+
+	load: function load(element) {
+
+		root.modal_element = element;
+	},
+
+	open: function open(element, load) {
+
+		var modal = root.modal_element;
+
+		modal.dataset.key = element.dataset.key;
+
+		if (!document.body.classList.contains('modal-open')) root.main.style.transform = 'translateY(-' + (window.scrollY || document.body.scrollTop) + 'px)';
+
+		scroll(0, 0);
+
+		modal.dataset.load = element.dataset.modal;
+
+		requestAnimationFrame(function () {
+			return document.body.classList.add('modal-open');
+		});
+	},
+
+	close: function close(element) {
+
+		var scrolltop = parseInt(root.main.style.transform.replace('translateY(', ''), 10);
+
+		document.body.classList.remove('modal-open');
+
+		root.main.removeAttribute('style');
+
+		root.modal_element.load = "modal.empty";
+
+		window.scroll(0, -1 * scrolltop);
+	},
+
+	empty: ''
+
+};
+});
+
+require.register("source/scripts/components/prefill.js", function(exports, require, module) {
 'use strict';
 
 var prefill = module.exports = {
@@ -1332,15 +1493,17 @@ window.root = {
 
   templates: require('./collections/templates.js'),
 
-  customers: require('./collections/customers.js'),
+  courses: require('./collections/courses.js'),
 
   sessions: require('./collections/sessions.js'),
 
   labels: require('./components/labels.js'),
 
+  modal: require('./components/modal.js'),
+
   prefill: require('./components/prefill.js'),
 
-  orders: require('./collections/orders.js'),
+  tickets: require('./collections/tickets.js'),
 
   users: require('./collections/users.js')
 
@@ -1379,7 +1542,7 @@ function create_websocket() {
 
   for (var i in localStorage) {
     query += (query ? '&' : '?') + encodeURIComponent(i) + '=' + encodeURIComponent(localStorage.getItem(i));
-  }new WebSocket(DEV_MODE ? 'ws://localhost:443/' + query : 'wss://tsr.fearless-apps.com/' + query).addEventListener('message', function listener(e) {
+  }new WebSocket(DEV_MODE ? 'ws://localhost:443/' + query : 'wss://vitalityone.fearless-apps.com/' + query).addEventListener('message', function listener(e) {
 
     root.ws = e.target;
 
@@ -1420,8 +1583,6 @@ function incoming(message, callbacks) {
 
   if (message instanceof Array) {
 
-    if (Object.keys(root.orders.memory).length) root.updated = true;
-
     for (var m in message) {
       merge(message[m]);
     }return;
@@ -1446,7 +1607,7 @@ function incoming(message, callbacks) {
 
   document.body.classList[message.token ? 'add' : 'remove']('authenticated');
 
-  if (!message.token) root.sessions.url('/');else if (localStorage.getItem('authenticated') && !message.launched) root.sessions.url('/');else if (history.state && history.state.page == 'admin') root.sessions.url('/');
+  if (!message.token) root.sessions.url('/');
 
   localStorage.setItem('authenticated', message.token || '');
 
@@ -1465,6 +1626,8 @@ function merge(message) {
   if (!message.key) return;
 
   var collection = message.key.split('_').slice(0, -1).join('_');
+
+  if (!root[collection]) return console.log('collection <' + collection + '> not found');
 
   if (!root[collection].memory[message.key]) {
 
