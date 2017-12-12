@@ -234,8 +234,6 @@ let courses = module.exports = {
         <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.view" data-load="labels.view"></button>
         <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></button>
         <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></button>
-        <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.edit" data-load="labels.edit"></button>
-        <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.copy" data-load="labels.copy"></button>
       </div>`;
       
   },
@@ -284,41 +282,6 @@ let courses = module.exports = {
       <div class="content">
         <div class="thumbnail" style="background-image:url(${ course.thumbnail })"></div>
         <h3 data-load="labels.stats"></h3>
-        ${ courses.course_nav(element) }
-        <input placeholder="Naam" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
-        <span data-load="users.memory.${ course.admin }.name"></span>
-      </div>
-    </div>`;
-    
-  },
-  
-  edit: (element) => {
-    
-    let course = root.courses.memory[element.dataset.key];
-
-    element.innerHTML = `<div class="modal">
-      <i class="fa fa-times close-modal" data-click="modal.close"></i>
-      <div class="content">
-        <div class="thumbnail" style="background-image:url(${ course.thumbnail })"></div>
-        <h3 data-load="labels.edit"></h3>
-        ${ courses.course_nav(element) }
-        <input placeholder="Naam" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
-        <span data-load="users.memory.${ course.admin }.name"></span>
-      </div>
-    </div>`;
-
-    
-  },
-  
-  copy: (element) => {
-    
-    let course = root.courses.memory[element.dataset.key];
-
-    element.innerHTML = `<div class="modal">
-      <i class="fa fa-times close-modal" data-click="modal.close"></i>
-      <div class="content">
-        <div class="thumbnail" style="background-image:url(${ course.thumbnail })"></div>
-        <h3 data-load="labels.copy"></h3>
         ${ courses.course_nav(element) }
         <input placeholder="Naam" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
         <span data-load="users.memory.${ course.admin }.name"></span>

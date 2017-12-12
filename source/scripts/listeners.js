@@ -40,6 +40,8 @@ function listener(e, element) {
 
   }
 
+  if(typeof target == 'string') return element.innerHTML = target;
+  
   if(typeof target != 'function') return console.error(element.dataset[e.type] || e.type, 'does not exist');
 
   target(element);
@@ -131,7 +133,7 @@ function load(element) {
 
     target = target[parts[i]];
 
-    if (!target) {
+    if (typeof target == 'undefined') {
 
       if(element.dataset.load.indexOf('.html') != -1) return load_file(element);
 

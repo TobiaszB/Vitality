@@ -39,9 +39,6 @@ body {
     padding: 40px 0 0 0;
     .notification { max-height: 40px; }
   }
-  &.start-page {
-    background-color: #fff;
-  }
 }
 
 body.profile-page [data-page="profile"],
@@ -266,7 +263,7 @@ input {
   top: 73px;
   width: 200px;
   padding: 12px;
-  [data-load="courses.load_managers"] > div {
+  [data-load="courses.load_managers"] > div,  [data-load="tickets.load_courses"] > div,{
   	&.active {
   		background-color: red;
   	}
