@@ -337,6 +337,9 @@ main {
   &[data-load="courses.html"] {
     padding: 96px 20px 20px 200px;
   }
+  &[data-load="invites.html"] {
+    padding: 96px 20px 20px 200px;
+  }
   > input {
     width: 100%;
     background-color: darken($blue, 10);
@@ -364,11 +367,6 @@ main {
   	padding: 0 0 0 20px;
   }
 
-}
-
-.course {
-  height: 200px;
-  margin: 20px;
 }
 
 // course
@@ -479,8 +477,6 @@ body {
 
 }
 
-
-
 .black-layer {
 	position: fixed;
 	z-index: 7;
@@ -494,7 +490,6 @@ body {
 	height: 100%;
 	transition: .3s background linear;
 }
-
 
 #modal-container {
 	display: none;
