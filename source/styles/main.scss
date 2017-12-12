@@ -54,7 +54,8 @@ body {
 	  &[data-page="login"] {
 	    display: none;
 	  }
-    }  	
+    } 
+    .introduction { border: none !important; } 	
   }
   &.modal-open {
 	text-align: center;
@@ -111,6 +112,7 @@ body > nav {
   width: 100%;
   background-image: url('/pattern-tile.png');
   background-repeat: repeat;
+  overflow: hidden;
 
   .logo { 
     display: inline-block;
@@ -388,17 +390,43 @@ main {
 }
 
 // landing 
-[data-load="landing.html"] {
+[data-load="landing.html"], [data-load="about.html"] {
 
 	section {
 		height: 100vh;
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center center;
+		position: relative;
 		&.introduction {
-			background-image: url('/photo-joris-merel-1.jpg');
 			border-top: 1px solid white;
+			.text {
+				position: absolute;
+				bottom: 30%;
+				right: 1%;
+				text-align: left;
+				width: 600px;
+			}
+			h1 {
+				color: white;
+				-webkit-text-stroke: 1px $grey;
+				line-height: 80px;
+				font-size: 60px;
+				font-family: $changa;
+				text-align: left;
+			}
+			span {
+				font-family: $raleway;
+				font-size: 18px;
+				color: white;
+				width: 500px;
+				line-height: 36px;
+				padding: 0 0 0 5px;
+				display: inline-block;
+			}
 		}
+		&.landing { background-image: url('/photo-joris-merel-1.jpg'); }
+		&.about { background-image: url('/photo-joris-merel-3.jpg'); }
 	}
 
 }

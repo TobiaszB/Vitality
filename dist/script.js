@@ -1028,6 +1028,9 @@ if (index == -1) index = 0;
 
 var labels = {
   landing: ['Welkom', 'Landing'],
+  introduction_text: ['Persoonlijke Training & Persoonlijke Coaching', 'Personal Training & Personal Coaching'],
+  introduction_description: ['voor het programma Managers Vitality (for a life - work balance that boosts management performance)', 'Program Managers Vitality (for a life - work balance that boosts management performance.)'],
+  about_text: ['Mogen wij uw personal trainer of personal coach zijn?', 'Can we be your personal trainer or personal coach?'],
   add: ['Toevoegen', 'Add'],
   invite: ['Uitnodigen', 'Invite'],
   about: ['Over ons', 'About'],
