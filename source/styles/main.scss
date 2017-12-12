@@ -334,6 +334,9 @@ main {
   		&[data-mode="lists"] { border-bottom: 2px solid $blue; }
   		&[data-mode="cards"] { border-bottom: 2px solid transparent; }
   }
+  &[data-load="login.html"], &[data-load="landing.html"] {
+    padding: 0 20px 20px 20px;
+  }
   &[data-load="courses.html"] {
     padding: 96px 20px 20px 200px;
   }
@@ -434,7 +437,8 @@ main {
 			font-family: $changa;
 			font-size: 14px;
 			display: inline-block;
-			width: 70px;
+			width: 40%;
+			margin-bottom: 10px;
 			color: $dark-grey;
 			&[data-modal="courses.view"]:before {
 				font-family: FontAwesome;

@@ -1019,7 +1019,7 @@ var labels = {
   landing: ['Welkom', 'Landing'],
   add: ['Toevoegen', 'Add'],
   invite: ['Uitnodigen', 'Invite'],
-  about: ['Over Ons', 'About'],
+  about: ['Over ons', 'About'],
   sign_in: ['Inloggen', 'Sign in'],
   sign_out: ['Uitloggen', 'Sign out'],
   courses: ['Cursussen', 'Courses'],
@@ -1081,9 +1081,11 @@ var modal = module.exports = {
 
 	open: function open(element, load) {
 
+		console.log('open', element, load);
+
 		var modal = root.modal_element;
 
-		modal.dataset.key = element.dataset.key;
+		if (modal.dataset.key) modal.dataset.key = element.dataset.key;
 
 		if (!document.body.classList.contains('modal-open')) root.main.style.transform = 'translateY(-' + (window.scrollY || document.body.scrollTop) + 'px)';
 

@@ -8,9 +8,13 @@ let modal = module.exports = {
 
   open: (element, load) => {
 
+  	console.log('open', element, load);
+
 	let modal = root.modal_element;
 
-	modal.dataset.key = element.dataset.key;
+	if(modal.dataset.key) modal.dataset.key = element.dataset.key;
+
+	
 
 	if(!document.body.classList.contains('modal-open'))
 		root.main.style.transform = `translateY(-${ window.scrollY || document.body.scrollTop }px)`;

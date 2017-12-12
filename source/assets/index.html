@@ -22,9 +22,9 @@
 
 	<body>
 
-		<div class="black-layer" data-click="modal.close"></div>
-
 		<div data-load="modal.load" id="modal-container"></div>
+
+		<div class="black-layer" data-click="modal.close"></div>
 		
 		<nav>
 		
@@ -46,7 +46,7 @@
 
 				<div class="divider vertical"></div>
 
-		    	<a data-load="labels.sign_in" data-click="sessions.load_page" data-page="login"></a>
+		    	<a data-load="labels.sign_in" data-modal="login.html" data-click="modal.open" data-page="login"></a>
 
 		    	<a data-load="labels.sign_out" data-click="sessions.sign_out"></a>
 

@@ -8,7 +8,7 @@ let labels = {
   landing: ['Welkom', 'Landing'],
   add: ['Toevoegen', 'Add'],
   invite: ['Uitnodigen', 'Invite'],
-  about: ['Over Ons', 'About'],
+  about: ['Over ons', 'About'],
   sign_in: ['Inloggen', 'Sign in'],
   sign_out: ['Uitloggen', 'Sign out'],
   courses: ['Cursussen', 'Courses'],
