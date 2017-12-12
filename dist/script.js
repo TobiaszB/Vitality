@@ -316,7 +316,7 @@ var courses = module.exports = {
 
       var user = root.users.memory[key];
 
-      if (user.role == 'admin') html += '<div data-click="courses.toggle_manager" data-key="' + user.key + '">\n        <span style="background-image: url(' + user.avatar + ');"></span>\n        <span data-load="users.memory.' + user.key + '.name"></span>\n      </div>';
+      if (user.role == 'admin') html += '<div data-click="courses.toggle_manager" data-key="' + user.key + '">\n        <img src="' + user.avatar + '">\n        <span data-load="users.memory.' + user.key + '.name"></span>\n      </div>';
 
       return html;
     }, '');
@@ -328,7 +328,7 @@ var courses = module.exports = {
 
     element.dataset.key = element.dataset.course;
 
-    element.innerHTML = courses.mode == 'lists' ? '\n      <span data-load="courses.memory.' + element.dataset.key + '.name"></span>\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <span data-load="users.memory.' + course.admin + '.name"></span>\n    ';
+    element.innerHTML = courses.mode == 'lists' ? '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <span data-load="users.memory.' + course.admin + '.name"></span>\n    ';
 
     if (!course.name) element.querySelector('input').focus();
 
@@ -1037,7 +1037,6 @@ var labels = {
   viewed: ['Bekeken:', 'Viewed:'],
   published: ['Gepubliceerd', 'Published'],
   unpublished: ['Niet Gepubliceerd', 'Unpublished'],
-  placeholder_search: [placeholder('zoeken'), placeholder('search')],
   password: ['WACHTWOORD', 'PASSWORD'],
   edit_password: ['WACHTWOORD WIJZIGEN', 'CHANGE PASSWORD'],
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],

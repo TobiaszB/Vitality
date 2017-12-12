@@ -34,7 +34,6 @@ let labels = {
   viewed: ['Bekeken:', 'Viewed:'],
   published: ['Gepubliceerd', 'Published'],
   unpublished: ['Niet Gepubliceerd', 'Unpublished'],
-  placeholder_search: [placeholder('zoeken'), placeholder('search')],
   password: ['WACHTWOORD', 'PASSWORD'],
   edit_password: ['WACHTWOORD WIJZIGEN', 'CHANGE PASSWORD'],
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],

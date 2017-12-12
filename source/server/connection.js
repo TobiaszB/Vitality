@@ -31,7 +31,6 @@ function handler(request) {
     },
 
     sign_in: (ws, msg, session, callback) => {
-console.log(msg);
       db.collection('users').findOne({ email: String(msg.email).toLowerCase() }, (err, user) => {
 
         if(err || !user) return ws.send(JSON.stringify({
@@ -398,7 +397,7 @@ function database() {
     db.collection('users').findAndModify({ key: 'users_joris' }, [], {
       $set: {
         name: 'Joris Boon',
-        avatar: '',
+        avatar: '/avatar-joris.jpg',
         email: 'joris@vitalityone.nl',
         password: '',
         role: 'admin'
@@ -408,7 +407,7 @@ function database() {
     db.collection('users').findAndModify({ key: 'users_merel' }, [], {
       $set: {
         name: 'Merel Witkamp',
-        avatar: '',
+        avatar: '/avatar-merel.jpg',
         email: 'merel@vitalityone.nl',
         password: '',
         role: 'admin'
@@ -422,6 +421,15 @@ function database() {
         admin: 'users_joris'
       }
     }, { upsert: true }, ()=>{});
+
+    db.collection('tickets').findAndModify({ key: 'tickets_test' }, [], {
+      $set: {
+        course: 'courses_test',
+        user: 'users_joris',
+        admin: 'users_joris'
+      }
+    }, { upsert: true }, ()=>{});
+
 
   });
 

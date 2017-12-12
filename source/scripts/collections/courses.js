@@ -183,7 +183,7 @@ let courses = module.exports = {
       let user = root.users.memory[key];
 
       if(user.role == 'admin') html += `<div data-click="courses.toggle_manager" data-key="${ user.key }">
-        <span style="background-image: url(${ user.avatar });"></span>
+        <img src="${ user.avatar }">
         <span data-load="users.memory.${ user.key }.name"></span>
       </div>`;
 
@@ -200,7 +200,7 @@ let courses = module.exports = {
     element.dataset.key = element.dataset.course;
 
     element.innerHTML = courses.mode == 'lists' ? `
-      <span data-load="courses.memory.${ element.dataset.key }.name"></span>
+      <input placeholder="Naam" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
       <pre>${ JSON.stringify(course, null, 2) }</pre>
     ` : `
       <div class="thumbnail" style="background-image:url(${ course.thumbnail })"></div>
