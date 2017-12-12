@@ -31,6 +31,7 @@ function handler(request) {
     },
 
     sign_in: (ws, msg, session, callback) => {
+
       db.collection('users').findOne({ email: String(msg.email).toLowerCase() }, (err, user) => {
 
         if(err || !user) return ws.send(JSON.stringify({
@@ -70,6 +71,8 @@ function handler(request) {
             ws.send(JSON.stringify(updated.value));
 
             ws.send(JSON.stringify(user));
+
+            updated.value.callback = msg.callback;
 
             callback(updated.value);
 
