@@ -17,6 +17,7 @@ HTML5 / CSS3 / Javascript (ES6)
 | Course |  |. |
 | ------------- | ------------- |  ------------- |
 | name | String | 
+| admin | Key | 
 | thumbnail | URL | 
 | blocks | Array | `[{ key: <key>, options: <object> }]`
 | language | String |
