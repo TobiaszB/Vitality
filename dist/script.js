@@ -216,6 +216,9 @@ var courses = module.exports = (_module$exports = {
     // whenever we use this list function manually
     if (!element) element = document.querySelector('[data-load="courses.list"]');
 
+    // element still not found?! we must stop this madness
+    if (!element) return;
+
     // we clean out the old HTML should this function be fired after the list already rendered
     element.innerHTML = '';
 
