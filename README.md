@@ -27,7 +27,7 @@ HTML5 / CSS3 / Javascript (ES6)
 | ------------- | ------------- |  ------------- |
 | course | Key |
 | user | Key |
-| blocks | Array | `[{ key: <key>, options: <object>, input: <object> }]`
+| blocks | Array | `[{ options: <object>, html: <string>, input: <object> }]`
 | created_at | Date |
 
 
