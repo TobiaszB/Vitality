@@ -87,7 +87,7 @@ body.authenticated {
     display: block;
   }
   > main {
-    padding-top: 72px;
+    padding-top: 30px;
   }
   > nav a {
     &[data-click="sessions.sign_out"] {
@@ -106,6 +106,9 @@ body > nav {
   top: 0;
   left: 0;
   width: 100%;
+  background-image: url('/pattern-tile.png');
+  background-repeat: repeat;
+
   .logo { 
     display: inline-block;
     vertical-align: top;
@@ -265,10 +268,65 @@ input {
   border-right: 1px solid $grey;
   top: 73px;
   width: 200px;
+  text-align: center;
   padding: 12px;
-  [data-load="courses.load_managers"] > div {
-  	&.active {
-  		background-color: red;
+  h3 {
+  	background-color: $blue;
+  	color: white;
+  	text-align: center;
+  	font-family: $changa;
+  	font-size: 14px;
+  	font-weight: 500;
+  	margin: 20px 0 0 0;
+  }
+  a { 
+  	padding: 8px;
+  	border-bottom: 2px solid transparent;
+  	color: $dark-grey;
+  	&:hover {
+  		border-bottom: 2px solid $blue;
+  	}
+  }
+  input {
+  	background-color: $grey;
+  	width: 100%;
+  	padding: 0 8px;
+  	line-height: 40px;
+  	height: 40px;
+  	font-size: 12px;
+  	font-family: $raleway;
+  	font-weight: 400;
+  }
+  .managers {
+  	text-align: left;
+  	positon: relative;
+  	margin-top: 5px;
+  	> div {
+  		font-family: $raleway;
+  		font-size: 12px;
+  		font-weight: 400;
+  		cursor: pointer;
+  		vertical-align: top;
+  		display: block; 
+  		padding: 0 5px;
+  		height: 33px;
+  		line-height: 33px;
+  		overflow: hidden;
+	    img {
+		  width: 20px;
+		  height: 20px;
+		  border-radius: 50%;
+		  margin-right: 2px;
+		  display: inline-block;
+		  margin-top: 5px;
+	    }
+	    span {
+  		  vertical-align: top;
+  		  display: inline-block;
+	    }
+  		&.active {
+  			background-color: $grey;
+  		}
   	}
   }
 }

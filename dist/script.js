@@ -320,7 +320,7 @@ var courses = module.exports = (_module$exports = {
 
       var user = root.users.memory[key];
 
-      if (user.role == 'admin') html += '<div data-click="courses.toggle_manager" data-key="' + user.key + '">\n        <span style="background-image: url(' + user.avatar + ');"></span>\n        <span data-load="users.memory.' + user.key + '.name"></span>\n      </div>';
+      if (user.role == 'admin') html += '<div data-click="courses.toggle_manager" data-key="' + user.key + '">\n        <img src="' + user.avatar + '">\n        <span data-load="users.memory.' + user.key + '.name"></span>\n      </div>';
 
       return html;
     }, '');
@@ -1027,7 +1027,6 @@ var labels = {
   viewed: ['Bekeken:', 'Viewed:'],
   published: ['Gepubliceerd', 'Published'],
   unpublished: ['Niet Gepubliceerd', 'Unpublished'],
-  placeholder_search: [placeholder('zoeken'), placeholder('search')],
   password: ['WACHTWOORD', 'PASSWORD'],
   edit_password: ['WACHTWOORD WIJZIGEN', 'CHANGE PASSWORD'],
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],

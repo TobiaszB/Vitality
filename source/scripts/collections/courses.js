@@ -183,7 +183,7 @@ let courses = module.exports = {
       let user = root.users.memory[key];
 
       if(user.role == 'admin') html += `<div data-click="courses.toggle_manager" data-key="${ user.key }">
-        <span style="background-image: url(${ user.avatar });"></span>
+        <img src="${ user.avatar }">
         <span data-load="users.memory.${ user.key }.name"></span>
       </div>`;
 
