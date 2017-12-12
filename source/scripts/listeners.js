@@ -164,7 +164,7 @@ function load_file(element) {
 
   let xhr = new XMLHttpRequest();
 
-  xhr.open('GET', element.dataset.load, true);
+  xhr.open('GET', `/${ element.dataset.load }`, true);
 
   xhr.onreadystatechange = function(e) {
 

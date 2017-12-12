@@ -66,6 +66,8 @@ let courses = module.exports = {
 
     // element still not found?! we must stop this madness
     if(!element) return;
+
+    if(history.state.course) return courses.load_course(element);
     
     // we clean out the old HTML should this function be fired after the list already rendered
     element.innerHTML = ``;
@@ -75,6 +77,12 @@ let courses = module.exports = {
 
     // and start the render loop!
     courses.render(element);
+
+  },
+
+  load_course: (element) => {
+
+    element.innerHTML = `<div data-load="courses.render_one" data-course="${ history.state.course }"></div>`;
 
   },
 
@@ -194,7 +202,7 @@ let courses = module.exports = {
   },
 
   render_one: (element) => {
-
+console.log(history.state.course);
     let course = courses.memory[element.dataset.course];
 
     element.dataset.key = element.dataset.course;
@@ -235,7 +243,7 @@ let courses = module.exports = {
 
    return `<div class="course-nav">
         ${ course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>' }<br>
-        <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.view" data-load="labels.view"></a>
+        <a data-key="${ element.dataset.key }" data-click="courses.view" data-load="labels.view"></a>
         <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>
         <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>
       </div>`;
@@ -244,18 +252,9 @@ let courses = module.exports = {
 
   view: (element) => {
 
-    let course = root.courses.memory[element.dataset.key];
+    root.sessions.url({ page: 'edit', course: element.dataset.key });
 
-    element.innerHTML = `<div class="modal">
-      <i class="fa fa-times close-modal" data-click="modal.close"></i>
-      <div class="content">
-        <div class="thumbnail" style="background-image:url(${ course.thumbnail })"></div>
-        <h3 data-load="labels.view"></h3>
-        ${ courses.course_nav(element) }
-        <input placeholder="Naam" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
-        <span data-load="users.memory.${ course.admin }.name"></span>
-      </div>
-    </div>`;
+    root.sessions.load_page(null, { prevent_url: true });
 
   },
 

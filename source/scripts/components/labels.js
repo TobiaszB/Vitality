@@ -37,7 +37,8 @@ let labels = {
   password: ['WACHTWOORD', 'PASSWORD'],
   edit_password: ['WACHTWOORD WIJZIGEN', 'CHANGE PASSWORD'],
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],
-  new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')]
+  new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
+  placeholder_search: [placeholder('Zoeken'), placeholder('Search')]
 };
 
 for(let n in labels) {

@@ -1,4 +1,6 @@
-module.exports = {
+let sessions = module.exports = {
+
+  default_page: 'landing',
 
   memory: {},
   
@@ -10,12 +12,28 @@ module.exports = {
 
   },
 
+  load_login: (element) => {
+
+    if(!root.me.session) return;
+    
+    sessions.url('/courses');
+
+    sessions.load_page(null, { prevent_url: true });
+
+  },
+
   sign_in: (element) => {
 
     root.send({
       request: 'sign_in',
       email: element.parentElement.querySelector('[type="email"]').value || '',
       password: element.parentElement.querySelector('[type="password"]').value || '',
+    }, () => {
+
+      sessions.url('/courses');
+
+      sessions.load_page(null, { prevent_url: true });
+
     });
   	
   },
@@ -30,8 +48,6 @@ module.exports = {
 
     let inputs = root.main.querySelectorAll('input[type="password"]');
 
-    if(!inputs[0].value && !inputs[2].value) return root.sessions.launch();
-
     if(inputs[0].value != inputs[1].value) return alert('not equal');
 
     root.send({
@@ -40,18 +56,12 @@ module.exports = {
       password: inputs[2].value || ''
     }, (res) => {
 
-      root.sessions.launch();
+   
 
     });
 
   },
 
-  launch: () => {
-
-    root.send({ request: 'launch' });
-
-  },
-  
   load_page: (elem, options) => {
 
     if(!root.main) return setTimeout(root.main, 0, elem, options);
@@ -69,22 +79,20 @@ module.exports = {
       document.body.classList.remove(c);
 
     });
-
+console.log(options);
     document.body.classList.remove('notified');
 
     document.body.classList.add(page + '-page');
     
     root.main.dataset.load = page + '.html';
 
-    if(!options || !options.prevent_url) root.sessions.url('/' + page);
+    if(!options || !options.prevent_url) sessions.url('/' + page);
 
     window.scrollTo(0, 0);
 
   },
 
   url: (state, options) => {
-
-    let defaulted = 'landing';
 
     let operation = options && options.replace ? 'replaceState' : 'pushState';
 
@@ -94,7 +102,7 @@ module.exports = {
 
     function encode() {
 
-      let page = state ? state.page || defaulted : defaulted;
+      let page = state ? state.page || sessions.default_page : sessions.default_page;
 
       return Object.keys(state).reduce((url,key)=>{
 
@@ -103,7 +111,7 @@ module.exports = {
         return `${url}/${key}/${ state[key] }`;
 
       }
-      , `/${ page == defaulted ? '' : page }`);
+      , `/${ page == sessions.default_page ? '' : page }`);
 
     }
 
@@ -119,7 +127,7 @@ module.exports = {
 
       }
 
-      state.page = state.page || 'landing';
+      state.page = state.page || sessions.default_page;
       
       return state;
 
