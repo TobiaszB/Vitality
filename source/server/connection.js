@@ -418,7 +418,10 @@ function database() {
       $set: {
         name: 'Test',
         thumbnail: 'https://ak4.picdn.net/shutterstock/videos/12666344/thumb/1.jpg',
-        admin: 'users_joris'
+        admin: 'users_joris',
+        language: 'nl',
+        published_at: new Date(),
+        created_at: new Date()
       }
     }, { upsert: true }, ()=>{});
 

@@ -30,8 +30,8 @@ html {
 }
 
 body {
-  padding: 148px 0 0 0;
-  background-color: $light-grey;
+  padding: 120px 0 0 0;
+  background-color: white;
   position: relative;
   height: 100%;
   transition: 200ms padding ease;
@@ -46,16 +46,6 @@ body.courses-page [data-page="courses"],
 body.invites-page [data-page="invites"],
 body.stats-page [data-page="stats"] {
     border-bottom: 3px solid $blue;
-}
-
-body.courses-page {
-
-  .thumbnail {
-    height: 200px;
-    width: 400px;
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
 }
 
 a {
@@ -150,12 +140,15 @@ body > nav {
     background-image: url('/pattern-ruffles.png');
     background-repeat: repeat;
     z-index: 1;
+    height: 60px;
+    line-height: 60px;
   }
   .row {
     display: inline-block;
     padding: 0 40px;
     cursor: pointer;
-    margin-bottom: -3px;
+    height: 60px;
+    line-height: 60px;
     border-botom: 3px solid transparent;
     &:hover {
       > span, i { color: $blue; }
@@ -365,6 +358,11 @@ main {
       color: $light-grey;
     }
   }
+	
+  > .content {
+  	padding: 0 0 0 20px;
+  }
+
 }
 
 .course {
@@ -372,6 +370,57 @@ main {
   margin: 20px;
 }
 
+// course
+[data-load="courses.render_one"] {
+	margin: 20px 10px;
+	position: relative;
+	max-width: 400px;
+	input {
+		background-color: $light-grey;
+		display: block;
+		width: 100%;
+		padding: 0 10px;
+		font-size: 14px;
+		position: absolute;
+		bottom: 0;
+		height: 40px;
+		line-height: 40px;
+		color: $dark-grey;
+		border-bottom: 2px solid $grey;
+	}
+	.thumbnail {
+		width: 200px;
+		height: 150px;
+		margin: 0 10px;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center center;
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+		display: inline-block;
+	}
+	.course-nav {
+		display: inline-block;
+		vertical-align: top;
+		span {
+			display: inline-block;
+			font-family: $changa;
+			font-size: 14px;
+			font-weight: 500;
+			border-radius: 2px;
+			color: white;
+			text-align: center;
+			padding: 0 8px;
+			margin: 0 0 10px;
+			&.published {
+				background-color: $green;
+			}
+			&.unpublished {
+				background-color: $orange;
+			}
+		}
+	}
+}
 
 body {
 	&.modal-open {

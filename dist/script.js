@@ -346,7 +346,9 @@ var courses = module.exports = {
 
   course_nav: function course_nav(element) {
 
-    return '<div>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.view" data-load="labels.view"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></button>\n      </div>';
+    console.log('courses nav', element);
+
+    return '<div class="course-nav">\n        ' + (root.courses.memory[element.dataset.key].published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>') + '<br>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.view" data-load="labels.view"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></button>\n      </div>';
   },
 
   view: function view(element) {
