@@ -30,14 +30,46 @@ html {
 }
 
 body {
-  padding: 120px 0 0 0;
+  padding: 70px 0 0 0;
   background-color: white;
   position: relative;
   height: 100%;
   transition: 200ms padding ease;
+  &.landing-page, &.courses-page, .about-page {
+  	padding: 70px 0 0 0;
+  }
   &.notified {
     padding: 40px 0 0 0;
     .notification { max-height: 40px; }
+  }
+  &.authenticated {
+	padding: 130px 0 0 0;
+    > nav .sub-nav {
+	  display: block;
+    }
+    > nav a {
+	  &[data-modal="profile.html"] {
+	    display: inline-block;
+	  }
+	  &[data-page="login"] {
+	    display: none;
+	  }
+    }  	
+  }
+  &.modal-open {
+	text-align: center;
+
+	footer {display: none;}
+
+	main {position: fixed;}
+
+	#modal-container {display: block}
+
+	.black-layer {
+		background: rgba(#000, .9);
+		display: block;
+		max-height: 100vh;
+	}
   }
 }
 
@@ -67,23 +99,6 @@ a {
   }
   &.grey {
     background-color: #ccc;
-  }
-}
-
-body.authenticated {
-  > nav .sub-nav {
-    display: block;
-  }
-  > main {
-    padding-top: 30px;
-  }
-  > nav a {
-    &[data-modal="profile.html"] {
-      display: inline-block;
-    }
-    &[data-page="login"] {
-      display: none;
-    }
   }
 }
 
@@ -329,20 +344,19 @@ input {
 main {
   height: 100%;
   width: 100%;
-  padding-top: 12px;
   position: relative;
   &[data-mode="lists"] a {
   		&[data-mode="lists"] { border-bottom: 2px solid $blue; }
   		&[data-mode="cards"] { border-bottom: 2px solid transparent; }
   }
-  &[data-load="login.html"], &[data-load="landing.html"] {
-    padding: 0 20px 20px 20px;
+  &[data-load="landing.html"] {
+  	padding: 0;
   }
   &[data-load="courses.html"] {
-    padding: 96px 20px 20px 200px;
+    padding: 20px 20px 20px 200px;
   }
   &[data-load="invites.html"] {
-    padding: 96px 20px 20px 200px;
+    padding: 20px 20px 20px 200px;
   }
   > input {
     width: 100%;
@@ -370,6 +384,22 @@ main {
   > .content {
   	padding: 0 0 0 20px;
   }
+
+}
+
+// landing 
+[data-load="landing.html"] {
+
+	section {
+		height: 100vh;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center center;
+		&.introduction {
+			background-image: url('/photo-joris-merel-1.jpg');
+			border-top: 1px solid white;
+		}
+	}
 
 }
 
@@ -461,25 +491,6 @@ main {
 			}
 		}
 	}
-}
-
-body {
-	&.modal-open {
-		text-align: center;
-		
-		footer {display: none;}
-
-		main {position: fixed;}
-
-		#modal-container {display: block}
-
-		.black-layer {
-			background: rgba(#000, .9);
-			display: block;
-			max-height: 100vh;
-		}
-	}
-
 }
 
 .black-layer {

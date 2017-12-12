@@ -79,7 +79,7 @@ let sessions = module.exports = {
       document.body.classList.remove(c);
 
     });
-console.log(options);
+    
     document.body.classList.remove('notified');
 
     document.body.classList.add(page + '-page');

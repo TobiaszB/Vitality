@@ -202,7 +202,7 @@ let courses = module.exports = {
   },
 
   render_one: (element) => {
-console.log(history.state.course);
+    
     let course = courses.memory[element.dataset.course];
 
     element.dataset.key = element.dataset.course;

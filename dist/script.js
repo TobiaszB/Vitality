@@ -330,7 +330,7 @@ var courses = module.exports = {
     },
 
     render_one: function render_one(element) {
-        console.log(history.state.course);
+
         var course = courses.memory[element.dataset.course];
 
         element.dataset.key = element.dataset.course;
@@ -466,7 +466,7 @@ var sessions = module.exports = {
 
             document.body.classList.remove(c);
         });
-        console.log(options);
+
         document.body.classList.remove('notified');
 
         document.body.classList.add(page + '-page');
@@ -1092,8 +1092,6 @@ var modal = module.exports = {
 	},
 
 	open: function open(element, load) {
-
-		console.log('open', element, load);
 
 		var modal = root.modal_element;
 
