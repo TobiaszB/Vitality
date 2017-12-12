@@ -42,7 +42,7 @@ let sessions = module.exports = {
 
   sign_out: (element) => {
 
-    root.ws.send(JSON.stringify({ request: 'sign_out' }));
+    root.send({ request: 'sign_out' });
 
   },
 
@@ -91,6 +91,8 @@ let sessions = module.exports = {
     if(!options || !options.prevent_url) sessions.url('/' + page);
 
     window.scrollTo(0, 0);
+
+    root.modal.close();
 
   },
 

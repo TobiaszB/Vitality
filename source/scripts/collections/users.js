@@ -4,7 +4,7 @@ let users = module.exports = {
 
   add: (element) => {
 
-    root.ws.send(JSON.stringify({ request: 'new_user' }));
+    root.send({ request: 'new_user' });
 
   },
   

@@ -6,10 +6,14 @@ if(index == -1) index = 0;
 
 let labels = {
   landing: ['Welkom', 'Landing'],
+  introduction_text: ['Persoonlijke Training & Persoonlijke Coaching', 'Personal Training & Personal Coaching'],
+  introduction_description: ['voor het programma Managers Vitality (for a life - work balance that boosts management performance)', 'Program Managers Vitality (for a life - work balance that boosts management performance.)'],
+  about_text: ['Mogen wij uw personal trainer of personal coach zijn?', 'Can we be your personal trainer or personal coach?'],
   add: ['Toevoegen', 'Add'],
   invite: ['Uitnodigen', 'Invite'],
   about: ['Over ons', 'About'],
   sign_in: ['Inloggen', 'Sign in'],
+  sign_in_input: [value('Inloggen', value('Sign in'))],
   sign_out: ['Uitloggen', 'Sign out'],
   courses: ['Cursussen', 'Courses'],
   profile: ['Profiel', 'Profile'],
@@ -62,5 +66,11 @@ function placeholder(label){
 function title(label){
 
   return (el) => el.setAttribute('data-title', label);
+
+}
+
+function value(label){
+
+  return (el) => el.setAttribute('data-value', label);
 
 }

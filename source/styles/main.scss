@@ -30,14 +30,47 @@ html {
 }
 
 body {
-  padding: 120px 0 0 0;
+  padding: 70px 0 0 0;
   background-color: white;
   position: relative;
   height: 100%;
   transition: 200ms padding ease;
+  &.landing-page, &.courses-page, .about-page {
+  	padding: 70px 0 0 0;
+  }
   &.notified {
     padding: 40px 0 0 0;
     .notification { max-height: 40px; }
+  }
+  &.authenticated {
+	padding: 130px 0 0 0;
+    > nav .sub-nav {
+	  display: block;
+    }
+    > nav a {
+	  &[data-modal="profile.html"] {
+	    display: inline-block;
+	  }
+	  &[data-page="login"] {
+	    display: none;
+	  }
+    } 
+    .introduction { border: none !important; } 	
+  }
+  &.modal-open {
+	text-align: center;
+
+	footer {display: none;}
+
+	main {position: fixed;}
+
+	#modal-container {display: block}
+
+	.black-layer {
+		background: rgba(#000, .9);
+		display: block;
+		max-height: 100vh;
+	}
   }
 }
 
@@ -70,23 +103,6 @@ a {
   }
 }
 
-body.authenticated {
-  > nav .sub-nav {
-    display: block;
-  }
-  > main {
-    padding-top: 30px;
-  }
-  > nav a {
-    &[data-click="sessions.sign_out"] {
-      display: inline-block;
-    }
-    &[data-page="login"] {
-      display: none;
-    }
-  }
-}
-
 body > nav {
   background-color: $dark-grey;
   line-height: 70px;
@@ -96,6 +112,7 @@ body > nav {
   width: 100%;
   background-image: url('/pattern-tile.png');
   background-repeat: repeat;
+  overflow: hidden;
 
   .logo { 
     display: inline-block;
@@ -119,7 +136,7 @@ body > nav {
     font-weight: 400;
     font-size: 14px;
     &:hover { color: $blue; }
-    &[data-page="courses"], &[data-click="sessions.sign_out"] {
+    &[data-page="courses"], &[data-modal="profile.html"] {
       display: none;
     }
   }
@@ -335,20 +352,19 @@ input {
 main {
   height: 100%;
   width: 100%;
-  padding-top: 12px;
   position: relative;
   &[data-mode="lists"] a {
   		&[data-mode="lists"] { border-bottom: 2px solid $blue; }
   		&[data-mode="cards"] { border-bottom: 2px solid transparent; }
   }
-  &[data-load="login.html"], &[data-load="landing.html"] {
-    padding: 0 20px 20px 20px;
+  &[data-load="landing.html"] {
+  	padding: 0;
   }
   &[data-load="courses.html"] {
-    padding: 96px 20px 20px 200px;
+    padding: 20px 20px 20px 200px;
   }
   &[data-load="invites.html"] {
-    padding: 96px 20px 20px 200px;
+    padding: 20px 20px 20px 200px;
   }
   > input {
     width: 100%;
@@ -376,6 +392,48 @@ main {
   > .content {
   	padding: 0 0 0 20px;
   }
+
+}
+
+// landing 
+[data-load="landing.html"], [data-load="about.html"] {
+
+	section {
+		height: 100vh;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: center center;
+		position: relative;
+		&.introduction {
+			border-top: 1px solid white;
+			.text {
+				position: absolute;
+				bottom: 30%;
+				right: 1%;
+				text-align: left;
+				width: 600px;
+			}
+			h1 {
+				color: white;
+				-webkit-text-stroke: 1px $grey;
+				line-height: 80px;
+				font-size: 60px;
+				font-family: $changa;
+				text-align: left;
+			}
+			span {
+				font-family: $raleway;
+				font-size: 18px;
+				color: white;
+				width: 500px;
+				line-height: 36px;
+				padding: 0 0 0 5px;
+				display: inline-block;
+			}
+		}
+		&.landing { background-image: url('/photo-joris-merel-1.jpg'); }
+		&.about { background-image: url('/photo-joris-merel-3.jpg'); }
+	}
 
 }
 
@@ -467,25 +525,6 @@ main {
 			}
 		}
 	}
-}
-
-body {
-	&.modal-open {
-		text-align: center;
-		
-		footer {display: none;}
-
-		main {position: fixed;}
-
-		#modal-container {display: block}
-
-		.black-layer {
-			background: rgba(#000, .9);
-			display: block;
-			max-height: 100vh;
-		}
-	}
-
 }
 
 .black-layer {

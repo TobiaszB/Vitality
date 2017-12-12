@@ -330,7 +330,7 @@ var courses = module.exports = {
     },
 
     render_one: function render_one(element) {
-        console.log(history.state.course);
+
         var course = courses.memory[element.dataset.course];
 
         element.dataset.key = element.dataset.course;
@@ -436,7 +436,7 @@ var sessions = module.exports = {
 
     sign_out: function sign_out(element) {
 
-        root.ws.send(JSON.stringify({ request: 'sign_out' }));
+        root.send({ request: 'sign_out' });
     },
 
     check_passwords: function check_passwords(element) {
@@ -478,6 +478,8 @@ var sessions = module.exports = {
         if (!options || !options.prevent_url) sessions.url('/' + page);
 
         window.scrollTo(0, 0);
+
+        root.modal.close();
     },
 
     url: function url(state, options) {
@@ -801,7 +803,7 @@ var users = module.exports = {
 
     add: function add(element) {
 
-        root.ws.send(JSON.stringify({ request: 'new_user' }));
+        root.send({ request: 'new_user' });
     },
 
     load_permissions: function load_permissions(element) {
@@ -1030,10 +1032,14 @@ if (index == -1) index = 0;
 
 var labels = {
   landing: ['Welkom', 'Landing'],
+  introduction_text: ['Persoonlijke Training & Persoonlijke Coaching', 'Personal Training & Personal Coaching'],
+  introduction_description: ['voor het programma Managers Vitality (for a life - work balance that boosts management performance)', 'Program Managers Vitality (for a life - work balance that boosts management performance.)'],
+  about_text: ['Mogen wij uw personal trainer of personal coach zijn?', 'Can we be your personal trainer or personal coach?'],
   add: ['Toevoegen', 'Add'],
   invite: ['Uitnodigen', 'Invite'],
   about: ['Over ons', 'About'],
   sign_in: ['Inloggen', 'Sign in'],
+  sign_in_input: [value('Inloggen', value('Sign in'))],
   sign_out: ['Uitloggen', 'Sign out'],
   courses: ['Cursussen', 'Courses'],
   profile: ['Profiel', 'Profile'],
@@ -1081,6 +1087,13 @@ function title(label) {
     return el.setAttribute('data-title', label);
   };
 }
+
+function value(label) {
+
+  return function (el) {
+    return el.setAttribute('data-value', label);
+  };
+}
 });
 
 ;require.register("source/scripts/components/modal.js", function(exports, require, module) {
@@ -1094,8 +1107,6 @@ var modal = module.exports = {
 	},
 
 	open: function open(element, load) {
-
-		console.log('open', element, load);
 
 		var modal = root.modal_element;
 
@@ -1576,15 +1587,15 @@ function create_websocket() {
     query += (query ? '&' : '?') + encodeURIComponent(i) + '=' + encodeURIComponent(localStorage.getItem(i));
   }new WebSocket(DEV_MODE ? 'ws://localhost:443/' + query : 'wss://vitalityone.fearless-apps.com/' + query).addEventListener('message', function listener(e) {
 
-    root.ws = e.target;
+    var ws = e.target;
 
-    root.send = Send(e.target, callbacks);
+    root.send = Send(ws, callbacks);
 
     incoming(JSON.parse(e.data), callbacks);
 
-    root.ws.removeEventListener('message', listener);
+    ws.removeEventListener('message', listener);
 
-    root.ws.addEventListener('message', function (e) {
+    ws.addEventListener('message', function (e) {
       return incoming(JSON.parse(e.data), callbacks);
     });
   });
@@ -1605,7 +1616,7 @@ function Send(ws, callbacks) {
 
     data.callback = cb;
 
-    callbacks[cb] = callback;
+    if (callback) callbacks[cb] = callback;
 
     ws.send(JSON.stringify(data));
   };

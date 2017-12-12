@@ -87,7 +87,7 @@ function handler(request) {
     },
 
     sign_out: (ws, msg, session) => {
-
+console.log(msg);
       ws.send(JSON.stringify({
         callback: msg.callback,
         token: false

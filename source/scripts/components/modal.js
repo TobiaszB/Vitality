@@ -8,8 +8,6 @@ let modal = module.exports = {
 
   open: (element, load) => {
 
-  	console.log('open', element, load);
-
 	let modal = root.modal_element;
 
 	if(modal.dataset.key) modal.dataset.key = element.dataset.key;

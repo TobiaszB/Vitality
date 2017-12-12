@@ -68,15 +68,15 @@ function create_websocket() {
     `wss://vitalityone.fearless-apps.com/${ query }`
   ).addEventListener('message', function listener(e){
 
-    root.ws = e.target;
+    let ws = e.target;
 
-    root.send = Send(e.target, callbacks);
+    root.send = Send(ws, callbacks);
 
     incoming(JSON.parse(e.data), callbacks);
 
-    root.ws.removeEventListener('message', listener);
+    ws.removeEventListener('message', listener);
 
-    root.ws.addEventListener('message', (e) => incoming(JSON.parse(e.data), callbacks));
+    ws.addEventListener('message', (e) => incoming(JSON.parse(e.data), callbacks));
 
   });
 
@@ -98,7 +98,7 @@ function Send(ws, callbacks) {
 
     data.callback = cb;
 
-    callbacks[cb] = callback;
+    if(callback) callbacks[cb] = callback;
 
     ws.send(JSON.stringify(data));
 
