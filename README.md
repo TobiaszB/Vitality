@@ -43,4 +43,4 @@ HTML5 / CSS3 / Javascript (ES6)
 | ------------- | ------------- |  ------------- |
 | html | HTML |
 | created_at | Date |
-| options | Object |
+| options | Object | `{ <label>: <option type> }`
