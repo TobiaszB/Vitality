@@ -537,7 +537,11 @@ module.exports = {
 
         if (!root.main) return setTimeout(root.main, 0, elem, options);
 
-        var page = elem ? elem.dataset.page : history.state ? history.state.page : 'courses';
+        var page = elem ? elem.dataset.page : history.state ? history.state.page : 'landing';
+
+        if (!localStorage.getItem('authenticated') && ['landing', 'login', 'about'].indexOf(page) == -1) {
+            page = 'landing';
+        }
 
         document.body.classList.forEach(function (c) {
 
@@ -559,6 +563,8 @@ module.exports = {
 
     url: function url(state, options) {
 
+        var defaulted = 'landing';
+
         var operation = options && options.replace ? 'replaceState' : 'pushState';
 
         var url = typeof state == 'string' ? decode() : location.pathname;
@@ -567,14 +573,14 @@ module.exports = {
 
         function encode() {
 
-            var page = state ? state.page || 'courses' : 'courses';
+            var page = state ? state.page || defaulted : defaulted;
 
             return Object.keys(state).reduce(function (url, key) {
 
                 if (key == 'page') return url;
 
                 return url + '/' + key + '/' + state[key];
-            }, '/' + page);
+            }, '/' + (page == defaulted ? '' : page));
         }
 
         function decode() {
@@ -588,7 +594,7 @@ module.exports = {
                 state[parts[i] || 'page'] = parts[i + 1];
             }
 
-            state.page = state.page || 'courses';
+            state.page = state.page || 'landing';
 
             return state;
         }
@@ -607,6 +613,13 @@ module.exports = {
     localStorage.setItem('language', element.dataset.language);
 
     location.reload();
+  },
+
+  highlight_lang: function highlight_lang(element) {
+
+    if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
+
+    element.classList.add('active');
   },
 
   format_date: function format_date(element) {
@@ -884,10 +897,15 @@ var index = LANGS.indexOf(localStorage.getItem('language'));
 if (index == -1) index = 0;
 
 var labels = (_labels = {
-  start: ['start', 'start'],
-  add: ['TOEVOEGEN', 'ADD'],
-  sign_in: ['LOG IN', 'SIGN IN'],
-  sign_out: ['LOG UIT', 'SIGN OUT'],
+  landing: ['Welkom', 'Landing'],
+  add: ['Toevoegen', 'Add'],
+  about: ['Over Ons', 'About'],
+  sign_in: ['Inloggen', 'Sign in'],
+  sign_out: ['Uitloggen', 'Sign out'],
+  courses: ['Cursussen', 'Courses'],
+  profile: ['Profiel', 'Profile'],
+  invitations: ['Uitnodigingen', 'Invitations'],
+  stats: ['Statistieken', 'Statistics'],
   no_results: [title('Geen resultaten'), title('No results')],
   loading: [title('Laden...'), title('Loading...')],
   placeholder_search: [placeholder('zoeken'), placeholder('search')],
@@ -1027,14 +1045,6 @@ function init() {
   document.documentElement.addEventListener('change', listener);
 
   document.documentElement.addEventListener('input', listener);
-
-  document.documentElement.addEventListener('keyup', listener);
-
-  document.documentElement.addEventListener('keydown', listener);
-
-  document.documentElement.addEventListener('mousedown', listener);
-
-  document.documentElement.addEventListener('mouseup', listener);
 
   document.documentElement.addEventListener('submit', listener);
 }
@@ -1312,7 +1322,7 @@ require.register("source/scripts/root.js", function(exports, require, module) {
 
 require('./polyfill.js');
 
-var DEV_MODE = false;
+var DEV_MODE = true;
 
 window.root = {
 
@@ -1430,26 +1440,17 @@ function incoming(message, callbacks) {
     delete callbacks[message.callback];
   }
 
-  if (message.key && !message.callback) {
-
-    if (message.key.indexOf('orders_') == 0) root.orders.render_one(document.querySelector('[data-order="' + message.key + '"][data-load="orders.render_one"]'));
-
-    if (message.key.indexOf('customers_') == 0) root.customers.render_one(document.querySelector('[data-customer="' + message.key + '"][data-load="customers.render_one"]'));
-
-    if (message.key.indexOf('users_') == 0) root.users.render_one(document.querySelector('[data-user="' + message.key + '"][data-load="users.render_one"]'));
-  }
-
   if (typeof message.token == 'undefined') return;
 
   root.me = Object.assign(root.me || {}, message);
 
   document.body.classList[message.token ? 'add' : 'remove']('authenticated');
 
-  if (!message.token) root.sessions.url('/login');else if (localStorage.getItem('authenticated') && !message.launched) root.sessions.url('/courses');else if (history.state && history.state.page == 'admin') root.sessions.url('/courses');
-
-  root.sessions.load_page(null, { prevent_url: true });
+  if (!message.token) root.sessions.url('/');else if (localStorage.getItem('authenticated') && !message.launched) root.sessions.url('/');else if (history.state && history.state.page == 'admin') root.sessions.url('/');
 
   localStorage.setItem('authenticated', message.token || '');
+
+  root.sessions.load_page(null, { prevent_url: true });
 }
 
 function notify(message) {

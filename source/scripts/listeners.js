@@ -12,14 +12,6 @@ function init() {
 
   document.documentElement.addEventListener('input', listener);
 
-  document.documentElement.addEventListener('keyup', listener);
-
-  document.documentElement.addEventListener('keydown', listener);
-
-  document.documentElement.addEventListener('mousedown', listener);
-
-  document.documentElement.addEventListener('mouseup', listener);
-
   document.documentElement.addEventListener('submit', listener);
 
 }

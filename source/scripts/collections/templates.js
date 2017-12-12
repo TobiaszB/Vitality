@@ -8,6 +8,14 @@ module.exports = {
 
   },
 
+  highlight_lang: (element) => {
+
+  	if(!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
+
+  	element.classList.add('active');
+  	
+  },
+
   format_date: (element) => {
 
   	let date = new Date(element.dataset.date),

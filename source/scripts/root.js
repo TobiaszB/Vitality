@@ -1,6 +1,6 @@
 require('./polyfill.js');
 
-const DEV_MODE = false;
+const DEV_MODE = true;
 
 window.root = {
 
@@ -130,34 +130,21 @@ function incoming(message, callbacks){
   	
   }
 
-  if(message.key && !message.callback) {
-
-  	if(message.key.indexOf('orders_') == 0) root.orders.render_one(
-      document.querySelector(`[data-order="${ message.key }"][data-load="orders.render_one"]`));
-
-  	if(message.key.indexOf('customers_') == 0) root.customers.render_one(
-      document.querySelector(`[data-customer="${ message.key }"][data-load="customers.render_one"]`));
-    
-  	if(message.key.indexOf('users_') == 0) root.users.render_one(
-      document.querySelector(`[data-user="${ message.key }"][data-load="users.render_one"]`));
-
-  }
-
   if(typeof message.token == 'undefined') return;
 
   root.me = Object.assign(root.me || {}, message);
 
   document.body.classList[message.token ? 'add' : 'remove']('authenticated');
 
-  if(!message.token) root.sessions.url('/login');
+  if(!message.token) root.sessions.url('/');
 
-  else if(localStorage.getItem('authenticated') && !message.launched) root.sessions.url('/courses');
+  else if(localStorage.getItem('authenticated') && !message.launched) root.sessions.url('/');
 
-  else if(history.state && history.state.page == 'admin') root.sessions.url('/courses');
-
-  root.sessions.load_page(null, { prevent_url: true });
+  else if(history.state && history.state.page == 'admin') root.sessions.url('/');
 
   localStorage.setItem('authenticated', message.token || '');
+
+  root.sessions.load_page(null, { prevent_url: true });
   
 }
 

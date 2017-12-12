@@ -24,44 +24,46 @@
 
 		<nav>
 		
-			<div class="logo" data-click="sessions.load_page" data-page="courses"></div>
+			<div class="logo" data-click="sessions.load_page" data-page="landing"></div>
 
 			<div class="divider vertical"></div>
 			
-		    <a data-click="sessions.load_page" data-page="courses">Courses</a>
+		    <a data-load="labels.courses" data-click="sessions.load_page" data-page="courses"></a>
 
-		    <a data-click="sessions.load_page" data-page="about">About</a>
+		    <a data-load="labels.about" data-click="sessions.load_page" data-page="about"></a>
 			
 			<div class="container">
 
 				<div class="divider vertical"></div>
 				
-				<span class="flag nl"></span>
+				<span data-click="templates.change_language" data-language="nl" data-load="templates.highlight_lang" class="flag nl"></span>
 
-				<span class="flag en"></span>
+				<span data-click="templates.change_language" data-language="en" data-load="templates.highlight_lang" class="flag en"></span>
 
 				<div class="divider vertical"></div>
 
-		    	<a data-click="sessions.sign_out">Sign out</a>
+		    	<a data-load="labels.sign_in" data-click="sessions.load_page" data-page="login"></a>
+
+		    	<a data-load="labels.sign_out" data-click="sessions.sign_out"></a>
 
 			</div>
 
 			<div class="sub-nav">
 
-				<div class="row">
-					<i class="fa fa-info"></i> <span>PROFILE</span>
+				<div data-click="sessions.load_page" data-page="profile" class="row">
+					<i class="fa fa-info"></i> <span data-load="labels.profile"></span>
 				</div>
 
-				<div class="row">
-					<i class="fa fa-book"></i> <span>MANAGE COURSES</span>
+				<div data-click="sessions.load_page" data-page="courses" class="row">
+					<i class="fa fa-book"></i> <span data-load="labels.courses"></span>
 				</div>
 
-				<div class="row">
-					<i class="fa fa-user-plus"></i> <span>INVITATIONS</span>
+				<div data-click="sessions.load_page" data-page="invites" class="row">
+					<i class="fa fa-user-plus"></i> <span data-load="labels.invitations"></span>
 				</div>
 
-				<div class="row">
-					<i class="fa fa-line-chart"></i> <span>INFO &amp STATS</span>
+				<div data-click="sessions.load_page" data-page="stats" class="row">
+					<i class="fa fa-line-chart"></i> <span data-load="labels.stats"></span>
 				</div>
 
 			</div>
@@ -69,15 +71,6 @@
 		</nav>
 	
 		<main></main>
-
-		<footer>
-			<div class="content">
-				<button data-click="sessions.sign_out" data-load="labels.sign_out"></button><!--
-			 --><button class="blue" data-click="orders.add" data-load="labels.add"></button><!--
-			 --><button class="blue" data-click="users.add" data-load="labels.add"></button><!--
-			 --><button class="blue" data-click="customers.add" data-load="labels.add"></button>
-			</div>
-		</footer>
 		
 		<script src="/script.js"></script>
 

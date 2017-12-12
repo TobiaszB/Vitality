@@ -64,6 +64,23 @@ a {
   }
 }
 
+body.authenticated {
+  > nav .sub-nav {
+    display: block;
+  }
+  > main {
+    padding-top: 72px;
+  }
+  > nav a {
+    &[data-click="sessions.sign_out"] {
+      display: inline-block;
+    }
+    &[data-page="login"] {
+      display: none;
+    }
+  }
+}
+
 body > nav {
   background-color: $dark-grey;
   height: 70px;
@@ -91,6 +108,9 @@ body > nav {
     font-weight: 400;
     font-size: 14px;
     &:hover { color: $blue; }
+    &[data-page="courses"], &[data-click="sessions.sign_out"] {
+      display: none;
+    }
   }
   .divider {
     height: 60px;
@@ -103,6 +123,7 @@ body > nav {
     vertical-align: top;
   }
   .sub-nav {
+    display: none;
     text-align: center;
     background-color: #f6f6f6;
     border-bottom: 3px solid #ccc;
@@ -135,6 +156,12 @@ body > nav {
   display: inline-block;
   &:hover {
     border-bottom: 2px solid $blue;
+  }
+  &.active {
+    border-bottom: 2px solid $grey;
+    &:hover {
+      border-bottom: 2px solid $blue;
+    }
   }
   &.nl { background-image: url('/flag-nl.png')}
   &.en { background-image: url('/flag-en.png')}
@@ -210,10 +237,7 @@ input {
 main {
   height: 100%;
   width: 100%;
-  padding-top: 76px;
-  &[data-load="admin.html"] + footer [data-click="orders.add"] {
-    display: none;
-  }
+  padding-top: 12px;
   &[data-load="courses.html"] {
     padding: 96px 20px 20px 20px;
   }

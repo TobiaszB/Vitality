@@ -31,7 +31,7 @@ function handler(request) {
     },
 
     sign_in: (ws, msg, session, callback) => {
-
+console.log(msg);
       db.collection('users').findOne({ email: String(msg.email).toLowerCase() }, (err, user) => {
 
         if(err || !user) return ws.send(JSON.stringify({
@@ -431,14 +431,14 @@ function database() {
 
     db = database;
 
-    db.collection('users').findAndModify({ key: 'users_admin' }, [], {
+    db.collection('users').findAndModify({ key: 'users_joris' }, [], {
       $set: {
         email: 'joris@vitalityone.nl',
         password: '',
       }
     }, { upsert: true }, ()=>{});
 
-    db.collection('users').findAndModify({ key: 'users_admin' }, [], {
+    db.collection('users').findAndModify({ key: 'users_merel' }, [], {
       $set: {
         email: 'merel@vitalityone.nl',
         password: '',

@@ -56,7 +56,11 @@ module.exports = {
 
     if(!root.main) return setTimeout(root.main, 0, elem, options);
 
-    let page = elem ? elem.dataset.page : history.state ? history.state.page : 'courses';
+    let page = elem ? elem.dataset.page : history.state ? history.state.page : 'landing';
+
+    if(!localStorage.getItem('authenticated') && ['landing', 'login', 'about'].indexOf(page) == -1) {
+      page = 'landing';
+    }
 
     document.body.classList.forEach((c) => {
 
@@ -80,6 +84,8 @@ module.exports = {
 
   url: (state, options) => {
 
+    let defaulted = 'landing';
+
     let operation = options && options.replace ? 'replaceState' : 'pushState';
 
     let url = typeof state == 'string' ? decode() : location.pathname;
@@ -88,16 +94,16 @@ module.exports = {
 
     function encode() {
 
-      let page = state ? state.page || 'courses' : 'courses';
+      let page = state ? state.page || defaulted : defaulted;
 
       return Object.keys(state).reduce((url,key)=>{
 
         if (key == 'page') return url;
 
-        return `${url}/${key}/${state[key]}`;
+        return `${url}/${key}/${ state[key] }`;
 
       }
-      , `/${page}`);
+      , `/${ page == defaulted ? '' : page }`);
 
     }
 
@@ -113,7 +119,7 @@ module.exports = {
 
       }
 
-      state.page = state.page || 'courses';
+      state.page = state.page || 'landing';
       
       return state;
 

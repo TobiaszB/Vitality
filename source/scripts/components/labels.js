@@ -5,10 +5,15 @@ let index = LANGS.indexOf(localStorage.getItem('language'));
 if(index == -1) index = 0;
 
 let labels = {
-  start: ['start', 'start'],
-  add: ['TOEVOEGEN', 'ADD'],
-  sign_in: ['LOG IN', 'SIGN IN'],
-  sign_out: ['LOG UIT', 'SIGN OUT'],
+  landing: ['Welkom', 'Landing'],
+  add: ['Toevoegen', 'Add'],
+  about: ['Over Ons', 'About'],
+  sign_in: ['Inloggen', 'Sign in'],
+  sign_out: ['Uitloggen', 'Sign out'],
+  courses: ['Cursussen', 'Courses'],
+  profile: ['Profiel', 'Profile'],
+  invitations: ['Uitnodigingen', 'Invitations'],
+  stats: ['Statistieken', 'Statistics'],
   no_results: [
     title('Geen resultaten'),
     title('No results')
