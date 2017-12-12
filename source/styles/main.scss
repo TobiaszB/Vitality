@@ -77,7 +77,7 @@ body.authenticated {
     padding-top: 30px;
   }
   > nav a {
-    &[data-click="sessions.sign_out"] {
+    &[data-modal="profile.html"] {
       display: inline-block;
     }
     &[data-page="login"] {
@@ -118,7 +118,7 @@ body > nav {
     font-weight: 400;
     font-size: 14px;
     &:hover { color: $blue; }
-    &[data-page="courses"], &[data-click="sessions.sign_out"] {
+    &[data-page="courses"], &[data-modal="profile.html"] {
       display: none;
     }
   }
