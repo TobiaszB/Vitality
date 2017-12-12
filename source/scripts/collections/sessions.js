@@ -9,13 +9,15 @@ let sessions = module.exports = {
     root.main = document.querySelector('main');
 
     if(!root.main) return setTimeout(load, 0);
+    
+    sessions.url(null, { prevent_url: true });
 
   },
 
   load_login: (element) => {
 
     if(!root.me.session) return;
-    
+
     sessions.url('/courses');
 
     sessions.load_page(null, { prevent_url: true });
@@ -79,7 +81,7 @@ let sessions = module.exports = {
       document.body.classList.remove(c);
 
     });
-console.log(options);
+
     document.body.classList.remove('notified');
 
     document.body.classList.add(page + '-page');

@@ -407,6 +407,8 @@ var sessions = module.exports = {
         root.main = document.querySelector('main');
 
         if (!root.main) return setTimeout(load, 0);
+
+        sessions.url(null, { prevent_url: true });
     },
 
     load_login: function load_login(element) {
@@ -466,7 +468,7 @@ var sessions = module.exports = {
 
             document.body.classList.remove(c);
         });
-        console.log(options);
+
         document.body.classList.remove('notified');
 
         document.body.classList.add(page + '-page');
