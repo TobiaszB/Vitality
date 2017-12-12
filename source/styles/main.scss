@@ -14,7 +14,7 @@ $blue: #78c5b9;
 $purple: hsl(280, 100%, 39%);
 $red: hsl(358, 100%, 39%);
 $orange: hsl(41, 100%, 39%);
-$green: hsl(146, 100%, 39%);
+$green: hsl(103, 39%, 62%);
 $pink: hsl(322, 100%, 39%);
 $yellow: hsl(60, 100%, 39%);
 $dark-blue: hsl(250, 100%, 39%);
@@ -191,6 +191,7 @@ body > nav {
 h2 {
   font-family: $os;
   font-size: 20px;
+  color: $dark-grey;
   display: inline-block;
   margin: 0 10px 0 0;
 }
@@ -281,7 +282,7 @@ input {
   	&[data-mode="cards"] { border-bottom: 2px solid $blue; }
   }
   input {
-  	background-color: $grey;
+  	background-color: $light-grey;
   	width: 100%;
   	padding: 0 8px;
   	line-height: 40px;
@@ -372,7 +373,7 @@ main {
 
 // course
 [data-load="courses.render_one"] {
-	margin: 20px 10px;
+	margin: 20px 10px 0 0;
 	position: relative;
 	max-width: 500px;
 	input {
@@ -412,6 +413,8 @@ main {
 	.course-nav {
 		display: inline-block;
 		vertical-align: top;
+		position: relative;
+		margin-top: 3px;
 		span {
 			display: inline-block;
 			font-family: $changa;
