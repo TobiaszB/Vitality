@@ -205,6 +205,7 @@ let courses = module.exports = {
     ` : `
       <div class="thumbnail" style="background-image:url(${ course.thumbnail })"></div>
       ${ courses.course_nav(element) }
+      <img src="${ root.users.memory[course.admin].avatar }">
       <input placeholder="Naam" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
       <span data-load="users.memory.${ course.admin }.name"></span>
     `;
@@ -230,13 +231,13 @@ let courses = module.exports = {
 
   course_nav: (element) => {
 
-  console.log('courses nav', element);
+   let course = root.courses.memory[element.dataset.key];
 
    return `<div class="course-nav">
-        ${ root.courses.memory[element.dataset.key].published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>' }<br>
-        <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.view" data-load="labels.view"></button>
-        <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></button>
-        <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></button>
+        ${ course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>' }<br>
+        <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.view" data-load="labels.view"></a>
+        <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>
+        <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>
       </div>`;
       
   },

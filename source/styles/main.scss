@@ -374,7 +374,7 @@ main {
 [data-load="courses.render_one"] {
 	margin: 20px 10px;
 	position: relative;
-	max-width: 400px;
+	max-width: 500px;
 	input {
 		background-color: $light-grey;
 		display: block;
@@ -399,6 +399,16 @@ main {
 		border-top-right-radius: 4px;
 		display: inline-block;
 	}
+	img {
+		width: 30px;
+		height: 30px;
+		position: absolute;
+		border-radius: 50%;
+		border: 1px solid $grey;
+		bottom: 5px;
+		right: 5px;
+		z-index: 1;
+	}
 	.course-nav {
 		display: inline-block;
 		vertical-align: top;
@@ -417,6 +427,31 @@ main {
 			}
 			&.unpublished {
 				background-color: $orange;
+			}
+		}
+		a {
+			font-family: $changa;
+			font-size: 14px;
+			display: inline-block;
+			width: 70px;
+			color: $dark-grey;
+			&[data-modal="courses.view"]:before {
+				font-family: FontAwesome;
+				content: "\f06e";
+				padding: 0 5px 0 0;
+			}
+			&[data-modal="courses.invite"]:before {
+				font-family: FontAwesome;
+				content: "\f003";
+				padding: 0 5px 0 0;
+			}
+			&[data-modal="courses.stats"]:before {
+				font-family: FontAwesome;
+				content: "\f201";
+				padding: 0 5px 0 0;
+			}
+			&:hover {
+				color: $blue;
 			}
 		}
 	}
