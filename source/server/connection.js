@@ -111,42 +111,22 @@ console.log(msg);
 
     },
 
-    new_order: (ws, msg, session) => {
-
-      if(!session.add_permission)
-        return ws.send(JSON.stringify({ error: 'geen permissie' }));
-
-      let status = 'AFGEHANDELD';
-
-      for(let i = 0; i < session.tasks.length; i++) {
-
-        if(!session.tasks[i]) continue;
-
-        status = session.tasks[i];
-
-        break;
-
-      }
+    new_course: (ws, msg, session) => {
 
       db.collection('courses').findAndModify({
         key: `courses_${ Math.floor(Math.random() * 99999999) }`
       }, [], {
         $set: {
-          ticket: '',
-          status: status,
-          extra: '',
-          tasks: session.tasks,
-          repeat: -1,
-          arrival: new Date(),
-          created_at: new Date()
+          name: '',
+          admin: session.user
         }
       }, { upsert: true, new: true }, (err, updated) => {
 
-        ws.send(JSON.stringify({ callback: msg.callback }));
+        updated.value.callback = msg.callback;
+        
+        ws.send(JSON.stringify(updated.value));
 
-        handler('broadcast')(ws, [updated.value], session);
-
-        handler('load_courses')(ws, msg, session);
+        handler('broadcast')(ws, updated.value, session);
 
       });
 
@@ -415,11 +395,11 @@ function database() {
 
     db = database;
 
-    db.collection('users').findAndModify({ key: 'users_jorin' }, [], {
+    db.collection('users').findAndModify({ key: 'users_joris' }, [], {
       $set: {
-        name: 'Jorin Boon',
+        name: 'Joris Boon',
         avatar: '',
-        email: 'jorin@vitalityone.nl',
+        email: 'joris@vitalityone.nl',
         password: '',
         role: 'admin'
       }
@@ -439,7 +419,7 @@ function database() {
       $set: {
         name: 'Test',
         thumbnail: 'https://ak4.picdn.net/shutterstock/videos/12666344/thumb/1.jpg',
-        admin: 'users_jorin'
+        admin: 'users_joris'
       }
     }, { upsert: true }, ()=>{});
 
