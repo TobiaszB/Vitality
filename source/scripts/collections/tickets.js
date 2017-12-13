@@ -4,6 +4,22 @@ let tickets = module.exports = {
   // { [key]: OBJECT }
   memory: {},
 
+  change_language: (element) => {
+
+    let block = document.querySelector('#invite-block');
+
+    block.dataset.language = element.dataset.language;
+
+  },
+
+  open_invite_block: (element) => {
+
+    let block = document.querySelector('#invite-block');
+
+    block.classList.toggle('open');
+
+  },
+
   // button is placed to the right of the title of the page
   add: (element) => {
 
