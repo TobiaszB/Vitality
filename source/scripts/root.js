@@ -11,12 +11,16 @@ window.root = {
   templates: require('./collections/templates.js'),
   
   courses: require('./collections/courses.js'),
+  
+  blocks: require('./collections/blocks.js'),
 
   sessions: require('./collections/sessions.js'),
 
   labels: require('./components/labels.js'),
   
   modal: require('./components/modal.js'),
+
+  editor: require('./components/editor.js'),
   
   prefill: require('./components/prefill.js'),
 

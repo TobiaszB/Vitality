@@ -147,249 +147,311 @@ var __makeRelativeRequire = function(require, mappings, pref) {
     return require(name);
   }
 };
+require.register("source/scripts/collections/blocks.js", function(exports, require, module) {
+'use strict';
+
+var blocks = module.exports = {
+
+  memory: [],
+
+  load: function load(element) {
+
+    element.innerHTML = Object.keys(blocks.memory).reduce(function (html, key) {
+      return html + '\n      <div><a data-key="' + key + '" data-load="blocks.render_one"></a></div>';
+    }, '');
+  },
+
+  render_one: function render_one(element) {
+
+    element.innerHTML = '' + element.dataset.key;
+
+    element.addEventListener('mousedown', function (e) {
+
+      blocks.drag_x = e.clientX;
+
+      blocks.drag_y = e.clientY;
+
+      blocks.drag_block = element;
+      console.log(element);
+    });
+  }
+
+};
+
+document.body.addEventListener('mousemove', function (e) {
+
+  if (!blocks.drag_block) return e;
+
+  blocks.drag_block.style.right = blocks.drag_x - e.clientX + 'px';
+
+  blocks.drag_block.style.top = e.clientY - blocks.drag_y + 'px';
+
+  root.main.classList[blocks.drag_x - e.clientX > 190 ? 'add' : 'remove']('dropzone');
+});
+
+document.body.addEventListener('mouseup', function (e) {
+
+  if (!blocks.drag_block) return e;
+
+  var key = blocks.drag_block.dataset.key;
+
+  blocks.drag_block.removeAttribute('style');
+
+  blocks.drag_block = null;
+
+  if (!root.main.classList.contains('dropzone')) return e;
+
+  root.main.classList.remove('dropzone');
+
+  root.editor.add_block(key);
+});
+});
+
 require.register("source/scripts/collections/courses.js", function(exports, require, module) {
 'use strict';
 
 var courses = module.exports = {
 
-    // here we save all courses in client memory
-    // { [key]: OBJECT }
-    memory: {},
+  // here we save all courses in client memory
+  // { [key]: OBJECT }
+  memory: {},
 
-    // button is placed to the right of the title of the page
-    add: function add(element) {
+  // button is placed to the right of the title of the page
+  add: function add(element) {
 
-        // root.send is used to talk to the server
-        root.send({ request: 'new_course' });
-    },
+    // root.send is used to talk to the server
+    root.send({ request: 'new_course' });
+  },
 
-    // view mode can be cards or list, it has a button in the left top of the interface
-    view_mode: function view_mode(element) {
+  // view mode can be cards or list, it has a button in the left top of the interface
+  view_mode: function view_mode(element) {
 
-        courses.mode = element.dataset.mode;
+    courses.mode = element.dataset.mode;
 
-        // we put the mode also in the main, to support CSS styling
-        root.main.dataset.mode = element.dataset.mode;
+    // we put the mode also in the main, to support CSS styling
+    root.main.dataset.mode = element.dataset.mode;
 
-        // see update loop at the bottom of this file
-        courses.updated = true;
-    },
+    // see update loop at the bottom of this file
+    courses.updated = true;
+  },
 
-    // anytime the user triggers the data-input of the search field, we execute this
-    save_search: function save_search(element) {
+  // anytime the user triggers the data-input of the search field, we execute this
+  save_search: function save_search(element) {
 
-        // used inside of courses.render()
-        courses.search_query = String(element.value || '').toLowerCase();
+    // used inside of courses.render()
+    courses.search_query = String(element.value || '').toLowerCase();
 
-        // see update loop at the bottom of this file
-        courses.updated = true;
-    },
+    // see update loop at the bottom of this file
+    courses.updated = true;
+  },
 
-    // goes off anytime course-related data-input is fired
-    edit: function edit(element, options) {
+  // goes off anytime course-related data-input is fired
+  edit: function edit(element, options) {
 
-        // we always need to provide a request string and the key of the object we are editing
-        var request = {
-            request: 'edit',
-            key: element.dataset.course
-        };
+    // we always need to provide a request string and the key of the object we are editing
+    var request = {
+      request: 'edit',
+      key: element.dataset.course
+    };
 
-        // but the value we are changing shall be added dynamically,
-        // so we can use this edit function straight from the HTML
-        // <input data-input="courses.edit" data-key="[KEY]">
-        var v = options ? options.value : element.value;
+    // but the value we are changing shall be added dynamically,
+    // so we can use this edit function straight from the HTML
+    // <input data-input="courses.edit" data-key="[KEY]">
+    var v = options ? options.value : element.value;
 
-        request[element.dataset.property] = v;
+    request[element.dataset.property] = v;
 
-        // options.callback can only be used when this function is fired manually in Javascript
-        // since we cannot write a function inside of the HTML tag
-        root.send(request, options ? options.callback : null);
-    },
+    // options.callback can only be used when this function is fired manually in Javascript
+    // since we cannot write a function inside of the HTML tag
+    root.send(request, options ? options.callback : null);
+  },
 
-    list: function list(element) {
+  list: function list(element) {
 
-        // we are lazy developers that do not want to select the list over and over
-        // whenever we use this list function manually
-        if (!element) element = document.querySelector('[data-load="courses.list"]');
+    // we are lazy developers that do not want to select the list over and over
+    // whenever we use this list function manually
+    if (!element) element = document.querySelector('[data-load="courses.list"]');
 
-        // element still not found?! we must stop this madness
-        if (!element) return;
+    // element still not found?! we must stop this madness
+    if (!element) return;
 
-        if (history.state.course) return courses.load_course(element);
+    if (history.state.course) return courses.load_course(element);
 
-        // we clean out the old HTML should this function be fired after the list already rendered
-        element.innerHTML = '';
+    // we clean out the old HTML should this function be fired after the list already rendered
+    element.innerHTML = '';
 
-        // we show a loading text
-        root.labels.loading(element);
+    // we show a loading text
+    root.labels.loading(element);
 
-        // and start the render loop!
-        courses.render(element);
-    },
+    // and start the render loop!
+    courses.render(element);
+  },
 
-    load_course: function load_course(element) {
+  load_course: function load_course(element) {
 
-        element.innerHTML = '<div data-load="courses.render_one" data-course="' + history.state.course + '"></div>';
-    },
+    element.innerHTML = '<div data-load="courses.render_one" data-course="' + history.state.course + '"></div>';
+  },
 
-    render: function render(element, keys, iteration) {
+  render: function render(element, keys, iteration) {
 
-        // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
-        if (!element) return;
+    // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
+    if (!element) return;
 
-        // we need to make sure we only run 1 loop at the same time
-        // every time render is called outside of its own loop, iteration will be undefined
-        // so we use this condition to also update the dataset of the element
-        // in order for the old loop to kill itself...
-        if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
+    // we need to make sure we only run 1 loop at the same time
+    // every time render is called outside of its own loop, iteration will be undefined
+    // so we use this condition to also update the dataset of the element
+    // in order for the old loop to kill itself...
+    if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
 
-        // if it turns out this execution is an outdated iteration,
-        // the element has updated its dataset.iteration outside of this loop
-        // we have to bring this loop to the white shores
-        // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
-        if (element.dataset.iteration != iteration) return;
+    // if it turns out this execution is an outdated iteration,
+    // the element has updated its dataset.iteration outside of this loop
+    // we have to bring this loop to the white shores
+    // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
+    if (element.dataset.iteration != iteration) return;
 
-        // every time render is called outside of its own loop, keys will be undefined
-        if (!keys) keys = Object.keys(courses.memory);
+    // every time render is called outside of its own loop, keys will be undefined
+    if (!keys) keys = Object.keys(courses.memory);
 
-        // the loop has finished
-        if (!keys.length) {
-
-            // sadly, no children are found inside of the element
-            // this can only mean there were no results
-            if (!element.children.length) return root.labels.no_results(element);
-
-            // we had results, and are no longer loading, so lets clear that loading message
-            return element.dataset.message = '';
-        }
-
-        var search = courses.search_query,
-            // search value is changed by courses.save_search()
-        course = courses.memory[keys.shift()];
-
-        if (!course || course.archived || search && String(course.name).toLowerCase().indexOf(search) == -1 || courses.manager_filter.length && courses.manager_filter.indexOf(course.admin) == -1) {
-
-            if (keys.length % 100 == 0) return requestAnimationFrame(function () {
-
-                courses.render(element, keys, iteration);
-            });
-
-            return courses.render(element, keys, iteration);
-        }
-
-        requestAnimationFrame(function () {
-
-            courses.render(element, keys, iteration);
-        });
-
-        var elem = document.createElement('div');
-
-        elem.dataset.load = 'courses.render_one';
-
-        elem.dataset.course = course.key;
-
-        element.appendChild(elem);
-    },
-
-    archive: function archive(element) {
-
-        var course = courses.memory[element.dataset.key];
-
-        root.send({ request: 'archive', key: course.key }, function () {
-
-            // see update loop at the bottom of this file
-            courses.updated = true;
-        });
-    },
-
-    manager_filter: [],
-
-    toggle_manager: function toggle_manager(element) {
-
-        var key = element.dataset.key,
-            filter = courses.manager_filter,
-            index = filter.indexOf(key);
-
-        element.classList.toggle('active');
-
-        if (index > -1) filter.splice(index, 1);else filter.push(key);
-
-        courses.updated = true;
-    },
-
-    load_managers: function load_managers(element) {
-
-        element.innerHTML = Object.keys(root.users.memory).reduce(function (html, key) {
-
-            var user = root.users.memory[key];
-
-            if (user.role == 'admin') html += '<div data-click="courses.toggle_manager" data-key="' + user.key + '">\n        <img src="' + user.avatar + '">\n        <span data-load="users.memory.' + user.key + '.name"></span>\n      </div>';
-
-            return html;
-        }, '');
-    },
-
-    render_one: function render_one(element) {
-
-        var course = courses.memory[element.dataset.course];
-
-        element.dataset.key = element.dataset.course;
-
-        element.innerHTML = courses.mode == 'lists' ? '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <img src="' + root.users.memory[course.admin].avatar + '">\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <span data-load="users.memory.' + course.admin + '.name"></span>\n    ';
-
-        if (!course.name) element.querySelector('input').focus();
-
-        function format(date) {
-
-            date = new Date(date);
-
-            var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
-
-            if (!date || String(date).toLowerCase() == 'invalid date') return '';
-
-            return '\n        ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + '\n        ' + date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes() + '\n      ';
-        }
-    },
-
-    course_nav: function course_nav(element) {
-
-        var course = root.courses.memory[element.dataset.key];
-
-        return '<div class="course-nav">\n        ' + (course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>') + '<br>\n        <a data-key="' + element.dataset.key + '" data-click="courses.view" data-load="labels.view"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>\n      </div>';
-    },
-
-    view: function view(element) {
-
-        root.sessions.url({ page: 'edit', course: element.dataset.key });
-
-        root.sessions.load_page(null, { prevent_url: true });
-    },
-
-    invite: function invite(element) {
-
-        var course = root.courses.memory[element.dataset.key];
-
-        element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.invite"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
-    },
-
-    stats: function stats(element) {
-
-        var course = root.courses.memory[element.dataset.key];
-
-        element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.stats"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
+    // the loop has finished
+    if (!keys.length) {
+
+      // sadly, no children are found inside of the element
+      // this can only mean there were no results
+      if (!element.children.length) return root.labels.no_results(element);
+
+      // we had results, and are no longer loading, so lets clear that loading message
+      return element.dataset.message = '';
     }
+
+    var search = courses.search_query,
+        // search value is changed by courses.save_search()
+    course = courses.memory[keys.shift()];
+
+    if (!course || course.archived || search && String(course.name).toLowerCase().indexOf(search) == -1 || courses.manager_filter.length && courses.manager_filter.indexOf(course.admin) == -1) {
+
+      if (keys.length % 100 == 0) return requestAnimationFrame(function () {
+
+        courses.render(element, keys, iteration);
+      });
+
+      return courses.render(element, keys, iteration);
+    }
+
+    requestAnimationFrame(function () {
+
+      courses.render(element, keys, iteration);
+    });
+
+    var elem = document.createElement('div');
+
+    elem.dataset.load = 'courses.render_one';
+
+    elem.dataset.course = course.key;
+
+    element.appendChild(elem);
+  },
+
+  archive: function archive(element) {
+
+    var course = courses.memory[element.dataset.key];
+
+    root.send({ request: 'archive', key: course.key }, function () {
+
+      // see update loop at the bottom of this file
+      courses.updated = true;
+    });
+  },
+
+  manager_filter: [],
+
+  toggle_manager: function toggle_manager(element) {
+
+    var key = element.dataset.key,
+        filter = courses.manager_filter,
+        index = filter.indexOf(key);
+
+    element.classList.toggle('active');
+
+    if (index > -1) filter.splice(index, 1);else filter.push(key);
+
+    courses.updated = true;
+  },
+
+  load_managers: function load_managers(element) {
+
+    element.innerHTML = Object.keys(root.users.memory).reduce(function (html, key) {
+
+      var user = root.users.memory[key];
+
+      if (user.role == 'admin') html += '<div data-click="courses.toggle_manager" data-key="' + user.key + '">\n        <img src="' + user.avatar + '">\n        <span data-load="users.memory.' + user.key + '.name"></span>\n      </div>';
+
+      return html;
+    }, '');
+  },
+
+  render_one: function render_one(element) {
+
+    var course = courses.memory[element.dataset.course];
+
+    element.dataset.key = element.dataset.course;
+
+    element.innerHTML = courses.mode == 'lists' ? '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <img src="' + root.users.memory[course.admin].avatar + '">\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <span data-load="users.memory.' + course.admin + '.name"></span>\n    ';
+
+    if (!course.name) element.querySelector('input').focus();
+
+    function format(date) {
+
+      date = new Date(date);
+
+      var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+
+      if (!date || String(date).toLowerCase() == 'invalid date') return '';
+
+      return '\n        ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + '\n        ' + date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes() + '\n      ';
+    }
+  },
+
+  course_nav: function course_nav(element) {
+
+    var course = root.courses.memory[element.dataset.key];
+
+    return '<div class="course-nav">\n        ' + (course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>') + '<br>\n        <a data-key="' + element.dataset.key + '" data-click="courses.view" data-load="labels.view"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>\n      </div>';
+  },
+
+  view: function view(element) {
+
+    root.sessions.url({ page: 'edit', course: element.dataset.key });
+
+    root.sessions.load_page(null, { prevent_url: true });
+  },
+
+  invite: function invite(element) {
+
+    var course = root.courses.memory[element.dataset.key];
+
+    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.invite"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
+  },
+
+  stats: function stats(element) {
+
+    var course = root.courses.memory[element.dataset.key];
+
+    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.stats"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
+  }
 
 };
 
 (function updater() {
 
-    if (!courses.updated) return setTimeout(updater, 300);
+  if (!courses.updated) return setTimeout(updater, 300);
 
-    courses.updated = false;
+  courses.updated = false;
 
-    courses.list();
+  if (root.main.dataset.load == 'edit.html') root.main.dataset.load = 'edit.html'; // this correctly triggers the mutationobserver in listeners.js
 
-    updater();
+  else courses.list();
+
+  updater();
 })();
 });
 
@@ -1021,6 +1083,50 @@ var users = module.exports = {
 })();
 });
 
+require.register("source/scripts/components/editor.js", function(exports, require, module) {
+'use strict';
+
+var editor = module.exports = {
+
+  load_course: function load_course(element) {
+
+    var key = history.state.course,
+        course = root.courses.memory[key];
+
+    console.log(course);
+
+    if (course.blocks) element.innerHTML = course.blocks.reduce(function (html, block, index) {
+
+      var options = Object.keys(block.options).reduce(function (html, option) {
+        return html + ' data-' + option + '="' + block.options[option] + '"';
+      }, '');
+
+      return html + '<div ' + options + ' data-index="' + index + '" data-key="' + block.key + '">' + block.html + '</div>';
+    }, '');
+  },
+
+  add_block: function add_block(key) {
+
+    var course = root.courses.memory[history.state.course],
+        block = root.blocks.memory[key];
+
+    course.blocks = course.blocks || [];
+
+    course.blocks.push(block);
+
+    console.log(course);
+
+    root.courses.updated = true;
+  },
+
+  load_element: function load_element(element) {
+
+    element.innerHTML = element.dataset.element;
+  }
+
+};
+});
+
 require.register("source/scripts/components/labels.js", function(exports, require, module) {
 'use strict';
 
@@ -1545,11 +1651,15 @@ window.root = {
 
   courses: require('./collections/courses.js'),
 
+  blocks: require('./collections/blocks.js'),
+
   sessions: require('./collections/sessions.js'),
 
   labels: require('./components/labels.js'),
 
   modal: require('./components/modal.js'),
+
+  editor: require('./components/editor.js'),
 
   prefill: require('./components/prefill.js'),
 
