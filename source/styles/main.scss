@@ -409,6 +409,9 @@ main {
   &[data-load="courses.html"] {
     padding: 20px 20px 20px 200px;
   }
+  &[data-load="stats.html"] {
+    padding: 20px 20px 20px 200px;
+  }
   &[data-load="invites.html"] {
     padding: 20px 20px 20px 200px;
   }
@@ -983,6 +986,12 @@ main {
 		&.en { background-image: url('/flag-en.png')}
 
 	}
+}
+
+.calender {
+	min-height: 400px;
+	background-color: $light-grey;
+	margin: 0 0 20px 0;
 }
 
 

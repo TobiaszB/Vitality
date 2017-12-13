@@ -27,6 +27,16 @@ module.exports = {
 
   },
 
+  load_calender: (element) => {
+
+	element.innerHTML = `
+		
+		
+		
+	`;
+
+  },
+
   change_language: (element) => {
 
 	localStorage.setItem('language', element.dataset.language);

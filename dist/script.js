@@ -588,63 +588,68 @@ require.register("source/scripts/collections/templates.js", function(exports, re
 
 module.exports = {
 
-  load_courses: function load_courses(element) {
+		load_courses: function load_courses(element) {
 
-    var html = '',
-        keys = Object.keys(root.courses.memory);
+				var html = '',
+				    keys = Object.keys(root.courses.memory);
 
-    for (var i = 0; i < keys.length; i++) {
+				for (var i = 0; i < keys.length; i++) {
 
-      var course = root.courses.memory[keys[i]];
+						var course = root.courses.memory[keys[i]];
 
-      html += '\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t</div>\n\t\t';
-    };
+						html += '\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t</div>\n\t\t';
+				};
 
-    element.innerHTML = html;
-  },
+				element.innerHTML = html;
+		},
 
-  change_language: function change_language(element) {
+		load_calender: function load_calender(element) {
 
-    localStorage.setItem('language', element.dataset.language);
+				element.innerHTML = '\n\t\t\n\t\t\n\t\t\n\t';
+		},
 
-    location.reload();
-  },
+		change_language: function change_language(element) {
 
-  highlight_lang: function highlight_lang(element) {
+				localStorage.setItem('language', element.dataset.language);
 
-    if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
+				location.reload();
+		},
 
-    element.classList.add('active');
-  },
+		highlight_lang: function highlight_lang(element) {
 
-  format_date: function format_date(element) {
+				if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
 
-    var date = new Date(element.dataset.date),
-        months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+				element.classList.add('active');
+		},
 
-    if (!date || String(date).toLowerCase() == 'invalid date') return;
+		format_date: function format_date(element) {
 
-    element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
-  },
+				var date = new Date(element.dataset.date),
+				    months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
-  format_time: function format_time(element) {
+				if (!date || String(date).toLowerCase() == 'invalid date') return;
 
-    var date = new Date(element.dataset.date);
+				element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+		},
 
-    if (!date || String(date).toLowerCase() == 'invalid date') return;
+		format_time: function format_time(element) {
 
-    element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
-  },
+				var date = new Date(element.dataset.date);
 
-  start: function start(element) {
+				if (!date || String(date).toLowerCase() == 'invalid date') return;
 
-    console.log('e', element);
-  },
+				element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
+		},
 
-  hide_notification: function hide_notification(element) {
+		start: function start(element) {
 
-    document.querySelector('body').classList.remove('notified');
-  }
+				console.log('e', element);
+		},
+
+		hide_notification: function hide_notification(element) {
+
+				document.querySelector('body').classList.remove('notified');
+		}
 
 };
 });
@@ -1155,6 +1160,92 @@ var users = module.exports = {
 })();
 });
 
+require.register("source/scripts/components/editor.js", function(exports, require, module) {
+'use strict';
+
+var editor = module.exports = {
+
+    course: null,
+
+    load_course: function load_course(element) {
+
+        var key = history.state.course,
+            course = root.courses.memory[key];
+
+        editor.course = course;
+
+        editor.element = element;
+
+        element.dataset.published = 'yes';
+
+        element.dataset.device = 'desktop';
+
+        if (!course.blocks) course.blocks = [];
+
+        element.innerHTML = course.blocks.reduce(function (html, block, index) {
+
+            var options = Object.keys(block.options).reduce(function (html, option) {
+                return html + ' data-' + option + '="' + block.options[option] + '"';
+            }, '');
+
+            return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-click="editor.update" class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
+        }, '\n      <div class="control-editor">\n        <a data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
+    },
+
+    add_block: function add_block(key) {
+
+        var course = root.courses.memory[history.state.course],
+            block = root.blocks.memory[key];
+
+        course.blocks = course.blocks || [];
+
+        course.blocks.push(block);
+
+        console.log(course);
+
+        root.courses.updated = true;
+    },
+
+    load_element: function load_element(element) {
+
+        var index = parseInt(element.parentElement.dataset.index, 10),
+            block = editor.course.blocks[index],
+            key = element.dataset.element;
+
+        element.dataset.input = 'editor.save';
+
+        if (!block.content) block.content = {};
+
+        if (!block.content[key]) block.content[key] = key;
+
+        element.innerHTML = block.content[key];
+    },
+
+    // only locally
+    save: function save(element) {
+
+        var index = parseInt(element.parentElement.dataset.index, 10),
+            block = editor.course.blocks[index];
+
+        block.content[element.dataset.element] = element.value;
+
+        console.log(JSON.stringify(editor.course, null, 2));
+    },
+
+    // updates course in server
+    update: function update(element) {
+
+        editor.element.classList.add('saving');
+
+        root.send({ request: 'save_course', set: editor.course }, function () {
+
+            editor.element.classList.remove('saving');
+        });
+    }
+
+};
+});
+
 require.register("source/scripts/components/labels.js", function(exports, require, module) {
 'use strict';
 
@@ -1211,7 +1302,7 @@ var labels = (_labels = {
     clients: ['Klanten', 'Clients'],
     app_settings: ['App instellingen', 'App settings'],
     name: [placeholder('Naam'), placeholder('Name')]
-}, _defineProperty(_labels, 'password', [placeholder('Wachtwoord'), placeholder('Password')]), _defineProperty(_labels, 'send_invite', ['Verstuur uitnodiging', 'Send invite']), _labels);
+}, _defineProperty(_labels, 'password', [placeholder('Wachtwoord'), placeholder('Password')]), _defineProperty(_labels, 'send_invite', ['Verstuur uitnodiging', 'Send invite']), _defineProperty(_labels, 'events', ['Evenementen', 'Events']), _labels);
 
 for (var n in labels) {
 

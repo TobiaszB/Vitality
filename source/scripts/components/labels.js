@@ -54,7 +54,8 @@ let labels = {
     app_settings: ['App instellingen', 'App settings'],
     name: [placeholder('Naam'), placeholder('Name')],
     password: [placeholder('Wachtwoord'), placeholder('Password')],
-    send_invite: ['Verstuur uitnodiging', 'Send invite']
+    send_invite: ['Verstuur uitnodiging', 'Send invite'],
+    events: ['Evenementen', 'Events']
 };
 
 for (let n in labels) {

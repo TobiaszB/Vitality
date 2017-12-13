@@ -4,6 +4,8 @@ let tickets = module.exports = {
   // { [key]: OBJECT }
   memory: {},
 
+  
+
   change_language: (element) => {
 
     let block = document.querySelector('#invite-block');
