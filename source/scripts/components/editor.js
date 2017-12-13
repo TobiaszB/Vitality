@@ -9,14 +9,41 @@ let editor = module.exports = {
 
     editor.course = course;
 
-    if(course.blocks) element.innerHTML = course.blocks.reduce((html, block, index)=> {
+    editor.element = element;
+
+    element.dataset.published = 'yes';
+
+    element.dataset.device = 'desktop';
+
+    if(!course.blocks) course.blocks = [];
+
+    element.innerHTML = course.blocks.reduce((html, block, index)=> {
 
       let options = Object.keys(block.options).reduce((html, option)=>
         `${ html } data-${ option }="${ block.options[option] }"`, '');
 
-      return `${ html }<div ${ options } data-index="${ index }">${ block.html }</div>`;
+      return `${ html }<div class="block" ${ options } data-key="${ block.key }" data-index="${ index }">
+        ${ block.html }
+        <div class="block-options">
+          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
+          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
+          <a data-click="editor.update" class="control-btn fa fa-cog"></a>
+          <a data-click="editor.update" class="control-btn fa fa-trash"></a>
+        </div>
+      </div>`;
 
-    }, '');
+    }, `
+      <div class="control-editor">
+        <a data-click="editor.update" class="control-btn fa fa-save"></a>
+        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>
+        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>
+        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>
+        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>
+        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>
+
+        <div data-load="blocks.load"></div>
+      </div>
+    `);
 
   },
 
@@ -51,6 +78,7 @@ let editor = module.exports = {
     
   },
 
+  // only locally
   save: (element) => {
 
     let index = parseInt(element.parentElement.dataset.index, 10),
@@ -59,6 +87,20 @@ let editor = module.exports = {
     block.content[element.dataset.element] = element.value;
 
     console.log(JSON.stringify(editor.course, null, 2));
+
+  },
+
+  // updates course in server
+  update: (element) => {
+  
+    editor.element.classList.add('saving');
+
+    root.send({ request: 'save_course', set: editor.course }, 
+    () => {
+
+      editor.element.classList.remove('saving');
+
+    });
 
   }
 

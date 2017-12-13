@@ -143,6 +143,7 @@ body > nav {
   background-image: url('/pattern-tile.png');
   background-repeat: repeat;
   overflow: hidden;
+  z-index: 7;
 
   .logo { 
     display: inline-block;
@@ -1004,18 +1005,134 @@ main.dropzone[data-load="edit.html"] {
 	}
 }
 
-[data-load="edit.html"] {
+.block {
 	position: relative;
-	
-	[data-load="blocks.load"] {
-		width: 200px;
-		min-height: 100%;
+	min-height: 500px;
+	.block-options {
 		position: absolute;
 		right: 0;
 		top: 0;
-		background: $dark-grey;
+		font-size: 0;
+		text-align: center;
+		box-shadow: 1px 1px 1px #444444;
+		z-index: 5;
+	}
+
+	&[data-key="blocks_test"] {
+		padding: 120px 40px 20px;
+		height: 500px;
+		textarea {
+			background: transparent;
+			border: 0;
+			position: relative;
+			z-index: 3;
+			resize: none;
+			font-family: $changa;
+			color: white;
+			outline: 0;
+			overflow: hidden;
+			&[data-element="title"] {
+				font-size: 50px;
+				font-weight: bold;
+				width: 100%;
+				height: 60px;
+			}
+			&[data-element="text"] {
+				font-size: 18px;
+				font-weight: bold;
+				line-height: 26px;
+				width: 100%;
+				height: 180px;
+				max-width: 500px;
+				display: block;
+			}
+			&[data-element="button_primary"] {
+				background-color: #FF5722;
+				text-align: center;
+				height: 50px;
+				line-height: 50px;
+				font-size: 16px;
+				font-weight: bold;
+				width: 160px;
+			}
+			&[data-element="button_secondary"] {
+				background-color: transparent;
+				border: 2px solid white;
+				text-align: center;
+				height: 50px;
+				line-height: 50px;
+				font-size: 16px;
+				font-weight: bold;
+				width: 160px;
+			}
+		}
+		[data-element="background"], [data-element="overlay"]{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			font-size: 0;
+		}
+		[data-element="background"] {
+			background-image: url(/photo-joris-merel-1.jpg);
+			background-size: cover;
+			z-index: 1;
+		}
+		[data-element="overlay"] {
+			background: rgba(0,0,0,0.3);
+			z-index: 2;
+		}
+	}
+}
+
+[data-load="edit.html"] {
+	position: relative;
+	padding-right: 200px;
+
+	[data-device="desktop"] .fa-desktop,
+	[data-device="mobile"] .fa-mobile,
+	[data-published="no"] .fa-cloud-download,
+	[data-published="yes"] .fa-cloud-upload {
+		display: none;
+	}
+
+	.control-btn {
+	  font-size: 16px;
+	  display: inline-block;
+	  width: 50px;
+	  height: 41px;
+	  background: #aaa;
+	  color: #eee;
+	  line-height: 41px;
+	  &.fa-save:hover { background: #4CAF50; }
+	  &.fa-trash:hover { background: #f44336; }
+	  &.fa-cog:hover, &.fa-cloud-download:hover { background: #2196f3; }
+	  &:hover {
+		color: #fff;
+		background: #999;
+	  }
+	}
+
+	.control-editor {
+		width: 200px;
+		height: 100%;
+		position: fixed;
+		right: 0;
+		top: 0;
+		background: #999;
 		text-align: center;
 		user-select: none;
+		z-index: 6;
+		font-size: 0;
+  		padding-top: 130px;
+	}
+	
+	[data-load="blocks.load"] {
+		text-align: center;
+		user-select: none;
+		background: $dark-grey;
+		height: 100%;
 		> div {
 			width: 176px;
 			height: 100px;
@@ -1031,6 +1148,9 @@ main.dropzone[data-load="edit.html"] {
 				display: inline-block;
 				z-index: 1;
 				background: $light-grey;
+				color: #444444;
+				font-size: 0;
+				background-size: cover;
 			}
 		}
 	}

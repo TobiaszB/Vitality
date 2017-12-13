@@ -5,7 +5,7 @@ let blocks = module.exports = {
   load: (element) => {
 
     element.innerHTML = Object.keys(blocks.memory).reduce((html, key) => `${ html }
-      <div><a data-key="${ key }" data-load="blocks.render_one"></a></div>`, '');
+      <div><a style="background-image:url(/${ key }.jpg);" data-key="${ key }" data-load="blocks.render_one"></a></div>`, '');
       
   },
 
@@ -20,7 +20,7 @@ let blocks = module.exports = {
       blocks.drag_y = e.clientY;
 
       blocks.drag_block = element;
-console.log(element)
+
     });
 
   }

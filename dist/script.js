@@ -157,7 +157,7 @@ var blocks = module.exports = {
   load: function load(element) {
 
     element.innerHTML = Object.keys(blocks.memory).reduce(function (html, key) {
-      return html + '\n      <div><a data-key="' + key + '" data-load="blocks.render_one"></a></div>';
+      return html + '\n      <div><a style="background-image:url(/' + key + '.jpg);" data-key="' + key + '" data-load="blocks.render_one"></a></div>';
     }, '');
   },
 
@@ -172,7 +172,6 @@ var blocks = module.exports = {
       blocks.drag_y = e.clientY;
 
       blocks.drag_block = element;
-      console.log(element);
     });
   }
 
@@ -1154,72 +1153,6 @@ var users = module.exports = {
 
     // updater();
 })();
-});
-
-require.register("source/scripts/components/editor.js", function(exports, require, module) {
-'use strict';
-
-var editor = module.exports = {
-
-    course: null,
-
-    load_course: function load_course(element) {
-
-        var key = history.state.course,
-            course = root.courses.memory[key];
-
-        editor.course = course;
-
-        if (course.blocks) element.innerHTML = course.blocks.reduce(function (html, block, index) {
-
-            var options = Object.keys(block.options).reduce(function (html, option) {
-                return html + ' data-' + option + '="' + block.options[option] + '"';
-            }, '');
-
-            return html + '<div ' + options + ' data-index="' + index + '">' + block.html + '</div>';
-        }, '');
-    },
-
-    add_block: function add_block(key) {
-
-        var course = root.courses.memory[history.state.course],
-            block = root.blocks.memory[key];
-
-        course.blocks = course.blocks || [];
-
-        course.blocks.push(block);
-
-        console.log(course);
-
-        root.courses.updated = true;
-    },
-
-    load_element: function load_element(element) {
-
-        var index = parseInt(element.parentElement.dataset.index, 10),
-            block = editor.course.blocks[index],
-            key = element.dataset.element;
-
-        element.dataset.input = 'editor.save';
-
-        if (!block.content) block.content = {};
-
-        if (!block.content[key]) block.content[key] = key;
-
-        element.innerHTML = block.content[key];
-    },
-
-    save: function save(element) {
-
-        var index = parseInt(element.parentElement.dataset.index, 10),
-            block = editor.course.blocks[index];
-
-        block.content[element.dataset.element] = element.value;
-
-        console.log(JSON.stringify(editor.course, null, 2));
-    }
-
-};
 });
 
 require.register("source/scripts/components/labels.js", function(exports, require, module) {
