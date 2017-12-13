@@ -1249,17 +1249,13 @@ var editor = module.exports = {
 require.register("source/scripts/components/labels.js", function(exports, require, module) {
 'use strict';
 
-var _labels;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var LANGS = ['nl', 'en'];
 
 var index = LANGS.indexOf(localStorage.getItem('language'));
 
 if (index == -1) index = 0;
 
-var labels = (_labels = {
+var labels = {
     landing: ['Welkom', 'Landing'],
     landing_text: ['Persoonlijke Training & Persoonlijke Coaching', 'Personal Training & Personal Coaching'],
     landing_description: ['voor het programma Managers Vitality (voor een leef - werkbalans die de managementprestaties verbetert)', 'Program Managers Vitality (for a life - work balance that boosts management performance)'],
@@ -1274,7 +1270,8 @@ var labels = (_labels = {
     add: ['Toevoegen', 'Add'],
     invite: ['Uitnodigen', 'Invite'],
     about: ['Over ons', 'About'],
-    sign_in: ['Inloggen', 'Sign in'],
+    sign_in: [value('Inloggen'), value('Sign in')],
+    sign_in_link: ['Inloggen', 'Sign in'],
     sign_in_input: [value('Inloggen', value('Sign in'))],
     sign_out: ['Uitloggen', 'Sign out'],
     courses: ['Cursussen', 'Courses'],
@@ -1293,7 +1290,7 @@ var labels = (_labels = {
     viewed: ['Bekeken:', 'Viewed:'],
     published: ['Gepubliceerd', 'Published'],
     unpublished: ['Niet Gepubliceerd', 'Unpublished'],
-    password: ['WACHTWOORD', 'PASSWORD'],
+    login_password: ['WACHTWOORD', 'PASSWORD'],
     edit_password: ['WACHTWOORD WIJZIGEN', 'CHANGE PASSWORD'],
     old_password: [placeholder('oud wachtwoord'), placeholder('old password')],
     new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
@@ -1301,8 +1298,11 @@ var labels = (_labels = {
     save_profile: [value('Sla profiel op'), value('Save profile')],
     clients: ['Klanten', 'Clients'],
     app_settings: ['App instellingen', 'App settings'],
-    name: [placeholder('Naam'), placeholder('Name')]
-}, _defineProperty(_labels, 'password', [placeholder('Wachtwoord'), placeholder('Password')]), _defineProperty(_labels, 'send_invite', ['Verstuur uitnodiging', 'Send invite']), _defineProperty(_labels, 'events', ['Evenementen', 'Events']), _labels);
+    name: [placeholder('Naam'), placeholder('Name')],
+    password: [placeholder('Wachtwoord'), placeholder('Password')],
+    send_invite: ['Verstuur uitnodiging', 'Send invite'],
+    events: ['Evenementen', 'Events']
+};
 
 for (var n in labels) {
 
