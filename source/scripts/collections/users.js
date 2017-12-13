@@ -30,7 +30,7 @@ let users = module.exports = {
     
     if(!root.me) return setTimeout(users.load_profile_link, 200, element);
 
-    if(!root.me.user) return console.log('not logged in');
+    if(!root.me.user) return;
 
     let user = users.memory[root.me.user];
 

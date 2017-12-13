@@ -727,6 +727,7 @@ main {
 	border-radius: 3px;
 	pointer-events: auto;
 	min-width: 220px;
+	&.profile-container .content { text-align: center; }
 
 	i.close-modal {
 		cursor: pointer;
@@ -753,7 +754,7 @@ main {
 
 	.content {
 		position: relative;
-		text-align: center;
+		text-align: left;
 		background: #fff;
 		padding: 20px 20px 60px 20px;
 		p {margin-bottom: 16px;}
@@ -763,6 +764,7 @@ main {
 		width: 75px;
 		height: 75px;
 		display: inline-block;
+		margin: 0 auto;
 	}
 
 	input {
