@@ -868,6 +868,30 @@ var users = module.exports = {
         root.send({ request: 'new_user' });
     },
 
+    load_clients: function load_clients(element) {
+
+        element.innerHTML = Object.keys(root.users.memory).reduce(function (html, key) {
+
+            var user = root.users.memory[key];
+
+            if (user.role == 'client') html += '\n\n        <div class="' + (user.key == root.me.user ? 'me' : '') + '" data-key="' + user.key + '">\n          <img src="' + user.avatar + '">\n          <span data-load="users.memory.' + user.key + '.name"></span>\n          <span data-load="users.memory.' + user.key + '.email"></span>\n        </div>\n\n      ';
+
+            return html;
+        }, '');
+    },
+
+    load_managers: function load_managers(element) {
+
+        element.innerHTML = Object.keys(root.users.memory).reduce(function (html, key) {
+
+            var user = root.users.memory[key];
+
+            if (user.role == 'admin') html += '\n\n        <div class="' + (user.key == root.me.user ? 'me' : '') + '" data-key="' + user.key + '">\n          <img src="' + user.avatar + '">\n          <span data-load="users.memory.' + user.key + '.name"></span>\n          <span data-load="users.memory.' + user.key + '.email"></span>\n        </div>\n\n      ';
+
+            return html;
+        }, '');
+    },
+
     load_profile: function load_profile(element) {
 
         var user = root.users.memory[root.me.user];
@@ -1217,7 +1241,12 @@ var labels = {
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],
   new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
   placeholder_search: [placeholder('Zoeken'), placeholder('Search')],
+<<<<<<< HEAD
   save_profile: [value('Sla profiel op'), value('Save profile')]
+=======
+  save_profile: [placeholder('Sla profiel op'), placeholder('Save profile')],
+  clients: ['Klanten', 'Clients']
+>>>>>>> af5b35a90e0e368b80aa369e3aea6273cff94bbd
 };
 
 for (var n in labels) {

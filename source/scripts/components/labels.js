@@ -49,7 +49,8 @@ let labels = {
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],
   new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
   placeholder_search: [placeholder('Zoeken'), placeholder('Search')],
-  save_profile: [value('Sla profiel op'), value('Save profile')]
+  save_profile: [value('Sla profiel op'), value('Save profile')],
+  clients: ['Klanten', 'Clients']
 };
 
 for(let n in labels) {
