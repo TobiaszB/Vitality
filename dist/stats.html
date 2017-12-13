@@ -1,16 +1,14 @@
 <div class="side-nav">
-  
-  <h3 data-load="labels.view_mode"></h3>
-
-  <a data-click="courses.view_mode" data-mode="cards" class="fa fa-address-card-o"></a>
-
-  <a data-click="courses.view_mode" data-mode="lists" class="fa fa-list"></a>
-
-  <h3 data-load="labels.search"></h3>
 
   <input type="search" data-input="courses.save_search">
   
-  <h3 data-load="labels.managers"></h3>
+  <h3 class="no-margin" data-load="labels.clients"></h3>
+
+  <div class="clients" data-load="users.load_clients"></div>
+
+  <input style="margin: 20px 0 0 0" type="search" data-input="courses.save_search">
+  
+  <h3 class="no-margin" data-load="labels.courses"></h3>
 
   <div class="managers" data-load="courses.load_managers"></div>
 
