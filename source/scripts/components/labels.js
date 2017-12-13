@@ -53,7 +53,8 @@ let labels = {
     clients: ['Klanten', 'Clients'],
     app_settings: ['App instellingen', 'App settings'],
     name: [placeholder('Naam'), placeholder('Name')],
-    password: [placeholder('Wachtwoord'), placeholder('Password')]
+    password: [placeholder('Wachtwoord'), placeholder('Password')],
+    send_invite: ['Verstuur uitnodiging', 'Send invite']
 };
 
 for (let n in labels) {

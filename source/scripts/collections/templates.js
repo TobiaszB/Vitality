@@ -1,5 +1,32 @@
 module.exports = {
 
+  load_courses: (element) => {
+
+	let html = '',
+		keys = Object.keys(root.courses.memory);
+
+	for(var i = 0; i < keys.length; i++) {
+	
+		let course = root.courses.memory[keys[i]];
+
+		html += `
+			<div class="invite-course" data-key="${ keys[i] }">
+
+				<div class="thumbnail-container"><img src="${ course.thumbnail }"></div>
+
+				<span>${ course.name }</span>
+
+				<small class="lang ${ course.language }"></small>
+
+			</div>
+		`;
+
+	};
+
+	element.innerHTML = html;
+
+  },
+
   change_language: (element) => {
 
 	localStorage.setItem('language', element.dataset.language);

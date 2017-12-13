@@ -589,6 +589,21 @@ require.register("source/scripts/collections/templates.js", function(exports, re
 
 module.exports = {
 
+  load_courses: function load_courses(element) {
+
+    var html = '',
+        keys = Object.keys(root.courses.memory);
+
+    for (var i = 0; i < keys.length; i++) {
+
+      var course = root.courses.memory[keys[i]];
+
+      html += '\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t</div>\n\t\t';
+    };
+
+    element.innerHTML = html;
+  },
+
   change_language: function change_language(element) {
 
     localStorage.setItem('language', element.dataset.language);
@@ -1210,6 +1225,8 @@ var editor = module.exports = {
 require.register("source/scripts/components/labels.js", function(exports, require, module) {
 'use strict';
 
+var _labels;
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var LANGS = ['nl', 'en'];
@@ -1218,7 +1235,7 @@ var index = LANGS.indexOf(localStorage.getItem('language'));
 
 if (index == -1) index = 0;
 
-var labels = _defineProperty({
+var labels = (_labels = {
     landing: ['Welkom', 'Landing'],
     landing_text: ['Persoonlijke Training & Persoonlijke Coaching', 'Personal Training & Personal Coaching'],
     landing_description: ['voor het programma Managers Vitality (voor een leef - werkbalans die de managementprestaties verbetert)', 'Program Managers Vitality (for a life - work balance that boosts management performance)'],
@@ -1261,7 +1278,7 @@ var labels = _defineProperty({
     clients: ['Klanten', 'Clients'],
     app_settings: ['App instellingen', 'App settings'],
     name: [placeholder('Naam'), placeholder('Name')]
-}, 'password', [placeholder('Wachtwoord'), placeholder('Password')]);
+}, _defineProperty(_labels, 'password', [placeholder('Wachtwoord'), placeholder('Password')]), _defineProperty(_labels, 'send_invite', ['Verstuur uitnodiging', 'Send invite']), _labels);
 
 for (var n in labels) {
 
