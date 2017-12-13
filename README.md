@@ -30,6 +30,7 @@ HTML5 / CSS3 / Javascript (ES6)
 | user | Key |
 | blocks | Array | `[{ options: <object>, html: <string>, input: <object> }]`
 | created_at | Date |
+| started_at | Date |
 
 
 | User |  |. |

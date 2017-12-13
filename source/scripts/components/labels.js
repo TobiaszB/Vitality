@@ -50,7 +50,10 @@ let labels = {
   new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
   placeholder_search: [placeholder('Zoeken'), placeholder('Search')],
   save_profile: [placeholder('Sla profiel op'), placeholder('Save profile')],
-  clients: ['Klanten', 'Clients']
+  clients: ['Klanten', 'Clients'],
+  app_settings: ['App instellingen', 'App settings'],
+  name: [placeholder('Naam'), placeholder('Name')],
+  password: [placeholder('Wachtwoord'), placeholder('Password')]
 };
 
 for(let n in labels) {

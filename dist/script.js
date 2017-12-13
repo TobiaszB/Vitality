@@ -644,6 +644,20 @@ var tickets = module.exports = {
   // { [key]: OBJECT }
   memory: {},
 
+  change_language: function change_language(element) {
+
+    var block = document.querySelector('#invite-block');
+
+    block.dataset.language = element.dataset.language;
+  },
+
+  open_invite_block: function open_invite_block(element) {
+
+    var block = document.querySelector('#invite-block');
+
+    block.classList.toggle('open');
+  },
+
   // button is placed to the right of the title of the page
   add: function add(element) {
 
@@ -1174,13 +1188,15 @@ var editor = module.exports = {
 require.register("source/scripts/components/labels.js", function(exports, require, module) {
 'use strict';
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var LANGS = ['nl', 'en'];
 
 var index = LANGS.indexOf(localStorage.getItem('language'));
 
 if (index == -1) index = 0;
 
-var labels = {
+var labels = _defineProperty({
   landing: ['Welkom', 'Landing'],
   landing_text: ['Persoonlijke Training & Persoonlijke Coaching', 'Personal Training & Personal Coaching'],
   landing_description: ['voor het programma Managers Vitality (voor een leef - werkbalans die de managementprestaties verbetert)', 'Program Managers Vitality (for a life - work balance that boosts management performance)'],
@@ -1220,8 +1236,10 @@ var labels = {
   new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
   placeholder_search: [placeholder('Zoeken'), placeholder('Search')],
   save_profile: [placeholder('Sla profiel op'), placeholder('Save profile')],
-  clients: ['Klanten', 'Clients']
-};
+  clients: ['Klanten', 'Clients'],
+  app_settings: ['App instellingen', 'App settings'],
+  name: [placeholder('Naam'), placeholder('Name')]
+}, 'password', [placeholder('Wachtwoord'), placeholder('Password')]);
 
 for (var n in labels) {
 
