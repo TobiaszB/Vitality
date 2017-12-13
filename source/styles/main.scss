@@ -225,6 +225,7 @@ label {
   margin: 0 0 5px 0;
   &.dark-grey { background-color: $dark-grey; color: #fff; }
   &.blue { background-color: $blue; color: white; }
+  &.cyan { background-color: $cyan; color: white; }
 }
 
 button {
@@ -288,6 +289,8 @@ input {
   	background-color: $green;
   	color: white;
   	width: 100%;
+  	cursor: pointer;
+  	&:hover { background-color: lighten($green, 5); }
   }
 }
 
