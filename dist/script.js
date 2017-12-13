@@ -157,7 +157,7 @@ var blocks = module.exports = {
   load: function load(element) {
 
     element.innerHTML = Object.keys(blocks.memory).reduce(function (html, key) {
-      return html + '\n      <div><a data-key="' + key + '" data-load="blocks.render_one"></a></div>';
+      return html + '\n      <div><a style="background-image:url(/' + key + '.jpg);" data-key="' + key + '" data-load="blocks.render_one"></a></div>';
     }, '');
   },
 
@@ -172,7 +172,6 @@ var blocks = module.exports = {
       blocks.drag_y = e.clientY;
 
       blocks.drag_block = element;
-      console.log(element);
     });
   }
 
@@ -1141,14 +1140,22 @@ var editor = module.exports = {
 
     editor.course = course;
 
-    if (course.blocks) element.innerHTML = course.blocks.reduce(function (html, block, index) {
+    editor.element = element;
+
+    element.dataset.published = 'yes';
+
+    element.dataset.device = 'desktop';
+
+    if (!course.blocks) course.blocks = [];
+
+    element.innerHTML = course.blocks.reduce(function (html, block, index) {
 
       var options = Object.keys(block.options).reduce(function (html, option) {
         return html + ' data-' + option + '="' + block.options[option] + '"';
       }, '');
 
-      return html + '<div ' + options + ' data-index="' + index + '">' + block.html + '</div>';
-    }, '');
+      return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-click="editor.update" class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
+    }, '\n      <div class="control-editor">\n        <a data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
   },
 
   add_block: function add_block(key) {
@@ -1180,6 +1187,7 @@ var editor = module.exports = {
     element.innerHTML = block.content[key];
   },
 
+  // only locally
   save: function save(element) {
 
     var index = parseInt(element.parentElement.dataset.index, 10),
@@ -1188,6 +1196,17 @@ var editor = module.exports = {
     block.content[element.dataset.element] = element.value;
 
     console.log(JSON.stringify(editor.course, null, 2));
+  },
+
+  // updates course in server
+  update: function update(element) {
+
+    editor.element.classList.add('saving');
+
+    root.send({ request: 'save_course', set: editor.course }, function () {
+
+      editor.element.classList.remove('saving');
+    });
   }
 
 };
@@ -1241,12 +1260,8 @@ var labels = {
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],
   new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
   placeholder_search: [placeholder('Zoeken'), placeholder('Search')],
-<<<<<<< HEAD
-  save_profile: [value('Sla profiel op'), value('Save profile')]
-=======
-  save_profile: [placeholder('Sla profiel op'), placeholder('Save profile')],
+  save_profile: [value('Sla profiel op'), value('Save profile')],
   clients: ['Klanten', 'Clients']
->>>>>>> af5b35a90e0e368b80aa369e3aea6273cff94bbd
 };
 
 for (var n in labels) {
