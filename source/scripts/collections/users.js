@@ -7,6 +7,43 @@ let users = module.exports = {
     root.send({ request: 'new_user' });
 
   },
+
+  load_profile: (element) => {
+
+    let user = root.users.memory[root.me.user];
+
+    element.innerHTML = `
+
+        <img class="avatar" src="${ user.avatar }"><br>
+
+        <div class="divider horizontal grey"></div>
+
+        <input type="input" value="${ user.name }"><br>
+
+        <a data-load="labels.sign_out" data-click="sessions.sign_out"></a>
+
+    `;
+
+  },
+
+  load_profile_link: (element) => {
+    
+    if(!root.me) return setTimeout(users.load_profile_link, 200, element);
+
+    if(!root.me.user) return console.log('not logged in');
+
+    let user = users.memory[root.me.user];
+
+    if(!user) return;
+
+    element.innerHTML = `
+
+      <div class="img-container"><img src="${ user.avatar }"></div>
+      <span>${ user.name }</span>
+      
+    `;
+
+  },
   
   load_permissions: (element) => {
 

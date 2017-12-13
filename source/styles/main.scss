@@ -83,6 +83,35 @@ body.stats-page [data-page="stats"] {
     border-bottom: 3px solid $blue;
 }
 
+[data-modal="profile.html"] {
+
+	.img-container {
+		height: 70px;
+		width: 45px;
+		line-height: 70px;
+		display: inline-block;
+		position: relative;
+		
+	}
+
+	img { 
+		height: 40px; 
+		width: 40px;
+		position: absolute;
+		left: 0;
+		top: 15px;  
+		display: inline-block; 
+		border-radius: 2px;
+		border: 1px solid white;
+	}
+
+	span { 
+		vertical-align: top;
+		display: inline-block;
+	}
+
+}
+
 a {
 	text-decoration: none;
 	cursor: pointer;
@@ -150,6 +179,7 @@ body > nav {
     float: right;
     display: inline-block;
     vertical-align: top;
+    height: 70px;
   }
   .sub-nav {
     display: none;
@@ -521,6 +551,7 @@ main {
 				margin: 0 10px 0 0;
 				color: white;
 				font-size: 24px;
+				display: inline-block;
 				&.fb { 
 					background-color: #3e5b98; 
 					&:before {
@@ -701,30 +732,55 @@ main {
 		cursor: pointer;
 		position: absolute;
 		z-index: 1;
-		top: 10px;
-		right: 10px;
+		top: 5px;
+		right: 5px;
 		font-size: 16px;
-		padding: 10px;
-		border-radius: 8px;
-		transition: all .15s ease;
-		color: #fff;
-		background: rgba(#000,.1);
-		
+		width: 40px;
+		height: 40px;
+		line-height: 40px;
+		color: $dark-grey;
+		text-align: center;
+		font-style: normal;
+		border-radius: 2px;
+		&:before {
+			content: "\f00d";
+			font-family: fontAwesome;
+		}
 		&:hover {
-			color: $black;
-			background: rgba(#fff,.3);
+			background: $light-grey;
 		}
 	}
 
 	.content {
 		position: relative;
-		text-align: left;
+		text-align: center;
 		background: #fff;
 		padding: 20px 20px 60px 20px;
 		p {margin-bottom: 16px;}
 	}
 
-	.img {height: 240px;}
+	.avatar {
+		width: 75px;
+		height: 75px;
+		display: inline-block;
+	}
+
+	input {
+		width: 100%;
+
+	}
+
+	a {
+		display: inline-block;
+		background-color: $red;
+		color: white;
+		padding: 0 8px;
+		line-height: 30px;
+		margin-top: 20px;
+		font-family: $changa;
+		font-size: 12px;
+		border-radius: 4px;
+	}
 
 	h1 {
 		border-top-left-radius: 3px;

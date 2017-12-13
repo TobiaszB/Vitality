@@ -868,6 +868,26 @@ var users = module.exports = {
         root.send({ request: 'new_user' });
     },
 
+    load_profile: function load_profile(element) {
+
+        var user = root.users.memory[root.me.user];
+
+        element.innerHTML = '\n\n        <img class="avatar" src="' + user.avatar + '"><br>\n\n        <div class="divider horizontal grey"></div>\n\n        <input type="input" value="' + user.name + '"><br>\n\n        <a data-load="labels.sign_out" data-click="sessions.sign_out"></a>\n\n    ';
+    },
+
+    load_profile_link: function load_profile_link(element) {
+
+        if (!root.me) return setTimeout(users.load_profile_link, 200, element);
+
+        if (!root.me.user) return console.log('not logged in');
+
+        var user = users.memory[root.me.user];
+
+        if (!user) return;
+
+        element.innerHTML = '\n\n      <div class="img-container"><img src="' + user.avatar + '"></div>\n      <span>' + user.name + '</span>\n      \n    ';
+    },
+
     load_permissions: function load_permissions(element) {
 
         element.innerHTML = '\n      <label class="dark-grey" data-load="labels.permissions"></label><br>\n\n      <div class="row">\n        <input id="add" data-load="users.load_permission" data-change="users.update_permission" type="checkbox">\n        <label for="add" class="task fa fa-user-plus"></label>\n        <input disabled type="text" value="ADMIN">\n      </div>\n\n     ' + users.render_tasks() + '\n      ';
@@ -1155,7 +1175,6 @@ var labels = {
   sign_in_input: [value('Inloggen', value('Sign in'))],
   sign_out: ['Uitloggen', 'Sign out'],
   courses: ['Cursussen', 'Courses'],
-  profile: ['Profiel', 'Profile'],
   invitations: ['Uitnodigingen', 'Invitations'],
   stats: ['Statistieken', 'Statistics'],
   no_results: [title('Geen resultaten'), title('No results')],
@@ -1175,7 +1194,8 @@ var labels = {
   edit_password: ['WACHTWOORD WIJZIGEN', 'CHANGE PASSWORD'],
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],
   new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
-  placeholder_search: [placeholder('Zoeken'), placeholder('Search')]
+  placeholder_search: [placeholder('Zoeken'), placeholder('Search')],
+  save_profile: [placeholder('Sla profiel op'), placeholder('Save profile')]
 };
 
 for (var n in labels) {
