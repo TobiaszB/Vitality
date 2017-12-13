@@ -49,7 +49,7 @@ let labels = {
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],
   new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
   placeholder_search: [placeholder('Zoeken'), placeholder('Search')],
-  save_profile: [placeholder('Sla profiel op'), placeholder('Save profile')]
+  save_profile: [value('Sla profiel op'), value('Save profile')]
 };
 
 for(let n in labels) {
@@ -78,6 +78,6 @@ function title(label){
 
 function value(label){
 
-  return (el) => el.setAttribute('data-value', label);
+  return (el) => { el.value = label; };
 
 }

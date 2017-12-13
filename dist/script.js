@@ -1108,41 +1108,63 @@ require.register("source/scripts/components/editor.js", function(exports, requir
 
 var editor = module.exports = {
 
-    load_course: function load_course(element) {
+  course: null,
 
-        var key = history.state.course,
-            course = root.courses.memory[key];
+  load_course: function load_course(element) {
 
-        console.log(course);
+    var key = history.state.course,
+        course = root.courses.memory[key];
 
-        if (course.blocks) element.innerHTML = course.blocks.reduce(function (html, block, index) {
+    editor.course = course;
 
-            var options = Object.keys(block.options).reduce(function (html, option) {
-                return html + ' data-' + option + '="' + block.options[option] + '"';
-            }, '');
+    if (course.blocks) element.innerHTML = course.blocks.reduce(function (html, block, index) {
 
-            return html + '<div ' + options + ' data-index="' + index + '" data-key="' + block.key + '">' + block.html + '</div>';
-        }, '');
-    },
+      var options = Object.keys(block.options).reduce(function (html, option) {
+        return html + ' data-' + option + '="' + block.options[option] + '"';
+      }, '');
 
-    add_block: function add_block(key) {
+      return html + '<div ' + options + ' data-index="' + index + '">' + block.html + '</div>';
+    }, '');
+  },
 
-        var course = root.courses.memory[history.state.course],
-            block = root.blocks.memory[key];
+  add_block: function add_block(key) {
 
-        course.blocks = course.blocks || [];
+    var course = root.courses.memory[history.state.course],
+        block = root.blocks.memory[key];
 
-        course.blocks.push(block);
+    course.blocks = course.blocks || [];
 
-        console.log(course);
+    course.blocks.push(block);
 
-        root.courses.updated = true;
-    },
+    console.log(course);
 
-    load_element: function load_element(element) {
+    root.courses.updated = true;
+  },
 
-        element.innerHTML = element.dataset.element;
-    }
+  load_element: function load_element(element) {
+
+    var index = parseInt(element.parentElement.dataset.index, 10),
+        block = editor.course.blocks[index],
+        key = element.dataset.element;
+
+    element.dataset.input = 'editor.save';
+
+    if (!block.content) block.content = {};
+
+    if (!block.content[key]) block.content[key] = key;
+
+    element.innerHTML = block.content[key];
+  },
+
+  save: function save(element) {
+
+    var index = parseInt(element.parentElement.dataset.index, 10),
+        block = editor.course.blocks[index];
+
+    block.content[element.dataset.element] = element.value;
+
+    console.log(JSON.stringify(editor.course, null, 2));
+  }
 
 };
 });
@@ -1195,7 +1217,7 @@ var labels = {
   old_password: [placeholder('oud wachtwoord'), placeholder('old password')],
   new_password: [placeholder('nieuw wachtwoord'), placeholder('new password')],
   placeholder_search: [placeholder('Zoeken'), placeholder('Search')],
-  save_profile: [placeholder('Sla profiel op'), placeholder('Save profile')]
+  save_profile: [value('Sla profiel op'), value('Save profile')]
 };
 
 for (var n in labels) {
@@ -1224,7 +1246,7 @@ function title(label) {
 function value(label) {
 
   return function (el) {
-    return el.setAttribute('data-value', label);
+    el.value = label;
   };
 }
 });

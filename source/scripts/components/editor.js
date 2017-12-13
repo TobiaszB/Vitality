@@ -1,18 +1,20 @@
 let editor = module.exports = {
 
+  course: null,
+
   load_course: (element) => {
 
     let key = history.state.course,
         course = root.courses.memory[key];
 
-    console.log(course);
+    editor.course = course;
 
     if(course.blocks) element.innerHTML = course.blocks.reduce((html, block, index)=> {
 
       let options = Object.keys(block.options).reduce((html, option)=>
         `${ html } data-${ option }="${ block.options[option] }"`, '');
 
-      return `${ html }<div ${ options } data-index="${ index }" data-key="${ block.key }">${ block.html }</div>`;
+      return `${ html }<div ${ options } data-index="${ index }">${ block.html }</div>`;
 
     }, '');
 
@@ -35,8 +37,29 @@ let editor = module.exports = {
 
   load_element: (element) => {
 
-    element.innerHTML = element.dataset.element;
+    let index = parseInt(element.parentElement.dataset.index, 10),
+        block = editor.course.blocks[index],
+        key = element.dataset.element;
+
+    element.dataset.input = 'editor.save';
+
+    if(!block.content) block.content = {};
+
+    if(!block.content[key]) block.content[key] = key;
+
+    element.innerHTML = block.content[key];
     
+  },
+
+  save: (element) => {
+
+    let index = parseInt(element.parentElement.dataset.index, 10),
+        block = editor.course.blocks[index];
+
+    block.content[element.dataset.element] = element.value;
+
+    console.log(JSON.stringify(editor.course, null, 2));
+
   }
 
 };

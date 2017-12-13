@@ -455,13 +455,12 @@ function database() {
     db.collection('blocks').findAndModify({ key: 'blocks_test' }, [], {
       $set: {
         html: `
-          <h1 data-load="editor.load_element" data-element="title"></h1>
-          <p data-load="editor.load_element" data-element="text"></p>
-          <a data-load="editor.load_element" data-element="button_primary"></a>
-          <a data-load="editor.load_element" data-element="button_secondary"></a>
+          <textarea data-load="editor.load_element" data-element="title"></textarea>
+          <textarea data-load="editor.load_element" data-element="text"></textarea>
+          <textarea data-load="editor.load_element" data-element="button_primary"></textarea>
+          <textarea data-load="editor.load_element" data-element="button_secondary"></textarea>
           <div data-load="editor.load_element" data-element="overlay"></div>
           <div data-load="editor.load_element" data-element="background"></div>
-          <input type="color">
         `,
         created_at: new Date(),
         options: {
