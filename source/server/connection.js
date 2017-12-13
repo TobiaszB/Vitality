@@ -433,6 +433,16 @@ function database() {
       }
     }, { upsert: true }, ()=>{});
 
+    db.collection('users').findAndModify({ key: 'users_peter' }, [], {
+      $set: {
+        name: 'Peter van Egeraat',
+        avatar: '/avatar-peter.jpg',
+        email: 'pit@fearless-apps.com',
+        password: '',
+        role: 'client'
+      }
+    }, { upsert: true }, ()=>{});
+
     db.collection('courses').findAndModify({ key: 'courses_test' }, [], {
       $set: {
         name: 'Test',

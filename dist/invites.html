@@ -10,14 +10,20 @@
 
 </div>
 
-<div class="content">
+<div class="content invites">
 
-  <h2 data-load="labels.invitations"></h2>
+  <h2>Managers</h2>
+
+  <div class="divider horizontal grey"></div>
+
+  <div class="managers" data-load="users.load_managers"></div><br>
+
+  <h2 data-load="labels.clients"></h2>
 
   <button data-click="tickets.add" class="add blue circle fa fa-plus"></button>
 
   <div class="divider horizontal grey"></div>
 
-  <div data-load="tickets.list"></div>
+  <div class="clients" data-load="users.load_clients"></div>
 
 </div>

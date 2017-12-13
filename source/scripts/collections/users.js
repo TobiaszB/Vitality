@@ -8,6 +8,50 @@ let users = module.exports = {
 
   },
 
+  load_clients: (element) => {
+
+    element.innerHTML = Object.keys(root.users.memory).reduce((html, key) => {
+
+      let user = root.users.memory[key];
+
+      if(user.role == 'client') html += `
+
+        <div class="${ user.key == root.me.user ? 'me' : '' }" data-key="${ user.key }">
+          <img src="${ user.avatar }">
+          <span data-load="users.memory.${ user.key }.name"></span>
+          <span data-load="users.memory.${ user.key }.email"></span>
+        </div>
+
+      `;
+
+      return html;
+
+    }, '');
+    
+  },
+
+  load_managers: (element) => {
+
+    element.innerHTML = Object.keys(root.users.memory).reduce((html, key) => {
+
+      let user = root.users.memory[key];
+
+      if(user.role == 'admin') html += `
+
+        <div class="${ user.key == root.me.user ? 'me' : '' }" data-key="${ user.key }">
+          <img src="${ user.avatar }">
+          <span data-load="users.memory.${ user.key }.name"></span>
+          <span data-load="users.memory.${ user.key }.email"></span>
+        </div>
+
+      `;
+
+      return html;
+
+    }, '');
+
+  },
+
   load_profile: (element) => {
 
     let user = root.users.memory[root.me.user];
