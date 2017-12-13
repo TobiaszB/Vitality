@@ -461,6 +461,7 @@ function database() {
           <a data-load="editor.load_element" data-element="button_secondary"></a>
           <div data-load="editor.load_element" data-element="overlay"></div>
           <div data-load="editor.load_element" data-element="background"></div>
+          <input type="color">
         `,
         created_at: new Date(),
         options: {

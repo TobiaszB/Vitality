@@ -12,7 +12,7 @@ let blocks = module.exports = {
   render_one: (element) => {
 
     element.innerHTML = `${ element.dataset.key }`;
-    
+
     element.addEventListener('mousedown', (e)=>{
 
       blocks.drag_x = e.clientX;
@@ -35,6 +35,24 @@ document.body.addEventListener('mousemove', (e)=>{
 
   blocks.drag_block.style.top = `${ e.clientY - blocks.drag_y }px`;
 
+  root.main.classList[blocks.drag_x - e.clientX > 190 ? 'add' : 'remove']('dropzone');
+
 });
 
-document.body.addEventListener('mouseup', (e)=>blocks.drag_block = null);
+document.body.addEventListener('mouseup', (e)=>{
+
+  if(!blocks.drag_block) return e;
+
+  let key = blocks.drag_block.dataset.key;
+
+  blocks.drag_block.removeAttribute('style');
+
+  blocks.drag_block = null;
+
+  if(!root.main.classList.contains('dropzone')) return e;
+
+  root.main.classList.remove('dropzone');
+
+  root.editor.add_block(key);
+
+});

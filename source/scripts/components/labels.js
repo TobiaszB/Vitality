@@ -6,8 +6,11 @@ if(index == -1) index = 0;
 
 let labels = {
   landing: ['Welkom', 'Landing'],
-  introduction_text: ['Persoonlijke Training & Persoonlijke Coaching', 'Personal Training & Personal Coaching'],
-  introduction_description: ['voor het programma Managers Vitality (for a life - work balance that boosts management performance)', 'Program Managers Vitality (for a life - work balance that boosts management performance.)'],
+  landing_text: ['Persoonlijke Training & Persoonlijke Coaching', 'Personal Training & Personal Coaching'],
+  landing_description: ['voor het programma Managers Vitality (voor een leef - werkbalans die de managementprestaties verbetert)', 'Program Managers Vitality (for a life - work balance that boosts management performance)'],
+  landing_feel_good: ['Goed in je vel zitten', 'Just feel great'],
+  landing_feel_good_description: ['Wil jij een gezondere levensstijl hebben, maar vind je het moeilijk om de juiste motivatie te vinden? Wil jij eindelijk eens echt een doel bereiken!!! Fitter zijn, afvallen, resultaat boeken!!. Dan ben je bij ons aan het juiste adres. We bieden zowel specifieke trainingsprogramma\'s aan als programma\'s met coaching. Daarbij gaat het vooral om het vinden van een goede werk - privé - balans. Zeker voor de drukke manager een geweldige mogelijkheid! Op deze site tref je meer informatie aan.', 'Do you want a healthier lifestyle, but do you find it difficult to find the right motivation? Do you finally really want to achieve a goal !!! Fitter, lose weight, book books !! Then you have come to the right place. We indicate specific training programs as programs with coaching. This mainly involves finding a good work - private balance. Especially for the busy manager a great opportunity! You will find more information on this site.'],
+  landing_share_page: ['Deel deze pagina', 'Share this page'],
   about_text: ['Mogen wij uw personal trainer of personal coach zijn?', 'Can we be your personal trainer or personal coach?'],
   add: ['Toevoegen', 'Add'],
   invite: ['Uitnodigen', 'Invite'],

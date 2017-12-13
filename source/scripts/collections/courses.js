@@ -301,7 +301,9 @@ let courses = module.exports = {
 
   courses.updated = false;
 
-  courses.list();
+  if(root.main.dataset.load == 'edit.html') root.main.dataset.load = 'edit.html'; // this correctly triggers the mutationobserver in listeners.js
+
+  else courses.list();
 
   updater();
 
