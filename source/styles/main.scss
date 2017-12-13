@@ -224,6 +224,7 @@ label {
   display: inline-block;
   margin: 0 0 5px 0;
   &.dark-grey { background-color: $dark-grey; color: #fff; }
+  &.blue { background-color: $blue; color: white; }
 }
 
 button {
@@ -279,6 +280,15 @@ input {
   line-height: 40px;
   font-family: $raleway;
   font-weight: 700;
+  padding: 0 8px;
+  &[type="submit"] {
+  	position: absolute;
+  	bottom: 0;
+  	left: 0;
+  	background-color: $green;
+  	color: white;
+  	width: 100%;
+  }
 }
 
 .side-nav {
@@ -437,7 +447,7 @@ main {
 		.content {
 			position: relative;
 			overflow: hidden;
-			padding: 50px 0;
+			padding: 50px;
 			max-width: 1400px;
 			margin: 0 auto;
 		}
@@ -707,7 +717,7 @@ main {
 		position: relative;
 		text-align: left;
 		background: #fff;
-		padding: 16px 24px;
+		padding: 20px 20px 60px 20px;
 		p {margin-bottom: 16px;}
 	}
 
