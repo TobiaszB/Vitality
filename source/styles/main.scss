@@ -1038,6 +1038,41 @@ main.dropzone[data-load="edit.html"] {
 		box-shadow: 1px 1px 1px #444444;
 		z-index: 5;
 	}
+	.block-config {
+	  position: absolute;
+	  right: 0;
+	  width: 200px;
+	  background: $light-grey;
+	  top: 41px;
+	  font-size: 0;
+	  padding: 5px 0 5px;
+	  user-select: none;
+  	  white-space: nowrap;
+	  input {
+		  display: inline-block;
+		  width: 10%;
+		  float: right;
+		  clear: right;
+		  z-index: 1;
+		  position: relative;
+		  vertical-align: top;
+		  height: 26px;
+		  margin-right: 10px;
+	  }
+	  label {
+	  	width: 100%;
+	  	vertical-align: top;
+	  	line-height: 28px;
+	  	text-align: left;
+	  	margin: 0;
+	  	cursor: pointer;
+	  	color: #444;
+	  	&:hover {
+	  		color: black;
+	  		background: rgba(0,0,0,0.2);
+	  	}
+	  }
+	}
 
 	&[data-key="blocks_test"] {
 		padding: 120px 40px 20px;

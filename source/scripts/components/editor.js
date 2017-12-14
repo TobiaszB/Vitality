@@ -27,15 +27,15 @@ let editor = module.exports = {
         <div class="block-options">
           <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
           <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
-          <a data-click="editor.update" class="control-btn fa fa-cog"></a>
+          <a class="control-btn fa fa-cog"></a>
           <a data-click="editor.update" class="control-btn fa fa-trash"></a>
           <div class="block-config">${
-            Object.keys(block.options).reduce((html, option) => {
+            Object.keys(block.options).reduce((html, option, id) => {
 
-              let element = `<label data-load="labels.${ option }"></label>`;
+              let element = `<label for="input-${ id }" data-load="labels.${ option }"></label><br>`;
 
               if(block.options[option] == 'boolean') element = `
-                <input type="checkbox">${ element }
+                <input id="input-${ id }" type="checkbox">${ element }
               `;
 
               return `${ html }${ element }`;

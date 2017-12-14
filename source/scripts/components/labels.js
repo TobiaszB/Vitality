@@ -56,7 +56,17 @@ let labels = {
     name: [placeholder('Naam'), placeholder('Name')],
     password: [placeholder('Wachtwoord'), placeholder('Password')],
     send_invite: ['Verstuur uitnodiging', 'Send invite'],
-    events: ['Evenementen', 'Events']
+    events: ['Evenementen', 'Events'],
+    show_title: ['Show Title', 'Show Title'],
+    show_text: ['Show Text', 'Show Text'],
+    show_buttons: ['Show Buttons', 'Show Buttons'],
+    show_arrow: ['Show Arrow', 'Show Arrow'],
+    content_align: ['Content Align', 'Content Align'],
+    background_image: ['Background Image', 'Background Image'],
+    parallax: ['Parallax', 'Parallax'],
+    background_color: ['Background Color', 'Background Color'],
+    background_video: ['Background Video', 'Background Video'],
+    overlay: ['Overlay', 'Overlay'],
 };
 
 for (let n in labels) {

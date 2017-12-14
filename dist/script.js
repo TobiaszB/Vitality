@@ -1166,11 +1166,11 @@ var editor = module.exports = {
         return html + ' data-' + option + '="' + block.options[option] + '"';
       }, '');
 
-      return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-click="editor.update" class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option) {
+      return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
-        var element = '<label data-load="labels.' + option + '"></label>';
+        var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
 
-        if (block.options[option] == 'boolean') element = '\n                <input type="checkbox">' + element + '\n              ';
+        if (block.options[option] == 'boolean') element = '\n                <input id="input-' + id + '" type="checkbox">' + element + '\n              ';
 
         return '' + html + element;
       }, '') + '</div>\n        </div>\n      </div>';
@@ -1286,7 +1286,17 @@ var labels = {
     name: [placeholder('Naam'), placeholder('Name')],
     password: [placeholder('Wachtwoord'), placeholder('Password')],
     send_invite: ['Verstuur uitnodiging', 'Send invite'],
-    events: ['Evenementen', 'Events']
+    events: ['Evenementen', 'Events'],
+    show_title: ['Show Title', 'Show Title'],
+    show_text: ['Show Text', 'Show Text'],
+    show_buttons: ['Show Buttons', 'Show Buttons'],
+    show_arrow: ['Show Arrow', 'Show Arrow'],
+    content_align: ['Content Align', 'Content Align'],
+    background_image: ['Background Image', 'Background Image'],
+    parallax: ['Parallax', 'Parallax'],
+    background_color: ['Background Color', 'Background Color'],
+    background_video: ['Background Video', 'Background Video'],
+    overlay: ['Overlay', 'Overlay']
 };
 
 for (var n in labels) {
@@ -1750,7 +1760,7 @@ require.register("source/scripts/root.js", function(exports, require, module) {
 
 require('./polyfill.js');
 
-var DEV_MODE = true;
+var DEV_MODE = false;
 
 window.root = {
 
