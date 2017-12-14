@@ -126,7 +126,7 @@ a {
     width: 1px;
   }
   &.horizontal {
-    height: 2px;
+    height: 1px;
     width: 100%;
   }
   &.grey {
@@ -862,7 +862,7 @@ main {
 	transition: 250ms all linear;
 	margin: 10px 0;
 	position: relative;
-	border-bottom: 2px solid $grey;
+	border-bottom: 1px solid $grey;
 	overflow: hidden;
 	&[data-language="nl"] {
 		.flag-container .nl { border-bottom: 2px solid $blue; }
@@ -929,7 +929,7 @@ main {
 		overflow: hidden;
 		padding: 10px 0 0 0;
 		position: relative;
-		border-top: 2px solid $grey;
+		border-top: 1px solid $grey;
 		background-color: $light-grey;
 	}
 

@@ -85,7 +85,7 @@ a {
   .divider.vertical {
     width: 1px; }
   .divider.horizontal {
-    height: 2px;
+    height: 1px;
     width: 100%; }
   .divider.grey {
     background-color: #ccc; }
@@ -707,7 +707,7 @@ main {
   transition: 250ms all linear;
   margin: 10px 0;
   position: relative;
-  border-bottom: 2px solid #ccc;
+  border-bottom: 1px solid #ccc;
   overflow: hidden; }
   #invite-block[data-language="nl"] .flag-container .nl {
     border-bottom: 2px solid #77c5b9; }
@@ -764,7 +764,7 @@ main {
     overflow: hidden;
     padding: 10px 0 0 0;
     position: relative;
-    border-top: 2px solid #ccc;
+    border-top: 1px solid #ccc;
     background-color: #efefef; }
   #invite-block > .divider {
     position: absolute;
