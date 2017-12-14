@@ -10,16 +10,18 @@ let users = module.exports = {
 
   load_clients: (element) => {
 
+    let keys = Object.keys(root.users.memory),
+        html = '';
+
     element.innerHTML = Object.keys(root.users.memory).reduce((html, key) => {
 
       let user = root.users.memory[key];
 
       if(user.role == 'client') html += `
 
-        <div class="${ user.key == root.me.user ? 'me' : '' }" data-key="${ user.key }">
+        <div data-key="${ user.key }">
           <img src="${ user.avatar }">
           <span data-load="users.memory.${ user.key }.name"></span>
-          <span data-load="users.memory.${ user.key }.email"></span>
         </div>
 
       `;
@@ -27,7 +29,7 @@ let users = module.exports = {
       return html;
 
     }, '');
-    
+
   },
 
   load_managers: (element) => {
@@ -72,7 +74,7 @@ let users = module.exports = {
 
   load_profile_link: (element) => {
     
-    if(!root.me) return setTimeout(users.load_profile_link, 200, element);
+    if(!root.me) return setTimeout(users.load_profile_link, 500, element);
 
     if(!root.me.user) return;
 

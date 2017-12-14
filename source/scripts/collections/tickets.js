@@ -4,8 +4,6 @@ let tickets = module.exports = {
   // { [key]: OBJECT }
   memory: {},
 
-  
-
   change_language: (element) => {
 
     let block = document.querySelector('#invite-block');
@@ -195,101 +193,21 @@ let tickets = module.exports = {
 
   render_one: (element) => {
 
-    let ticket = tickets.memory[element.dataset.ticket];
+    let ticket = tickets.memory[element.dataset.ticket],
+        user = root.users.memory[ticket.user];
 
-    element.dataset.key = element.dataset.ticket;
+    element.innerHTML = `
 
-    element.innerHTML = tickets.mode == 'lists' ? `
-      <span data-load="tickets.memory.${ element.dataset.key }.name"></span>
-      <pre>${ JSON.stringify(ticket, null, 2) }</pre>
-    ` : `
-      <div class="thumbnail" style="background-image:url(${ ticket.thumbnail })"></div>
-      ${ tickets.ticket_nav(element) }
-      <input placeholder="Naam" data-property="name" data-ticket="${ ticket.key }" data-input="tickets.edit" type="text" value="${ ticket.name }">
-      <span data-load="users.memory.${ ticket.admin }.name"></span>
+      <div class="${ user.key == root.me.user ? 'me' : '' }" data-key="${ user.key }">
+        <img src="${ user.avatar }">
+        <span data-load="users.memory.${ user.key }.name"></span>
+        <span data-load="users.memory.${ user.key }.email"></span>
+      </div>
+
     `;
 
-    if(!ticket.name) element.querySelector('input').focus();
-
-    function format(date) {
-
-      date = new Date(date);
-
-      let months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
-
-      if (!date || String(date).toLowerCase() == 'invalid date') return '';
-
-      return `
-        ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}
-        ${ date.getHours() }:${ String(date.getMinutes()).length > 1 ? '' : 0 }${ date.getMinutes() }
-      `;
-
-    }
-
   },
 
-  ticket_nav: (element) => {
-
-   return `<div>
-        <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="tickets.view" data-load="labels.view"></button>
-        <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="tickets.invite" data-load="labels.invite"></button>
-        <button data-key="${ element.dataset.key }" data-click="modal.open" data-modal="tickets.stats" data-load="labels.stats_short"></button>
-      </div>`;
-      
-  },
-
-  view: (element) => {
-
-    let ticket = root.tickets.memory[element.dataset.key];
-
-    element.innerHTML = `<div class="modal">
-      <i class="fa fa-times close-modal" data-click="modal.close"></i>
-      <div class="content">
-        <div class="thumbnail" style="background-image:url(${ ticket.thumbnail })"></div>
-        <h3 data-load="labels.view"></h3>
-        ${ tickets.ticket_nav(element) }
-        <input placeholder="Naam" data-property="name" data-ticket="${ ticket.key }" data-input="tickets.edit" type="text" value="${ ticket.name }">
-        <span data-load="users.memory.${ ticket.admin }.name"></span>
-      </div>
-    </div>`;
-
-  },
-
-
-  invite: (element) => {
-
-    let ticket = root.tickets.memory[element.dataset.key];
-
-    element.innerHTML = `<div class="modal">
-      <i class="fa fa-times close-modal" data-click="modal.close"></i>
-      <div class="content">
-        <div class="thumbnail" style="background-image:url(${ ticket.thumbnail })"></div>
-        <h3 data-load="labels.invite"></h3>
-        ${ tickets.ticket_nav(element) }
-        <input placeholder="Naam" data-property="name" data-ticket="${ ticket.key }" data-input="tickets.edit" type="text" value="${ ticket.name }">
-        <span data-load="users.memory.${ ticket.admin }.name"></span>
-      </div>
-    </div>`;
-
-  },
-  
-  stats: (element) => {
-    
-    let ticket = root.tickets.memory[element.dataset.key];
-
-    element.innerHTML = `<div class="modal">
-      <i class="fa fa-times close-modal" data-click="modal.close"></i>
-      <div class="content">
-        <div class="thumbnail" style="background-image:url(${ ticket.thumbnail })"></div>
-        <h3 data-load="labels.stats"></h3>
-        ${ tickets.ticket_nav(element) }
-        <input placeholder="Naam" data-property="name" data-ticket="${ ticket.key }" data-input="tickets.edit" type="text" value="${ ticket.name }">
-        <span data-load="users.memory.${ ticket.admin }.name"></span>
-      </div>
-    </div>`;
-    
-  }
-  
 };
 
 (function updater(){

@@ -1,12 +1,16 @@
 <div class="side-nav">
-  
-  <h3 data-load="labels.search"></h3>
 
   <input type="search" data-input="tickets.save_search">
   
-  <h3 data-load="labels.courses"></h3>
+  <h3 class="no-margin" data-load="labels.clients"></h3>
 
-  <div data-load="tickets.load_courses"></div>
+  <div class="clients" data-load="users.load_clients"></div>
+
+  <input style="margin: 20px 0 0 0" type="search" data-input="courses.save_search">
+
+  <h3 class="no-margin" data-load="labels.courses"></h3>
+
+  <div data-load="courses.load_courses"></div>
 
 </div>
 
@@ -18,7 +22,7 @@
 
   <div class="managers" data-load="users.load_managers"></div><br>
 
-  <h2 data-load="labels.clients"></h2>
+  <h2>Tickets</h2>
 
   <button data-click="tickets.open_invite_block" class="add blue circle fa fa-plus"></button>
 
@@ -70,6 +74,6 @@
 
   </div>
 
-  <div class="clients" data-load="users.load_clients"></div>
+  <div class="clients" data-load="tickets.list"></div>
 
 </div>

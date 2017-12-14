@@ -51,6 +51,7 @@ body {
     > nav a {
 	  &[data-modal="profile.html"] {
 	    display: inline-block;
+	    height: 70px;
 	  }
 	  &[data-page="login"] {
 	    display: none;
@@ -125,7 +126,7 @@ a {
     width: 1px;
   }
   &.horizontal {
-    height: 2px;
+    height: 1px;
     width: 100%;
   }
   &.grey {
@@ -136,13 +137,15 @@ a {
 body > nav {
   background-color: $dark-grey;
   line-height: 70px;
+  height: 70px;
   position: absolute;
   top: 0;
   left: 0;
+  white-space: nowrap;
   width: 100%;
   background-image: url('/pattern-tile.png');
   background-repeat: repeat;
-  overflow: hidden;
+  overflow: visible;
   z-index: 7;
 
   .logo { 
@@ -177,10 +180,13 @@ body > nav {
     margin: 5px 30px 0 5px;
   }
   .container {
-    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
     display: inline-block;
     vertical-align: top;
     height: 70px;
+  	white-space: nowrap;
   }
   .sub-nav {
     display: none;
@@ -329,10 +335,10 @@ input {
   position: absolute;
   left: 0;
   border-right: 1px solid $grey;
-  top: 73px;
+  top: 30px;
   width: 200px;
   text-align: center;
-  padding: 12px;
+  padding: 0 15px;
   h3 {
   	background-color: $blue;
   	color: white;
@@ -341,6 +347,7 @@ input {
   	font-size: 14px;
   	font-weight: 500;
   	margin: 20px 0 0 0;
+  	text-transform: uppercase;
   	&.no-margin { margin: 0; }
   }
   a { 
@@ -362,7 +369,7 @@ input {
   	font-family: $raleway;
   	font-weight: 400;
   }
-  .managers, .clients {
+  .managers, .clients, [data-load="courses.load_courses"] {
   	text-align: left;
   	positon: relative;
   	margin-top: 5px;
@@ -440,7 +447,7 @@ main {
   }
 	
   > .content {
-  	padding: 0 0 0 20px;
+  	padding: 0 0 0 15px;
   }
 
 }
@@ -611,9 +618,10 @@ main {
 
 // course
 [data-load="courses.render_one"] {
-	margin: 20px 10px 0 0;
+	margin: 20px 20px 0 0;
 	position: relative;
-	max-width: 500px;
+	display: inline-block;
+	white-space: nowrap;
 	input {
 		background-color: $light-grey;
 		display: block;
@@ -625,7 +633,10 @@ main {
 		height: 40px;
 		line-height: 40px;
 		color: $dark-grey;
-		border-bottom: 2px solid $grey;
+		border-bottom: 1px solid $dark-grey;
+		-webkit-box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.1);
+		-moz-box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.1);
+		box-shadow: 0px -1px 1px 0px rgba(0,0,0,0.1);
 	}
 	.thumbnail {
 		width: 200px;
@@ -653,6 +664,7 @@ main {
 		vertical-align: top;
 		position: relative;
 		margin-top: 3px;
+		white-space: normal;
 		span {
 			display: inline-block;
 			font-family: $changa;
@@ -701,7 +713,7 @@ main {
 
 .black-layer {
 	position: fixed;
-	z-index: 7;
+	z-index: 8;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -761,7 +773,7 @@ main {
 		position: relative;
 		text-align: left;
 		background: #fff;
-		padding: 20px 20px 60px 20px;
+		padding: 20px;
 		p {margin-bottom: 16px;}
 	}
 
@@ -850,7 +862,7 @@ main {
 	transition: 250ms all linear;
 	margin: 10px 0;
 	position: relative;
-	border-bottom: 2px solid $grey;
+	border-bottom: 1px solid $grey;
 	overflow: hidden;
 	&[data-language="nl"] {
 		.flag-container .nl { border-bottom: 2px solid $blue; }
@@ -917,7 +929,7 @@ main {
 		overflow: hidden;
 		padding: 10px 0 0 0;
 		position: relative;
-		border-top: 2px solid $grey;
+		border-top: 1px solid $grey;
 		background-color: $light-grey;
 	}
 

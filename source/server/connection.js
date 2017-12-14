@@ -120,7 +120,10 @@ console.log(msg);
       }, [], {
         $set: {
           name: '',
-          admin: session.user
+          admin: session.user,
+          thumbnail: '/default-course.jpg',
+          created_at: new Date(),
+          language: 'nl'
         }
       }, { upsert: true, new: true }, (err, updated) => {
 
@@ -446,7 +449,7 @@ function database() {
     db.collection('courses').findAndModify({ key: 'courses_test' }, [], {
       $set: {
         name: 'Test',
-        thumbnail: 'https://ak4.picdn.net/shutterstock/videos/12666344/thumb/1.jpg',
+        thumbnail: '/default-course.jpg',
         admin: 'users_joris',
         language: 'nl',
         published_at: new Date(),
@@ -457,7 +460,7 @@ function database() {
     db.collection('tickets').findAndModify({ key: 'tickets_test' }, [], {
       $set: {
         course: 'courses_test',
-        user: 'users_joris',
+        user: 'users_peter',
         admin: 'users_joris'
       }
     }, { upsert: true }, ()=>{});

@@ -12,6 +12,30 @@ let courses = module.exports = {
 
   },
 
+  load_courses: (element) => {
+
+    let keys = Object.keys(root.users.memory),
+        html = '';
+
+    element.innerHTML = Object.keys(root.courses.memory).reduce((html, key) => {
+
+      let course = root.courses.memory[key];
+
+      html += `
+
+        <div data-key="${ course.key }">
+          <img src="${ course.thumbnail }">
+          <span>${ course.name }</span>
+        </div>
+
+      `;
+
+      return html;
+
+    }, '');
+
+  },
+
   // view mode can be cards or list, it has a button in the left top of the interface
   view_mode: (element) => {
 
@@ -214,8 +238,7 @@ let courses = module.exports = {
       <div class="thumbnail" style="background-image:url(${ course.thumbnail })"></div>
       ${ courses.course_nav(element) }
       <img src="${ root.users.memory[course.admin].avatar }">
-      <input placeholder="Naam" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
-      <span data-load="users.memory.${ course.admin }.name"></span>
+      <input data-load="labels.name" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
     `;
 
     if(!course.name) element.querySelector('input').focus();
