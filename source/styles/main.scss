@@ -338,7 +338,7 @@ input {
   top: 30px;
   width: 200px;
   text-align: center;
-  padding: 12px;
+  padding: 0 15px;
   h3 {
   	background-color: $blue;
   	color: white;
@@ -447,7 +447,7 @@ main {
   }
 	
   > .content {
-  	padding: 0 0 0 20px;
+  	padding: 0 0 0 15px;
   }
 
 }
