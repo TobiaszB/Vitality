@@ -1165,83 +1165,90 @@ require.register("source/scripts/components/editor.js", function(exports, requir
 
 var editor = module.exports = {
 
-    course: null,
+  course: null,
 
-    load_course: function load_course(element) {
+  load_course: function load_course(element) {
 
-        var key = history.state.course,
-            course = root.courses.memory[key];
+    var key = history.state.course,
+        course = root.courses.memory[key];
 
-        editor.course = course;
+    editor.course = course;
 
-        editor.element = element;
+    editor.element = element;
 
-        element.dataset.published = 'yes';
+    element.dataset.published = 'yes';
 
-        element.dataset.device = 'desktop';
+    element.dataset.device = 'desktop';
 
-        if (!course.blocks) course.blocks = [];
+    if (!course.blocks) course.blocks = [];
 
-        element.innerHTML = course.blocks.reduce(function (html, block, index) {
+    element.innerHTML = course.blocks.reduce(function (html, block, index) {
 
-            var options = Object.keys(block.options).reduce(function (html, option) {
-                return html + ' data-' + option + '="' + block.options[option] + '"';
-            }, '');
+      var options = Object.keys(block.options).reduce(function (html, option) {
+        return html + ' data-' + option + '="' + block.options[option] + '"';
+      }, '');
 
-            return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-click="editor.update" class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
-        }, '\n      <div class="control-editor">\n        <a data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
-    },
+      return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-click="editor.update" class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option) {
 
-    add_block: function add_block(key) {
+        var element = '<label data-load="labels.' + option + '"></label>';
 
-        var course = root.courses.memory[history.state.course],
-            block = root.blocks.memory[key];
+        if (block.options[option] == 'boolean') element = '\n                <input type="checkbox">' + element + '\n              ';
 
-        course.blocks = course.blocks || [];
+        return '' + html + element;
+      }, '') + '</div>\n        </div>\n      </div>';
+    }, '\n      <div class="control-editor">\n        <a data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
+  },
 
-        course.blocks.push(block);
+  add_block: function add_block(key) {
 
-        console.log(course);
+    var course = root.courses.memory[history.state.course],
+        block = root.blocks.memory[key];
 
-        root.courses.updated = true;
-    },
+    course.blocks = course.blocks || [];
 
-    load_element: function load_element(element) {
+    course.blocks.push(block);
 
-        var index = parseInt(element.parentElement.dataset.index, 10),
-            block = editor.course.blocks[index],
-            key = element.dataset.element;
+    console.log(course);
 
-        element.dataset.input = 'editor.save';
+    root.courses.updated = true;
+  },
 
-        if (!block.content) block.content = {};
+  load_element: function load_element(element) {
 
-        if (!block.content[key]) block.content[key] = key;
+    var index = parseInt(element.parentElement.dataset.index, 10),
+        block = editor.course.blocks[index],
+        key = element.dataset.element;
 
-        element.innerHTML = block.content[key];
-    },
+    element.dataset.input = 'editor.save';
 
-    // only locally
-    save: function save(element) {
+    if (!block.content) block.content = {};
 
-        var index = parseInt(element.parentElement.dataset.index, 10),
-            block = editor.course.blocks[index];
+    if (!block.content[key]) block.content[key] = key;
 
-        block.content[element.dataset.element] = element.value;
+    element.innerHTML = block.content[key];
+  },
 
-        console.log(JSON.stringify(editor.course, null, 2));
-    },
+  // only locally
+  save: function save(element) {
 
-    // updates course in server
-    update: function update(element) {
+    var index = parseInt(element.parentElement.dataset.index, 10),
+        block = editor.course.blocks[index];
 
-        editor.element.classList.add('saving');
+    block.content[element.dataset.element] = element.value;
 
-        root.send({ request: 'save_course', set: editor.course }, function () {
+    console.log(JSON.stringify(editor.course, null, 2));
+  },
 
-            editor.element.classList.remove('saving');
-        });
-    }
+  // updates course in server
+  update: function update(element) {
+
+    editor.element.classList.add('saving');
+
+    root.send({ request: 'save_course', set: editor.course }, function () {
+
+      editor.element.classList.remove('saving');
+    });
+  }
 
 };
 });

@@ -29,6 +29,20 @@ let editor = module.exports = {
           <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
           <a data-click="editor.update" class="control-btn fa fa-cog"></a>
           <a data-click="editor.update" class="control-btn fa fa-trash"></a>
+          <div class="block-config">${
+            Object.keys(block.options).reduce((html, option) => {
+
+              let element = `<label data-load="labels.${ option }"></label>`;
+
+              if(block.options[option] == 'boolean') element = `
+                <input type="checkbox">${ element }
+              `;
+
+              return `${ html }${ element }`;
+
+
+            }, '')
+          }</div>
         </div>
       </div>`;
 
@@ -40,7 +54,6 @@ let editor = module.exports = {
         <a data-click="editor.preview" class="control-btn fa fa-eye"></a>
         <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>
         <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>
-
         <div data-load="blocks.load"></div>
       </div>
     `);
