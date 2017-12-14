@@ -222,6 +222,21 @@ var courses = module.exports = {
     root.send({ request: 'new_course' });
   },
 
+  load_courses: function load_courses(element) {
+
+    var keys = Object.keys(root.users.memory),
+        html = '';
+
+    element.innerHTML = Object.keys(root.courses.memory).reduce(function (html, key) {
+
+      var course = root.courses.memory[key];
+
+      html += '\n\n        <div data-key="' + course.key + '">\n          <img src="' + course.thumbnail + '">\n          <span>' + course.name + '</span>\n        </div>\n\n      ';
+
+      return html;
+    }, '');
+  },
+
   // view mode can be cards or list, it has a button in the left top of the interface
   view_mode: function view_mode(element) {
 
@@ -394,7 +409,7 @@ var courses = module.exports = {
 
     element.dataset.key = element.dataset.course;
 
-    element.innerHTML = courses.mode == 'lists' ? '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <img src="' + root.users.memory[course.admin].avatar + '">\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <span data-load="users.memory.' + course.admin + '.name"></span>\n    ';
+    element.innerHTML = courses.mode == 'lists' ? '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <img src="' + root.users.memory[course.admin].avatar + '">\n      <input data-load="labels.name" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n    ';
 
     if (!course.name) element.querySelector('input').focus();
 
@@ -659,233 +674,193 @@ require.register("source/scripts/collections/tickets.js", function(exports, requ
 
 var tickets = module.exports = {
 
-  // here we save all tickets in client memory
-  // { [key]: OBJECT }
-  memory: {},
+    // here we save all tickets in client memory
+    // { [key]: OBJECT }
+    memory: {},
 
-  change_language: function change_language(element) {
+    change_language: function change_language(element) {
 
-    var block = document.querySelector('#invite-block');
+        var block = document.querySelector('#invite-block');
 
-    block.dataset.language = element.dataset.language;
-  },
+        block.dataset.language = element.dataset.language;
+    },
 
-  open_invite_block: function open_invite_block(element) {
+    open_invite_block: function open_invite_block(element) {
 
-    var block = document.querySelector('#invite-block');
+        var block = document.querySelector('#invite-block');
 
-    block.classList.toggle('open');
-  },
+        block.classList.toggle('open');
+    },
 
-  // button is placed to the right of the title of the page
-  add: function add(element) {
+    // button is placed to the right of the title of the page
+    add: function add(element) {
 
-    // root.send is used to talk to the server
-    root.send({ request: 'new_ticket' });
-  },
+        // root.send is used to talk to the server
+        root.send({ request: 'new_ticket' });
+    },
 
-  // anytime the user triggers the data-input of the search field, we execute this
-  save_search: function save_search(element) {
+    // anytime the user triggers the data-input of the search field, we execute this
+    save_search: function save_search(element) {
 
-    // used inside of tickets.render()
-    tickets.search_query = String(element.value || '').toLowerCase();
+        // used inside of tickets.render()
+        tickets.search_query = String(element.value || '').toLowerCase();
 
-    // see update loop at the bottom of this file
-    tickets.updated = true;
-  },
+        // see update loop at the bottom of this file
+        tickets.updated = true;
+    },
 
-  // goes off anytime ticket-related data-input is fired
-  edit: function edit(element, options) {
+    // goes off anytime ticket-related data-input is fired
+    edit: function edit(element, options) {
 
-    // we always need to provide a request string and the key of the object we are editing
-    var request = {
-      request: 'edit',
-      key: element.dataset.ticket
-    };
+        // we always need to provide a request string and the key of the object we are editing
+        var request = {
+            request: 'edit',
+            key: element.dataset.ticket
+        };
 
-    // but the value we are changing shall be added dynamically,
-    // so we can use this edit function straight from the HTML
-    // <input data-input="tickets.edit" data-key="[KEY]">
-    var v = options ? options.value : element.value;
+        // but the value we are changing shall be added dynamically,
+        // so we can use this edit function straight from the HTML
+        // <input data-input="tickets.edit" data-key="[KEY]">
+        var v = options ? options.value : element.value;
 
-    request[element.dataset.property] = v;
+        request[element.dataset.property] = v;
 
-    // options.callback can only be used when this function is fired manually in Javascript
-    // since we cannot write a function inside of the HTML tag
-    root.send(request, options ? options.callback : null);
-  },
+        // options.callback can only be used when this function is fired manually in Javascript
+        // since we cannot write a function inside of the HTML tag
+        root.send(request, options ? options.callback : null);
+    },
 
-  list: function list(element) {
+    list: function list(element) {
 
-    // we are lazy developers that do not want to select the list over and over
-    // whenever we use this list function manually
-    if (!element) element = document.querySelector('[data-load="tickets.list"]');
+        // we are lazy developers that do not want to select the list over and over
+        // whenever we use this list function manually
+        if (!element) element = document.querySelector('[data-load="tickets.list"]');
 
-    // element still not found?! we must stop this madness
-    if (!element) return;
+        // element still not found?! we must stop this madness
+        if (!element) return;
 
-    // we clean out the old HTML should this function be fired after the list already rendered
-    element.innerHTML = '';
+        // we clean out the old HTML should this function be fired after the list already rendered
+        element.innerHTML = '';
 
-    // we show a loading text
-    root.labels.loading(element);
+        // we show a loading text
+        root.labels.loading(element);
 
-    // and start the render loop!
-    tickets.render(element);
-  },
+        // and start the render loop!
+        tickets.render(element);
+    },
 
-  render: function render(element, keys, iteration) {
+    render: function render(element, keys, iteration) {
 
-    // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
-    if (!element) return;
+        // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
+        if (!element) return;
 
-    // we need to make sure we only run 1 loop at the same time
-    // every time render is called outside of its own loop, iteration will be undefined
-    // so we use this condition to also update the dataset of the element
-    // in order for the old loop to kill itself...
-    if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
+        // we need to make sure we only run 1 loop at the same time
+        // every time render is called outside of its own loop, iteration will be undefined
+        // so we use this condition to also update the dataset of the element
+        // in order for the old loop to kill itself...
+        if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
 
-    // if it turns out this execution is an outdated iteration,
-    // the element has updated its dataset.iteration outside of this loop
-    // we have to bring this loop to the white shores
-    // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
-    if (element.dataset.iteration != iteration) return;
+        // if it turns out this execution is an outdated iteration,
+        // the element has updated its dataset.iteration outside of this loop
+        // we have to bring this loop to the white shores
+        // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
+        if (element.dataset.iteration != iteration) return;
 
-    // every time render is called outside of its own loop, keys will be undefined
-    if (!keys) keys = Object.keys(tickets.memory);
+        // every time render is called outside of its own loop, keys will be undefined
+        if (!keys) keys = Object.keys(tickets.memory);
 
-    // the loop has finished
-    if (!keys.length) {
+        // the loop has finished
+        if (!keys.length) {
 
-      // sadly, no children are found inside of the element
-      // this can only mean there were no results
-      if (!element.children.length) return root.labels.no_results(element);
+            // sadly, no children are found inside of the element
+            // this can only mean there were no results
+            if (!element.children.length) return root.labels.no_results(element);
 
-      // we had results, and are no longer loading, so lets clear that loading message
-      return element.dataset.message = '';
+            // we had results, and are no longer loading, so lets clear that loading message
+            return element.dataset.message = '';
+        }
+
+        var search = tickets.search_query,
+            // search value is changed by tickets.save_search()
+        ticket = tickets.memory[keys.shift()];
+
+        if (!ticket || ticket.archived || search && String(ticket.name).toLowerCase().indexOf(search) == -1 || tickets.manager_filter.length && tickets.manager_filter.indexOf(ticket.admin) == -1) {
+
+            if (keys.length % 100 == 0) return requestAnimationFrame(function () {
+
+                tickets.render(element, keys, iteration);
+            });
+
+            return tickets.render(element, keys, iteration);
+        }
+
+        requestAnimationFrame(function () {
+
+            tickets.render(element, keys, iteration);
+        });
+
+        var elem = document.createElement('div');
+
+        elem.dataset.load = 'tickets.render_one';
+
+        elem.dataset.ticket = ticket.key;
+
+        element.appendChild(elem);
+    },
+
+    archive: function archive(element) {
+
+        var ticket = tickets.memory[element.dataset.key];
+
+        root.send({ request: 'archive', key: ticket.key }, function () {
+
+            // see update loop at the bottom of this file
+            tickets.updated = true;
+        });
+    },
+
+    manager_filter: [],
+
+    toggle_course: function toggle_course(element) {
+
+        var key = element.dataset.key,
+            filter = tickets.manager_filter,
+            index = filter.indexOf(key);
+
+        element.classList.toggle('active');
+
+        if (index > -1) filter.splice(index, 1);else filter.push(key);
+
+        tickets.updated = true;
+    },
+
+    load_courses: function load_courses(element) {
+
+        element.innerHTML = Object.keys(root.courses.memory).reduce(function (html, key) {
+
+            return html + ('<div data-click="tickets.toggle_course" data-key="' + key + '">\n        <span data-load="courses.memory.' + key + '.name"></span>\n      </div>');
+        }, '');
+    },
+
+    render_one: function render_one(element) {
+
+        var ticket = tickets.memory[element.dataset.ticket],
+            user = root.users.memory[ticket.user];
+
+        element.innerHTML = '\n\n      <div class="' + (user.key == root.me.user ? 'me' : '') + '" data-key="' + user.key + '">\n        <img src="' + user.avatar + '">\n        <span data-load="users.memory.' + user.key + '.name"></span>\n        <span data-load="users.memory.' + user.key + '.email"></span>\n      </div>\n\n    ';
     }
-
-    var search = tickets.search_query,
-        // search value is changed by tickets.save_search()
-    ticket = tickets.memory[keys.shift()];
-
-    if (!ticket || ticket.archived || search && String(ticket.name).toLowerCase().indexOf(search) == -1 || tickets.manager_filter.length && tickets.manager_filter.indexOf(ticket.admin) == -1) {
-
-      if (keys.length % 100 == 0) return requestAnimationFrame(function () {
-
-        tickets.render(element, keys, iteration);
-      });
-
-      return tickets.render(element, keys, iteration);
-    }
-
-    requestAnimationFrame(function () {
-
-      tickets.render(element, keys, iteration);
-    });
-
-    var elem = document.createElement('div');
-
-    elem.dataset.load = 'tickets.render_one';
-
-    elem.dataset.ticket = ticket.key;
-
-    element.appendChild(elem);
-  },
-
-  archive: function archive(element) {
-
-    var ticket = tickets.memory[element.dataset.key];
-
-    root.send({ request: 'archive', key: ticket.key }, function () {
-
-      // see update loop at the bottom of this file
-      tickets.updated = true;
-    });
-  },
-
-  manager_filter: [],
-
-  toggle_course: function toggle_course(element) {
-
-    var key = element.dataset.key,
-        filter = tickets.manager_filter,
-        index = filter.indexOf(key);
-
-    element.classList.toggle('active');
-
-    if (index > -1) filter.splice(index, 1);else filter.push(key);
-
-    tickets.updated = true;
-  },
-
-  load_courses: function load_courses(element) {
-
-    element.innerHTML = Object.keys(root.courses.memory).reduce(function (html, key) {
-
-      return html + ('<div data-click="tickets.toggle_course" data-key="' + key + '">\n        <span data-load="courses.memory.' + key + '.name"></span>\n      </div>');
-    }, '');
-  },
-
-  render_one: function render_one(element) {
-
-    var ticket = tickets.memory[element.dataset.ticket];
-
-    element.dataset.key = element.dataset.ticket;
-
-    element.innerHTML = tickets.mode == 'lists' ? '\n      <span data-load="tickets.memory.' + element.dataset.key + '.name"></span>\n      <pre>' + JSON.stringify(ticket, null, 2) + '</pre>\n    ' : '\n      <div class="thumbnail" style="background-image:url(' + ticket.thumbnail + ')"></div>\n      ' + tickets.ticket_nav(element) + '\n      <input placeholder="Naam" data-property="name" data-ticket="' + ticket.key + '" data-input="tickets.edit" type="text" value="' + ticket.name + '">\n      <span data-load="users.memory.' + ticket.admin + '.name"></span>\n    ';
-
-    if (!ticket.name) element.querySelector('input').focus();
-
-    function format(date) {
-
-      date = new Date(date);
-
-      var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
-
-      if (!date || String(date).toLowerCase() == 'invalid date') return '';
-
-      return '\n        ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + '\n        ' + date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes() + '\n      ';
-    }
-  },
-
-  ticket_nav: function ticket_nav(element) {
-
-    return '<div>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="tickets.view" data-load="labels.view"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="tickets.invite" data-load="labels.invite"></button>\n        <button data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="tickets.stats" data-load="labels.stats_short"></button>\n      </div>';
-  },
-
-  view: function view(element) {
-
-    var ticket = root.tickets.memory[element.dataset.key];
-
-    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + ticket.thumbnail + ')"></div>\n        <h3 data-load="labels.view"></h3>\n        ' + tickets.ticket_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-ticket="' + ticket.key + '" data-input="tickets.edit" type="text" value="' + ticket.name + '">\n        <span data-load="users.memory.' + ticket.admin + '.name"></span>\n      </div>\n    </div>';
-  },
-
-  invite: function invite(element) {
-
-    var ticket = root.tickets.memory[element.dataset.key];
-
-    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + ticket.thumbnail + ')"></div>\n        <h3 data-load="labels.invite"></h3>\n        ' + tickets.ticket_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-ticket="' + ticket.key + '" data-input="tickets.edit" type="text" value="' + ticket.name + '">\n        <span data-load="users.memory.' + ticket.admin + '.name"></span>\n      </div>\n    </div>';
-  },
-
-  stats: function stats(element) {
-
-    var ticket = root.tickets.memory[element.dataset.key];
-
-    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + ticket.thumbnail + ')"></div>\n        <h3 data-load="labels.stats"></h3>\n        ' + tickets.ticket_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-ticket="' + ticket.key + '" data-input="tickets.edit" type="text" value="' + ticket.name + '">\n        <span data-load="users.memory.' + ticket.admin + '.name"></span>\n      </div>\n    </div>';
-  }
 
 };
 
 (function updater() {
 
-  if (!tickets.updated) return setTimeout(updater, 300);
+    if (!tickets.updated) return setTimeout(updater, 300);
 
-  tickets.updated = false;
+    tickets.updated = false;
 
-  tickets.list();
+    tickets.list();
 
-  updater();
+    updater();
 })();
 });
 
@@ -903,11 +878,14 @@ var users = module.exports = {
 
     load_clients: function load_clients(element) {
 
+        var keys = Object.keys(root.users.memory),
+            html = '';
+
         element.innerHTML = Object.keys(root.users.memory).reduce(function (html, key) {
 
             var user = root.users.memory[key];
 
-            if (user.role == 'client') html += '\n\n        <div class="' + (user.key == root.me.user ? 'me' : '') + '" data-key="' + user.key + '">\n          <img src="' + user.avatar + '">\n          <span data-load="users.memory.' + user.key + '.name"></span>\n          <span data-load="users.memory.' + user.key + '.email"></span>\n        </div>\n\n      ';
+            if (user.role == 'client') html += '\n\n        <div data-key="' + user.key + '">\n          <img src="' + user.avatar + '">\n          <span data-load="users.memory.' + user.key + '.name"></span>\n        </div>\n\n      ';
 
             return html;
         }, '');
@@ -934,7 +912,7 @@ var users = module.exports = {
 
     load_profile_link: function load_profile_link(element) {
 
-        if (!root.me) return setTimeout(users.load_profile_link, 200, element);
+        if (!root.me) return setTimeout(users.load_profile_link, 500, element);
 
         if (!root.me.user) return;
 
