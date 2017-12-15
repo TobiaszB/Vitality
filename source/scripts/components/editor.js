@@ -7,6 +7,10 @@ let editor = module.exports = {
     let key = history.state.course,
         course = root.courses.memory[key];
 
+    editor.looping = Math.random();
+
+    editor.tooltip(editor.looping);
+
     editor.course = course;
 
     editor.element = element;
@@ -24,6 +28,9 @@ let editor = module.exports = {
 
       return `${ html }<div class="block" ${ options } data-key="${ block.key }" data-index="${ index }">
         ${ block.html }
+        <div data-index="${ index }" data-load="editor.load_tooltip" class="block-tooltip">
+          <i class="fa fa-align-left"></i>
+        </div>
         <div class="block-options">
           <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
           <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
@@ -60,6 +67,48 @@ let editor = module.exports = {
 
   },
 
+  tooltip_list: [],
+
+  load_tooltip: (element) => {
+
+    editor.tooltip_list[parseInt(element.dataset.index, 10)] = element;
+
+  },
+
+  tooltip: (iteration) => {
+
+    if(history.state.page != 'edit' || editor.looping != iteration) return;
+
+    setTimeout(editor.tooltip, 2000, iteration);
+
+    if(document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map((element) => {
+
+        element.style.display = 'none';
+
+        element.classList.remove('fade-in');
+        
+    });
+
+    let index = document.activeElement.parentElement.dataset.index;
+
+    editor.tooltip_list[index].style.bottom = `${ 3 + document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop }px`;
+
+    editor.tooltip_list[index].style.left = `${ document.activeElement.offsetLeft }px`;
+
+    if(editor.tooltip_list[index].classList.contains('fade-in')) return;
+
+    editor.tooltip_list[index].classList.remove('fade-in');
+
+    editor.tooltip_list[index].style.display = 'block';
+
+    requestAnimationFrame(()=> {
+
+      editor.tooltip_list[index].classList.add('fade-in');
+
+    });
+
+  },
+
   add_block: (key) => {
 
     let course = root.courses.memory[history.state.course],
@@ -82,6 +131,12 @@ let editor = module.exports = {
         key = element.dataset.element;
 
     element.dataset.input = 'editor.save';
+
+    element.addEventListener('mouseenter', ()=>{
+
+      element.focus();
+
+    });
 
     if(!block.content) block.content = {};
 

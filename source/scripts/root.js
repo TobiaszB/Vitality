@@ -1,6 +1,8 @@
 require('./polyfill.js');
 
-const DEV_MODE = false;
+window.AOS = require('./components/aos.js');
+
+const DEV_MODE = true;
 
 window.root = {
 

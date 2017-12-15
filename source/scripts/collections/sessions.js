@@ -9,6 +9,8 @@ let sessions = module.exports = {
     root.main = document.querySelector('main');
 
     if(!root.main) return setTimeout(load, 0);
+
+    AOS.init();
     
     sessions.url(null, { prevent_url: true });
 

@@ -1009,6 +1009,26 @@ main {
 
 // EDITOR
 
+.block-tooltip {
+  background: rgba(31, 31, 31, 0.67);
+  width: 200px;
+  position: absolute;
+  z-index: 3;
+  padding: 6px;
+  border-radius: 2px;
+  color: white;
+  opacity: 0;
+  transition: none;
+  &:hover {
+  	visibility: visible !important;
+  	display: block !important;
+  }
+  &.fade-in {
+  	opacity: 1;
+  	transition: opacity 200ms ease;
+  }
+}
+
 main.dropzone[data-load="edit.html"] {
 	background: rgba(0,0,0,0.1);
 	&::after {
