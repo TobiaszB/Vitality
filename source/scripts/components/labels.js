@@ -26,6 +26,7 @@ let labels = {
     courses: ['Cursussen', 'Courses'],
     invitations: ['Uitnodigingen', 'Invitations'],
     stats: ['Statistieken', 'Statistics'],
+    confirm_delete: ['Bevestig verwijdering', 'Confirm deletion'],
     no_results: [
         title('Geen resultaten'),
         title('No results')

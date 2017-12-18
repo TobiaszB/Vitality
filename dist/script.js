@@ -1476,7 +1476,8 @@ var editor = module.exports = {
   load_course: function load_course(element) {
 
     var key = history.state.course,
-        course = root.courses.memory[key];
+        course = root.courses.memory[key],
+        colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
 
     editor.looping = Math.random();
 
@@ -1495,18 +1496,25 @@ var editor = module.exports = {
     element.innerHTML = course.blocks.reduce(function (html, block, index) {
 
       var options = Object.keys(block.options).reduce(function (html, option) {
-        return html + ' data-' + option + '="' + block.options[option] + '"';
+        return html + ' data-' + option + '="' + block.options[option].value + '"';
       }, '');
 
-      return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div data-index="' + index + '" data-load="editor.load_tooltip" class="block-tooltip">\n          <i class="fa fa-align-left"></i>\n        </div>\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
+      return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
+        return '<b style="background-color:#' + c + ';"></b>';
+      }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
         var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
 
-        if (block.options[option] == 'boolean') element = '\n                <input id="input-' + id + '" type="checkbox">' + element + '\n              ';
+        if (block.options[option].type == 'boolean') element = '\n                <input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element + '\n              ';
 
         return '' + html + element;
       }, '') + '</div>\n        </div>\n      </div>';
     }, '\n      <div class="control-editor">\n        <a data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
+  },
+
+  toggle_tooltip_submenu: function toggle_tooltip_submenu(element) {
+
+    element.parentElement.dataset.tab = element.dataset.tab;
   },
 
   tooltip_list: [],
@@ -1516,11 +1524,21 @@ var editor = module.exports = {
     editor.tooltip_list[parseInt(element.dataset.index, 10)] = element;
   },
 
+  input_save: function input_save(element) {
+
+    var block = editor.course.blocks[parseInt(element.dataset.index, 10)],
+        option = block.options[element.dataset.option];
+
+    if (option.type == 'boolean') option.value = !option.value;
+
+    console.log(editor.course);
+  },
+
   tooltip: function tooltip(iteration) {
 
     if (history.state.page != 'edit' || editor.looping != iteration) return;
 
-    setTimeout(editor.tooltip, 2000, iteration);
+    setTimeout(editor.tooltip, 1000, iteration);
 
     if (document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map(function (element) {
 
@@ -1531,9 +1549,11 @@ var editor = module.exports = {
 
     var index = document.activeElement.parentElement.dataset.index;
 
-    editor.tooltip_list[index].style.bottom = 3 + document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop + 'px';
+    editor.tooltip_list[index].style.bottom = document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop + 'px';
 
     editor.tooltip_list[index].style.left = document.activeElement.offsetLeft + 'px';
+
+    editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
 
     if (editor.tooltip_list[index].classList.contains('fade-in')) return;
 
@@ -1554,11 +1574,36 @@ var editor = module.exports = {
 
     course.blocks = course.blocks || [];
 
+    var demo = [{ page: 'Introduction', tab: 'Part I', index: 0 }, { progress: 5 }, { tab: 'Part II', index: 2, progress: 5 }, { tab: 'Part III', index: 3, progress: 5 }, { page: 'Learning the basics', tab: 'Module A', index: 4, progress: 15 }, { progress: 15 }, { progress: 15 }, { tab: 'Module B', index: 7, progress: 10 }, { page: 'Questions', index: 8, progress: 10 }, { progress: 10 }, { progress: 10 }, { page: 'Conclusion', index: 11 }];
+
+    block = Object.assign(demo[course.blocks.length] || {}, block);
+
     course.blocks.push(block);
 
-    console.log(course);
+    block.options = Object.keys(block.options).reduce(function (options, key) {
+
+      options[key] = editor.set_option(block.options[key], key);
+
+      return options;
+    }, {});
 
     root.courses.updated = true;
+
+    console.log(course);
+  },
+
+  set_option: function set_option(type, property) {
+
+    var config = {
+      property: property,
+      type: type
+    };
+
+    if (type == 'boolean') config.value = true;
+
+    console.log(type, property);
+
+    return config;
   },
 
   load_element: function load_element(element) {
@@ -1597,7 +1642,10 @@ var editor = module.exports = {
 
     editor.element.classList.add('saving');
 
-    root.send({ request: 'save_course', set: editor.course }, function () {
+    root.send({
+      request: 'save_course',
+      set: editor.course
+    }, function () {
 
       editor.element.classList.remove('saving');
     });
@@ -1637,6 +1685,7 @@ var labels = {
     courses: ['Cursussen', 'Courses'],
     invitations: ['Uitnodigingen', 'Invitations'],
     stats: ['Statistieken', 'Statistics'],
+    confirm_delete: ['Bevestig verwijdering', 'Confirm deletion'],
     no_results: [title('Geen resultaten'), title('No results')],
     loading: [title('Laden...'), title('Loading...')],
     archive: ['Archiveer', 'Archive'],

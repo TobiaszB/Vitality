@@ -2,10 +2,13 @@ let editor = module.exports = {
 
   course: null,
 
-  load_course: (element) => {
+  load_course: (element)=>{
 
     let key = history.state.course,
-        course = root.courses.memory[key];
+        course = root.courses.memory[key],
+        colors = ['7ac673','1abc9c','27aae0','2c82c9','9365b8','4c6972','ffffff','41a85f','00a885','3d8eb9',
+                  '2969b0','553982','475577','efefef','f7da64','faaf40','eb6b56','e25041','a38f84','28324e',
+                  'cccccc','fac51c','f97352','d14841','b8312f','7c706b','000000','c1c1c1'];
 
     editor.looping = Math.random();
 
@@ -19,41 +22,52 @@ let editor = module.exports = {
 
     element.dataset.device = 'desktop';
 
-    if(!course.blocks) course.blocks = [];
+    if (!course.blocks)
+      course.blocks = [];
 
-    element.innerHTML = course.blocks.reduce((html, block, index)=> {
+    element.innerHTML = course.blocks.reduce((html,block,index)=>{
 
-      let options = Object.keys(block.options).reduce((html, option)=>
-        `${ html } data-${ option }="${ block.options[option] }"`, '');
+      let options = Object.keys(block.options).reduce((html,option)=>`${html} data-${option}="${block.options[option].value}"`, '');
 
-      return `${ html }<div class="block" ${ options } data-key="${ block.key }" data-index="${ index }">
-        ${ block.html }
-        <div data-index="${ index }" data-load="editor.load_tooltip" class="block-tooltip">
-          <i class="fa fa-align-left"></i>
+      return `${html}<div class="block" ${options} data-key="${block.key}" data-index="${index}">
+        ${block.html}
+        <div class="block-tooltip" data-index="${index}" data-load="editor.load_tooltip">
+          <div class="inner">
+           <div class="color-picker">${
+             colors.map((c)=>`<b style="background-color:#${ c };"></b>`).join('')
+           }</div>
+           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>
+           <div class="set-link"><button>set link</button></div>
+           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>
+           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>
+           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>
+           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>
+           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>
+          </div>
         </div>
         <div class="block-options">
           <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
           <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
           <a class="control-btn fa fa-cog"></a>
           <a data-click="editor.update" class="control-btn fa fa-trash"></a>
-          <div class="block-config">${
-            Object.keys(block.options).reduce((html, option, id) => {
+          <div class="block-config">${Object.keys(block.options).reduce((html,option,id)=>{
 
-              let element = `<label for="input-${ id }" data-load="labels.${ option }"></label><br>`;
+        let element = `<label for="input-${id}" data-load="labels.${option}"></label><br>`;
 
-              if(block.options[option] == 'boolean') element = `
-                <input id="input-${ id }" type="checkbox">${ element }
+        if (block.options[option].type == 'boolean')
+          element = `
+                <input data-option="${ option }" data-index="${ index }" data-change="editor.input_save" ${block.options[option].value ? 'checked' : ''} id="input-${id}" type="checkbox">${element}
               `;
 
-              return `${ html }${ element }`;
+        return `${html}${element}`;
 
-
-            }, '')
-          }</div>
+      }
+      , '')}</div>
         </div>
       </div>`;
 
-    }, `
+    }
+    , `
       <div class="control-editor">
         <a data-click="editor.update" class="control-btn fa fa-save"></a>
         <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>
@@ -67,64 +81,132 @@ let editor = module.exports = {
 
   },
 
+  toggle_tooltip_submenu: (element) => {
+
+    element.parentElement.dataset.tab = element.dataset.tab;
+    
+  },
+
   tooltip_list: [],
 
-  load_tooltip: (element) => {
+  load_tooltip: (element)=>{
 
     editor.tooltip_list[parseInt(element.dataset.index, 10)] = element;
 
   },
 
-  tooltip: (iteration) => {
+  input_save: (element) => {
 
-    if(history.state.page != 'edit' || editor.looping != iteration) return;
+    let block = editor.course.blocks[parseInt(element.dataset.index, 10)],
+        option = block.options[element.dataset.option];
 
-    setTimeout(editor.tooltip, 2000, iteration);
+    if(option.type == 'boolean') option.value = !option.value;
 
-    if(document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map((element) => {
+    console.log(editor.course);
+
+  },
+
+  tooltip: (iteration)=>{
+
+    if (history.state.page != 'edit' || editor.looping != iteration)
+      return;
+
+    setTimeout(editor.tooltip, 1000, iteration);
+
+    if (document.activeElement.dataset.load != 'editor.load_element')
+      return editor.tooltip_list.map((element)=>{
 
         element.style.display = 'none';
 
         element.classList.remove('fade-in');
-        
-    });
+
+      }
+      );
 
     let index = document.activeElement.parentElement.dataset.index;
 
-    editor.tooltip_list[index].style.bottom = `${ 3 + document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop }px`;
+    editor.tooltip_list[index].style.bottom = `${ document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop}px`;
 
-    editor.tooltip_list[index].style.left = `${ document.activeElement.offsetLeft }px`;
+    editor.tooltip_list[index].style.left = `${document.activeElement.offsetLeft}px`;
 
-    if(editor.tooltip_list[index].classList.contains('fade-in')) return;
+    editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
+
+    if (editor.tooltip_list[index].classList.contains('fade-in'))
+      return;
 
     editor.tooltip_list[index].classList.remove('fade-in');
 
     editor.tooltip_list[index].style.display = 'block';
 
-    requestAnimationFrame(()=> {
+    requestAnimationFrame(()=>{
 
       editor.tooltip_list[index].classList.add('fade-in');
 
-    });
+    }
+    );
 
-  },
+  }
+  ,
 
-  add_block: (key) => {
+  add_block: (key)=>{
 
-    let course = root.courses.memory[history.state.course],
-        block = root.blocks.memory[key];
+    let course = root.courses.memory[history.state.course]
+      , block = root.blocks.memory[key];
 
     course.blocks = course.blocks || [];
 
+    let demo = [
+      { page: 'Introduction', tab: 'Part I', index: 0 },
+      { progress: 5 },
+      { tab: 'Part II', index: 2, progress: 5 },
+      { tab: 'Part III', index: 3, progress: 5 },
+      { page: 'Learning the basics', tab: 'Module A', index: 4, progress: 15 },
+      { progress: 15 },
+      { progress: 15 },
+      { tab: 'Module B', index: 7, progress: 10 },
+      { page: 'Questions', index: 8, progress: 10 },
+      { progress: 10 },
+      { progress: 10 },
+      { page: 'Conclusion', index: 11 }
+    ];
+
+    block = Object.assign(demo[course.blocks.length] || {}, block);
+
     course.blocks.push(block);
 
-    console.log(course);
+    block.options = Object.keys(block.options).reduce((options,key)=>{
+
+      options[key] = editor.set_option(block.options[key], key);
+
+      return options;
+
+    }
+    , {});
 
     root.courses.updated = true;
 
+    console.log(course);
+
+  }
+  ,
+
+  set_option: (type,property)=>{
+
+    let config = {
+      property: property,
+      type: type
+    };
+
+    if (type == 'boolean')
+      config.value = true;
+
+    console.log(type, property);
+
+    return config;
+
   },
 
-  load_element: (element) => {
+  load_element: (element)=>{
 
     let index = parseInt(element.parentElement.dataset.index, 10),
         block = editor.course.blocks[index],
@@ -138,37 +220,44 @@ let editor = module.exports = {
 
     });
 
-    if(!block.content) block.content = {};
+    if (!block.content)
+      block.content = {};
 
-    if(!block.content[key]) block.content[key] = key;
+    if (!block.content[key])
+      block.content[key] = key;
 
     element.innerHTML = block.content[key];
-    
-  },
+
+  }
+  ,
 
   // only locally
-  save: (element) => {
+  save: (element)=>{
 
-    let index = parseInt(element.parentElement.dataset.index, 10),
-        block = editor.course.blocks[index];
+    let index = parseInt(element.parentElement.dataset.index, 10)
+      , block = editor.course.blocks[index];
 
     block.content[element.dataset.element] = element.value;
 
     console.log(JSON.stringify(editor.course, null, 2));
 
-  },
+  }
+  ,
 
   // updates course in server
-  update: (element) => {
-  
+  update: (element)=>{
+
     editor.element.classList.add('saving');
 
-    root.send({ request: 'save_course', set: editor.course }, 
-    () => {
+    root.send({
+      request: 'save_course',
+      set: editor.course
+    }, ()=>{
 
       editor.element.classList.remove('saving');
 
-    });
+    }
+    );
 
   }
 

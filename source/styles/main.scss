@@ -1010,22 +1010,118 @@ main {
 // EDITOR
 
 .block-tooltip {
-  background: rgba(31, 31, 31, 0.67);
-  width: 200px;
   position: absolute;
-  z-index: 3;
-  padding: 6px;
-  border-radius: 2px;
-  color: white;
+  z-index: 9;
+  padding: 10px 0 2px;
   opacity: 0;
-  transition: none;
+  font-size: 0;
   &:hover {
-  	visibility: visible !important;
-  	display: block !important;
+	opacity: 1 !important;
+	display: block !important;
   }
   &.fade-in {
-  	opacity: 1;
-  	transition: opacity 200ms ease;
+	opacity: 1;
+	transition: opacity 200ms ease;
+  }
+  > div {
+	  background: rgba(255, 255, 255, 0.95);
+	  border-radius: 2px;
+	  color: #555;
+	  transition: none;
+  	  width: auto;
+	  &:after, &:before {
+		top: 100%;
+		left: 18px;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		margin-top: -2px;
+	  }
+	  &:after {
+		border-color: rgba(255, 255, 255, 0);
+		border-top-color: #ffffff;
+		border-width: 7px;
+		margin-left: -7px;
+	  }
+	  &:before {
+		border-color: rgba(224, 224, 224, 0);
+		border-top-color: #e0e0e0;
+		border-width: 8px;
+		margin-left: -8px;
+	  }
+	  &[data-tab="color"] {
+	  	padding-top: 110px;
+	  	.color-picker { display: block; }
+	  	[data-tab="color"] { background: rgba(0,0,0,0.1); }
+	  }
+	  &[data-tab="link"] {
+	  	.set-link { display: block; }
+	  	&:after { border-top-color: #ddd; }
+	  	[data-tab="link"], &:after { background: rgba(0,0,0,0.1); }
+	  }
+	  &[data-tab="delete"] {
+	  	.confirm-delete { display: block; }
+	  	[data-tab="delete"] { background: rgba(0,0,0,0.1); }
+	  }
+	  .confirm-delete button {
+	  	width: 100%;
+	  	&:hover {
+	  		background: #f44336;
+	  		color: white;
+	  	}
+	  }
+	  .set-link button {
+	  	width: 100%;
+	  	&:hover {
+	  		background: #ccc;
+	  		color: black;
+	  	}
+	  }
+	  .color-picker {
+	  	width: 100%;
+	  	position: absolute;
+	  	left: 0;
+	  	top: 0;
+	  	line-height: 0;
+	  	display: none;
+	  	b {
+	  		display: inline-block;
+			width: 14.28%;
+			height: 30px;
+	  	}
+	  }
+	  .confirm-delete {
+	  	display: none;
+	  }
+	  .set-link {
+	  	display: none;
+	  }
+	  > i, span {
+  	  	font-size: 14px;
+		padding: 8px 10px;
+		cursor: pointer;
+		&:hover {
+			background: rgba(0,0,0,0.05);
+			color: black;
+			i { color: white; }
+		}
+	  }
+	  .color i {
+		background-color: red;
+		border-radius: 50%;
+		display: inline-block;
+		width: 18px;
+		height: 18px;
+		font-size: 8px;
+		color: rgba(255,255,255,0.9);
+		text-align: center;
+		line-height: 18px;
+		vertical-align: top;
+		margin-top: 6px;
+	  }
   }
 }
 
