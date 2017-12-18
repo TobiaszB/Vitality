@@ -1,6 +1,6 @@
 let sessions = module.exports = {
 
-  default_page: 'landing',
+  default_page: 'home',
 
   memory: {},
   
@@ -70,10 +70,10 @@ let sessions = module.exports = {
 
     if(!root.main) return setTimeout(root.main, 0, elem, options);
 
-    let page = elem ? elem.dataset.page : history.state ? history.state.page : 'landing';
+    let page = elem ? elem.dataset.page : history.state ? history.state.page : 'home';
 
     if(!localStorage.getItem('authenticated') && ['landing', 'login', 'about'].indexOf(page) == -1) {
-      page = 'landing';
+      page = 'home';
     }
 
     document.body.classList.forEach((c) => {

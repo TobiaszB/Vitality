@@ -36,7 +36,7 @@ body {
   position: relative;
   height: 100%;
   transition: 200ms padding ease;
-  &.landing-page, &.courses-page, .about-page {
+  &.home-page, &.courses-page, .team-page {
   	padding: 70px 0 0 0;
   }
   &.notified {
@@ -135,7 +135,7 @@ a {
 }
 
 body > nav {
-  background-color: $dark-grey;
+  background-color: #000;
   line-height: 70px;
   height: 70px;
   position: absolute;
@@ -143,8 +143,6 @@ body > nav {
   left: 0;
   white-space: nowrap;
   width: 100%;
-  background-image: url('/pattern-tile.png');
-  background-repeat: repeat;
   overflow: visible;
   z-index: 7;
 
@@ -411,7 +409,7 @@ main {
   		&[data-mode="lists"] { border-bottom: 2px solid $blue; }
   		&[data-mode="cards"] { border-bottom: 2px solid transparent; }
   }
-  &[data-load="landing.html"] {
+  &[data-load="home.html"] {
   	padding: 0;
   }
   &[data-load="courses.html"] {
@@ -452,10 +450,54 @@ main {
 
 }
 
-// landing 
-[data-load="landing.html"], [data-load="about.html"] {
+// home 
+[data-load="home.html"], [data-load="team.html"] {
 	positon: relative;
 	padding: 0;
+
+	form {
+		text-align: left;
+		label {
+			width: 50px;
+			display: inline-block;
+			vertical-align: top;
+			padding: 18px 0 0 0;
+		}
+		input, textarea {
+			margin: 10px 0;
+			width: 100%;
+		}
+		input {
+			height: 40px;
+		}
+		textarea {
+			height: 200px;
+		}
+	}
+
+	.point {
+		max-width: 33%;
+		text-align: center;
+		display: inline-block;
+		vertical-align: top;
+		img {
+			display: inline-block;
+			background-position: center center;
+			max-width: 150px;
+			margin: 0 0 10px 0;
+		}
+			
+		p {
+			color: white;
+			font-size: 18px;
+			display: inline-block;
+			line-height: 30px;
+			font-family: $raleway;
+			font-weight: 400;
+			vertical-align: top;
+			padding: 10px 20px 0;
+		}
+	}
 
 	section {
 		background-repeat: no-repeat;
@@ -467,9 +509,8 @@ main {
 		.text {
 			position: absolute;
 			bottom: 30%;
-			right: 1%;
-			text-align: left;
-			width: 600px;
+			left: 5%;
+			text-align: center;
 		}
 		h1 {
 			color: white;
@@ -479,14 +520,21 @@ main {
 			font-family: $changa;
 			text-align: left;
 		}
-		span {
-			font-family: $raleway;
+		button {
+			font-family: $changa;
 			font-size: 18px;
 			color: white;
-			width: 500px;
 			line-height: 36px;
-			padding: 0 0 0 5px;
+			padding: 0 10px;
+			margin: 10px 0 0 0;
+			text-transform: uppercase;
+			background-color: $orange;
+			border: 1px solid white;
+			cursor: pointer;
 			display: inline-block;
+			&:hover {
+				background-color: lighten($orange, 5);
+			}
 		}
 		
 		.content {
@@ -497,19 +545,11 @@ main {
 			margin: 0 auto;
 		}
 		
-		&.landing { background-image: url('/photo-joris-merel-1.jpg'); min-height: 100vh; }
-		&.about { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh; }
+		&.home { background-image: url('/photo-joris-merel-1.jpg'); min-height: 100vh; }
+		&.team { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh; }
 
 		&[data-index="2"] { 
 			background-color: $cyan; 
-
-			img {
-				width: 400px;
-				background-size: contain;
-				display: inline-block;
-				margin: 0 30px 50px 50px;
-				float: left;
-			}
 
 			h2 {
 				text-transform: uppercase;
@@ -517,18 +557,6 @@ main {
 				display: inline-block;
 				vertical-align: top;
 				font-family: $raleway;
-			}
-			
-			p {
-				color: white;
-				font-size: 18px;
-				display: inline-block;
-				line-height: 30px;
-				font-family: $raleway;
-				font-weight: 400;
-				vertical-align: top;
-				padding: 10px 0 0 0;
-				max-width: calc(100% - 500px);
 			}
 
 			.content {
@@ -589,8 +617,14 @@ main {
 				background-size: contain;
 				display: inline-block;
 				margin: 0 0 30px 50px;
-			}
 
+				&.contact-photo {
+					float: left;
+					margin: 50px 20px 20px 20px;
+				}
+
+			}
+	
 			h2 {
 				text-transform: uppercase;
 				color: white;
