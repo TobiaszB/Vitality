@@ -457,14 +457,20 @@ main {
 
 	form {
 		text-align: left;
+		max-width: 600px;
+		width: 100%;
+		padding: 20px;
+		display: inline-block;
 		label {
 			width: 50px;
 			display: inline-block;
 			vertical-align: top;
-			padding: 18px 0 0 0;
+			padding: 0;
+			margin: 20px 0 0 0;
+			font-family: $raleway;
+			text-transform: uppercase;
 		}
 		input, textarea {
-			margin: 10px 0;
 			width: 100%;
 		}
 		input {
@@ -499,6 +505,27 @@ main {
 		}
 	}
 
+	img {
+		width: 400px;
+		background-size: contain;
+		display: inline-block;
+		margin: 20px;
+		
+		&.joris {
+			float: left;
+		}
+		
+		&.merel {
+			float: right;
+		}
+
+		&.contact-photo {
+			margin: 40px 20px 20px 20px;
+			vertical-align: top;
+		}
+
+	}
+
 	section {
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -506,20 +533,57 @@ main {
 		position: relative;
 		overflow: hidden;
 		height: auto;
+		text-align: center;
+		
+		&[data-index="2"] {
+			background-color: $cyan;
+		}
+		
+		&[data-index="3"] {
+			text-align: left;
+		}
+		
+		&[data-index="4"] {
+			background-color: $cyan;
+		}
+
 		.text {
 			position: absolute;
 			bottom: 30%;
 			left: 5%;
-			text-align: center;
+			text-align: left;
 		}
+
 		h1 {
 			color: white;
 			-webkit-text-stroke: 1px $grey;
 			line-height: 80px;
 			font-size: 60px;
 			font-family: $changa;
-			text-align: left;
 		}
+
+		h2 {
+			color: white;
+			margin: 0;
+			padding: 0 0 5px 0;
+		}
+
+		p {
+			text-align: left;
+			color: white;
+			font-family: $raleway;
+			font-size: 14px;
+			line-height: 24px;
+		}
+
+		small {
+			color: $light-grey;
+			font-size: 30px;
+			text-align: left;
+			font-family: $changa;
+			-webkit-text-stroke: 1px $grey;
+		}
+
 		button {
 			font-family: $changa;
 			font-size: 18px;
@@ -544,110 +608,31 @@ main {
 			max-width: 1400px;
 			margin: 0 auto;
 		}
+
+		.social {
+			background-color: #3e5b98;
+			width: 60px;
+			height: 60px;
+			display: inline-block;
+			text-align: center;
+			line-height: 60px;
+			&:hover {
+				background-color: lighten(#3e5b98, 5);
+			}
+
+			&:before {
+				content: "\f09a";
+   				font-family: FontAwesome;
+   				color: white;
+   				font-size: 26px;
+			}
+		}
 		
 		&.home { background-image: url('/photo-joris-merel-1.jpg'); min-height: 100vh; }
 		&.team { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh; }
 
-		&[data-index="2"] { 
-			background-color: $cyan; 
+	}	
 
-			h2 {
-				text-transform: uppercase;
-				color: white;
-				display: inline-block;
-				vertical-align: top;
-				font-family: $raleway;
-			}
-
-			.content {
-				padding: 50px 0;
-				&.joris {
-					img { float: left; }
-				}
-				&.merel {
-					img { float: none; }
-					p {
-						padding: 10px 0 0 50px;
-					}
-					h2 { padding: 0 0 0 50px; }
-				}
-			}
-		}
-
-		&[data-index="3"]{
-			padding: 30px 50px;
-			h2 { 
-				color: $dark-grey; 
-				text-transform: uppercase;
-				display: inline-block;
-				vertical-align: top;
-				margin: 20px 20px 0 0;
-			}
-			.social {
-				width: 60px;
-				height: 60px;
-				line-height: 60px;
-				text-align: center;
-				margin: 0 10px 0 0;
-				color: white;
-				font-size: 24px;
-				display: inline-block;
-				&.fb { 
-					background-color: #3e5b98; 
-					&:before {
-						content: "\f09a";
-						font-family: FontAwesome;
-					}
-				}
-				&.google { 
-					background-color: #dd4b39; 
-					&:before {
-						content: "\f0d5";
-						font-family: FontAwesome;
-					}
-				}
-			}
-		}
-		
-		&[data-index="4"] { 
-			background-color: $cyan; 
-
-			img {
-				width: 400px;
-				background-size: contain;
-				display: inline-block;
-				margin: 0 0 30px 50px;
-
-				&.contact-photo {
-					float: left;
-					margin: 50px 20px 20px 20px;
-				}
-
-			}
-	
-			h2 {
-				text-transform: uppercase;
-				color: white;
-				display: inline-block;
-				vertical-align: top;
-				font-family: $raleway;
-				margin: 10px 0;
-			}
-			
-			p {
-				color: white;
-				font-size: 18px;
-				display: inline-block;
-				line-height: 30px;
-				font-family: $raleway;
-				font-weight: 400;
-				max-width: 50%;
-				vertical-align: top;
-			}
-		}
-
-	}
-	
 }
 
 // course
