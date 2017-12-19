@@ -468,6 +468,7 @@ main {
 			padding: 0;
 			margin: 20px 0 0 0;
 			font-family: $raleway;
+			color: white;
 			text-transform: uppercase;
 		}
 		input, textarea {
@@ -566,6 +567,7 @@ main {
 			color: white;
 			margin: 0;
 			padding: 0 0 5px 0;
+			&[data-load="labels.home_share_page"] { color: $dark-grey; }
 		}
 
 		p {
@@ -616,6 +618,7 @@ main {
 			display: inline-block;
 			text-align: center;
 			line-height: 60px;
+			margin: 0 0 0 20px;
 			&:hover {
 				background-color: lighten(#3e5b98, 5);
 			}
