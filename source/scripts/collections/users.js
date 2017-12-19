@@ -74,13 +74,9 @@ let users = module.exports = {
 
   load_profile_link: (element) => {
     
-    if(!root.me) return setTimeout(users.load_profile_link, 500, element);
-
-    if(!root.me.user) return;
+    if(!root.me || !root.me.user || !users.memory[root.me.user]) return setTimeout(users.load_profile_link, 500, element);
 
     let user = users.memory[root.me.user];
-
-    if(!user) return;
 
     element.innerHTML = `
 

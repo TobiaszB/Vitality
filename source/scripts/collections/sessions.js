@@ -35,7 +35,7 @@ let sessions = module.exports = {
       email: element.parentElement.querySelector('[type="email"]').value || '',
       password: element.parentElement.querySelector('[type="password"]').value || '',
     }, () => {
-
+console.log(231232);
       sessions.url('/courses');
 
       sessions.load_page(null, { prevent_url: true });

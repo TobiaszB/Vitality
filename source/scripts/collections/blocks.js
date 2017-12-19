@@ -5,13 +5,15 @@ let blocks = module.exports = {
   load: (element) => {
 
     element.innerHTML = Object.keys(blocks.memory).reduce((html, key) => `${ html }
-      <div><a style="background-image:url(/${ key }.jpg);" data-key="${ key }" data-load="blocks.render_one"></a></div>`, '');
+      <div><a data-key="${ key }" data-load="blocks.render_one"></a></div>`, '');
       
   },
 
   render_one: (element) => {
 
     element.innerHTML = `${ element.dataset.key }`;
+
+    element.style.backgroundImage = `url(/${ element.dataset.key }.jpg)`;
 
     element.addEventListener('mousedown', (e)=>{
 
@@ -45,7 +47,7 @@ document.body.addEventListener('mouseup', (e)=>{
 
   let key = blocks.drag_block.dataset.key;
 
-  blocks.drag_block.removeAttribute('style');
+  blocks.drag_block.setAttribute('style', `background-image:url(/${ key }.jpg);`);
 
   blocks.drag_block = null;
 

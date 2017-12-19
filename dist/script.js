@@ -157,13 +157,15 @@ var blocks = module.exports = {
   load: function load(element) {
 
     element.innerHTML = Object.keys(blocks.memory).reduce(function (html, key) {
-      return html + '\n      <div><a style="background-image:url(/' + key + '.jpg);" data-key="' + key + '" data-load="blocks.render_one"></a></div>';
+      return html + '\n      <div><a data-key="' + key + '" data-load="blocks.render_one"></a></div>';
     }, '');
   },
 
   render_one: function render_one(element) {
 
     element.innerHTML = '' + element.dataset.key;
+
+    element.style.backgroundImage = 'url(/' + element.dataset.key + '.jpg)';
 
     element.addEventListener('mousedown', function (e) {
 
@@ -194,7 +196,7 @@ document.body.addEventListener('mouseup', function (e) {
 
   var key = blocks.drag_block.dataset.key;
 
-  blocks.drag_block.removeAttribute('style');
+  blocks.drag_block.setAttribute('style', 'background-image:url(/' + key + '.jpg);');
 
   blocks.drag_block = null;
 
@@ -507,7 +509,7 @@ var sessions = module.exports = {
             email: element.parentElement.querySelector('[type="email"]').value || '',
             password: element.parentElement.querySelector('[type="password"]').value || ''
         }, function () {
-
+            console.log(231232);
             sessions.url('/courses');
 
             sessions.load_page(null, { prevent_url: true });
@@ -916,13 +918,9 @@ var users = module.exports = {
 
     load_profile_link: function load_profile_link(element) {
 
-        if (!root.me) return setTimeout(users.load_profile_link, 500, element);
-
-        if (!root.me.user) return;
+        if (!root.me || !root.me.user || !users.memory[root.me.user]) return setTimeout(users.load_profile_link, 500, element);
 
         var user = users.memory[root.me.user];
-
-        if (!user) return;
 
         element.innerHTML = '\n\n      <div class="img-container"><img src="' + user.avatar + '"></div>\n      <span>' + user.name + '</span>\n      \n    ';
     },
@@ -2216,7 +2214,7 @@ require('./polyfill.js');
 
 window.AOS = require('./components/aos.js');
 
-var DEV_MODE = false;
+var DEV_MODE = true;
 
 window.root = {
 
