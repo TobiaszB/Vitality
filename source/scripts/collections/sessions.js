@@ -2,6 +2,8 @@ let sessions = module.exports = {
 
   default_page: 'home',
 
+  public_pages: ['home', 'login', 'about', 'team', 'services', 'contact'],
+
   memory: {},
   
   load: function load(){
@@ -72,7 +74,7 @@ let sessions = module.exports = {
 
     let page = elem ? elem.dataset.page : history.state ? history.state.page : 'home';
 
-    if(!localStorage.getItem('authenticated') && ['landing', 'login', 'about'].indexOf(page) == -1) {
+    if(!localStorage.getItem('authenticated') && sessions.public_pages.indexOf(page) == -1) {
       page = 'home';
     }
 
