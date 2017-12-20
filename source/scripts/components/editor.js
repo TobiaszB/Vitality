@@ -101,8 +101,6 @@ let editor = module.exports = {
 
     if(option.type == 'boolean') option.value = !option.value;
 
-    console.log(editor.course);
-
   },
 
   tooltip: (iteration)=>{
@@ -183,10 +181,11 @@ let editor = module.exports = {
 
     root.courses.updated = true;
 
-    console.log(course);
+  },
 
-  }
-  ,
+  scroll_trigger: (element) =>  {
+    
+  },
 
   set_option: (config,property)=>{
 
