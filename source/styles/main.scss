@@ -1172,6 +1172,10 @@ main.dropzone[data-load="edit.html"] {
 .block {
 	position: relative;
 	min-height: 500px;
+	.fa-cog:hover + .block-config,
+	.block-config:hover {
+		display: block
+	}
 	.block-options {
 		position: absolute;
 		right: 0;
@@ -1182,6 +1186,7 @@ main.dropzone[data-load="edit.html"] {
 		z-index: 5;
 	}
 	.block-config {
+	  display: none;
 	  position: absolute;
 	  right: 0;
 	  width: 200px;

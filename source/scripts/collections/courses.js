@@ -21,7 +21,7 @@ let courses = module.exports = {
 
       let course = root.courses.memory[key];
 
-      html += `
+      if(course.published_at) html += `
 
         <div data-key="${ course.key }">
           <img src="${ course.thumbnail }">

@@ -208,269 +208,6 @@ document.body.addEventListener('mouseup', function (e) {
 });
 });
 
-require.register("source/scripts/collections/courses.js", function(exports, require, module) {
-'use strict';
-
-var courses = module.exports = {
-
-  // here we save all courses in client memory
-  // { [key]: OBJECT }
-  memory: {},
-
-  // button is placed to the right of the title of the page
-  add: function add(element) {
-
-    // root.send is used to talk to the server
-    root.send({ request: 'new_course' });
-  },
-
-  load_courses: function load_courses(element) {
-
-    var keys = Object.keys(root.users.memory),
-        html = '';
-
-    element.innerHTML = Object.keys(root.courses.memory).reduce(function (html, key) {
-
-      var course = root.courses.memory[key];
-
-      html += '\n\n        <div data-key="' + course.key + '">\n          <img src="' + course.thumbnail + '">\n          <span>' + course.name + '</span>\n        </div>\n\n      ';
-
-      return html;
-    }, '');
-  },
-
-  // view mode can be cards or list, it has a button in the left top of the interface
-  view_mode: function view_mode(element) {
-
-    courses.mode = element.dataset.mode;
-
-    // we put the mode also in the main, to support CSS styling
-    root.main.dataset.mode = element.dataset.mode;
-
-    // see update loop at the bottom of this file
-    courses.updated = true;
-  },
-
-  // anytime the user triggers the data-input of the search field, we execute this
-  save_search: function save_search(element) {
-
-    // used inside of courses.render()
-    courses.search_query = String(element.value || '').toLowerCase();
-
-    // see update loop at the bottom of this file
-    courses.updated = true;
-  },
-
-  // goes off anytime course-related data-input is fired
-  edit: function edit(element, options) {
-
-    // we always need to provide a request string and the key of the object we are editing
-    var request = {
-      request: 'edit',
-      key: element.dataset.course
-    };
-
-    // but the value we are changing shall be added dynamically,
-    // so we can use this edit function straight from the HTML
-    // <input data-input="courses.edit" data-key="[KEY]">
-    var v = options ? options.value : element.value;
-
-    request[element.dataset.property] = v;
-
-    // options.callback can only be used when this function is fired manually in Javascript
-    // since we cannot write a function inside of the HTML tag
-    root.send(request, options ? options.callback : null);
-  },
-
-  list: function list(element) {
-
-    // we are lazy developers that do not want to select the list over and over
-    // whenever we use this list function manually
-    if (!element) element = document.querySelector('[data-load="courses.list"]');
-
-    // element still not found?! we must stop this madness
-    if (!element) return;
-
-    if (history.state.course) return courses.load_course(element);
-
-    // we clean out the old HTML should this function be fired after the list already rendered
-    element.innerHTML = '';
-
-    // we show a loading text
-    root.labels.loading(element);
-
-    // and start the render loop!
-    courses.render(element);
-  },
-
-  load_course: function load_course(element) {
-
-    element.innerHTML = '<div data-load="courses.render_one" data-course="' + history.state.course + '"></div>';
-  },
-
-  render: function render(element, keys, iteration) {
-
-    // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
-    if (!element) return;
-
-    // we need to make sure we only run 1 loop at the same time
-    // every time render is called outside of its own loop, iteration will be undefined
-    // so we use this condition to also update the dataset of the element
-    // in order for the old loop to kill itself...
-    if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
-
-    // if it turns out this execution is an outdated iteration,
-    // the element has updated its dataset.iteration outside of this loop
-    // we have to bring this loop to the white shores
-    // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
-    if (element.dataset.iteration != iteration) return;
-
-    // every time render is called outside of its own loop, keys will be undefined
-    if (!keys) keys = Object.keys(courses.memory);
-
-    // the loop has finished
-    if (!keys.length) {
-
-      // sadly, no children are found inside of the element
-      // this can only mean there were no results
-      if (!element.children.length) return root.labels.no_results(element);
-
-      // we had results, and are no longer loading, so lets clear that loading message
-      return element.dataset.message = '';
-    }
-
-    var search = courses.search_query,
-        // search value is changed by courses.save_search()
-    course = courses.memory[keys.shift()];
-
-    if (!course || course.archived || search && String(course.name).toLowerCase().indexOf(search) == -1 || courses.manager_filter.length && courses.manager_filter.indexOf(course.admin) == -1) {
-
-      if (keys.length % 100 == 0) return requestAnimationFrame(function () {
-
-        courses.render(element, keys, iteration);
-      });
-
-      return courses.render(element, keys, iteration);
-    }
-
-    requestAnimationFrame(function () {
-
-      courses.render(element, keys, iteration);
-    });
-
-    var elem = document.createElement('div');
-
-    elem.dataset.load = 'courses.render_one';
-
-    elem.dataset.course = course.key;
-
-    element.appendChild(elem);
-  },
-
-  archive: function archive(element) {
-
-    var course = courses.memory[element.dataset.key];
-
-    root.send({ request: 'archive', key: course.key }, function () {
-
-      // see update loop at the bottom of this file
-      courses.updated = true;
-    });
-  },
-
-  manager_filter: [],
-
-  toggle_manager: function toggle_manager(element) {
-
-    var key = element.dataset.key,
-        filter = courses.manager_filter,
-        index = filter.indexOf(key);
-
-    element.classList.toggle('active');
-
-    if (index > -1) filter.splice(index, 1);else filter.push(key);
-
-    courses.updated = true;
-  },
-
-  load_managers: function load_managers(element) {
-
-    element.innerHTML = Object.keys(root.users.memory).reduce(function (html, key) {
-
-      var user = root.users.memory[key];
-
-      if (user.role == 'admin') html += '<div data-click="courses.toggle_manager" data-key="' + user.key + '">\n        <img src="' + user.avatar + '">\n        <span data-load="users.memory.' + user.key + '.name"></span>\n      </div>';
-
-      return html;
-    }, '');
-  },
-
-  render_one: function render_one(element) {
-
-    var course = courses.memory[element.dataset.course];
-
-    element.dataset.key = element.dataset.course;
-
-    element.innerHTML = courses.mode == 'lists' ? '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <img src="' + root.users.memory[course.admin].avatar + '">\n      <input data-load="labels.name" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n    ';
-
-    if (!course.name) element.querySelector('input').focus();
-
-    function format(date) {
-
-      date = new Date(date);
-
-      var months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
-
-      if (!date || String(date).toLowerCase() == 'invalid date') return '';
-
-      return '\n        ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + '\n        ' + date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes() + '\n      ';
-    }
-  },
-
-  course_nav: function course_nav(element) {
-
-    var course = root.courses.memory[element.dataset.key];
-
-    return '<div class="course-nav">\n        ' + (course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>') + '<br>\n        <a data-key="' + element.dataset.key + '" data-click="courses.view" data-load="labels.view"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>\n      </div>';
-  },
-
-  view: function view(element) {
-
-    root.sessions.url({ page: 'edit', course: element.dataset.key });
-
-    root.sessions.load_page(null, { prevent_url: true });
-  },
-
-  invite: function invite(element) {
-
-    var course = root.courses.memory[element.dataset.key];
-
-    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.invite"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
-  },
-
-  stats: function stats(element) {
-
-    var course = root.courses.memory[element.dataset.key];
-
-    element.innerHTML = '<div class="modal">\n      <i class="fa fa-times close-modal" data-click="modal.close"></i>\n      <div class="content">\n        <div class="thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n        <h3 data-load="labels.stats"></h3>\n        ' + courses.course_nav(element) + '\n        <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n        <span data-load="users.memory.' + course.admin + '.name"></span>\n      </div>\n    </div>';
-  }
-
-};
-
-(function updater() {
-
-  if (!courses.updated) return setTimeout(updater, 300);
-
-  courses.updated = false;
-
-  if (root.main.dataset.load == 'edit.html') root.main.dataset.load = 'edit.html'; // this correctly triggers the mutationobserver in listeners.js
-
-  else courses.list();
-
-  updater();
-})();
-});
-
 require.register("source/scripts/collections/sessions.js", function(exports, require, module) {
 'use strict';
 
@@ -617,6 +354,8 @@ module.exports = {
 				for (var i = 0; i < keys.length; i++) {
 
 						var course = root.courses.memory[keys[i]];
+
+						if (!course.published_at) continue;
 
 						html += '\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t</div>\n\t\t';
 				};
@@ -1516,18 +1255,21 @@ var editor = module.exports = {
 
             var options = Object.keys(block.options).reduce(function (html, option) {
                 return html + ' data-' + option + '="' + block.options[option].value + '"';
-            }, '');
+            }, ''),
+                progress = '';
 
-            return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
+            if (block.options.progress && block.options.progress.trigger) progress = 'data-load="' + block.options.progress.trigger + '"';
+
+            return html + '<div ' + progress + ' class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
                 return '<b style="background-color:#' + c + ';"></b>';
-            }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
+            }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
                 var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
 
-                if (block.options[option].type == 'boolean') element = '\n                <input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element + '\n              ';
+                if (block.options[option].type == 'boolean') element = '<input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element;
 
                 return '' + html + element;
-            }, '') + '</div>\n        </div>\n      </div>';
+            }, '') + '</div>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
         }, '\n      <div class="control-editor">\n        <a data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
     },
 
@@ -1559,12 +1301,7 @@ var editor = module.exports = {
 
         setTimeout(editor.tooltip, 1000, iteration);
 
-        if (document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map(function (element) {
-
-            element.style.display = 'none';
-
-            element.classList.remove('fade-in');
-        });
+        if (document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map(close);
 
         var index = document.activeElement.parentElement.dataset.index;
 
@@ -1576,7 +1313,7 @@ var editor = module.exports = {
 
         if (editor.tooltip_list[index].classList.contains('fade-in')) return;
 
-        editor.tooltip_list[index].classList.remove('fade-in');
+        editor.tooltip_list.map(close);
 
         editor.tooltip_list[index].style.display = 'block';
 
@@ -1584,6 +1321,13 @@ var editor = module.exports = {
 
             editor.tooltip_list[index].classList.add('fade-in');
         });
+
+        function close(element) {
+
+            element.style.display = 'none';
+
+            element.classList.remove('fade-in');
+        }
     },
 
     add_block: function add_block(key) {
@@ -1611,16 +1355,11 @@ var editor = module.exports = {
         console.log(course);
     },
 
-    set_option: function set_option(type, property) {
+    set_option: function set_option(config, property) {
 
-        var config = {
-            property: property,
-            type: type
-        };
+        config.property = property;
 
-        if (type == 'boolean') config.value = true;
-
-        console.log(type, property);
+        if (config.type == 'boolean') config.value = true;
 
         return config;
     },

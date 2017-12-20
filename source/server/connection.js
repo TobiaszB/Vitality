@@ -500,16 +500,17 @@ function database() {
         `,
         created_at: new Date(),
         options: {
-          show_title: 'boolean',
-          show_text: 'boolean',
-          show_buttons: 'boolean',
-          show_arrow: 'boolean',
-          content_align: 'align',
-          background_image: 'url',
-          parallax: 'boolean',
-          background_color: 'color',
-          background_video: 'video',
-          overlay: 'overlay'
+          progress: { type: 'progress', trigger: 'editor.scroll_trigger' },
+          show_title: { type: 'boolean' },
+          show_text: { type: 'boolean' },
+          show_buttons: { type: 'boolean' },
+          show_arrow: { type: 'boolean' },
+          content_align: { type: 'align' },
+          background_image: { type: 'url' },
+          parallax: { type: 'boolean' },
+          background_color: { type: 'color' },
+          background_video: { type: 'video' },
+          overlay: { type: 'overlay' }
         }
       }
     }, { upsert: true }, ()=>{});
