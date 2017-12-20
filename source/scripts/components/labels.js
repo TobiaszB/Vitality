@@ -77,7 +77,8 @@ let labels = {
     contact_email: ['Email', 'Email'],
     contact_message: ['Bericht', 'Message'],
     send: ['Verstuur', 'Send'],
-    progress: ['Progressie', 'Progress']
+    progress: ['Progressie', 'Progress'],
+    video: ['Video', 'Video']
 };
 
 for (let n in labels) {

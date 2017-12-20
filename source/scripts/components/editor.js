@@ -26,12 +26,9 @@ let editor = module.exports = {
 
     element.innerHTML = course.blocks.reduce((html,block,index)=>{
 
-      let options = Object.keys(block.options).reduce((html,option)=>`${html} data-${option}="${block.options[option].value}"`, ''),
-          progress = '';
+      let options = Object.keys(block.options).reduce((html,option)=>`${html} data-${option}="${block.options[option].value}"`, '');
 
-      if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
-
-      return `${html}<div ${ progress } class="block" ${options} data-key="${block.key}" data-index="${index}">
+      return `${html}<div class="block" ${options} data-key="${block.key}" data-index="${index}">
         ${block.html}
         <div class="block-tooltip" data-index="${index}" data-load="editor.load_tooltip">
           <div class="inner">
@@ -211,16 +208,38 @@ let editor = module.exports = {
 
     });
 
-    if (!block.content)
-      block.content = {};
+    if(!block.content) block.content = {};
 
-    if (!block.content[key])
-      block.content[key] = key;
+    if(!block.content[key]) block.content[key] = key;
 
-    if(key !== 'video') element.innerHTML = block.content[key];
+    if(key !== 'video') element.innerHTML = key;
 
-  }
-  ,
+    element.dataset.load = `editor.load_${ key }`;
+
+  },
+
+  load_title: (element) => {
+
+  },
+
+  load_text: (element) => {
+
+  },
+
+  load_video: (element) => {
+
+    //if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
+
+    let source = "https://img.youtube.com/vi/T7Mm392tY1k/sddefault.jpg",
+        iframe = document.createElement( "iframe" );
+ 
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("src", `https://www.youtube.com/embed/T7Mm392tY1k`);
+
+        element.appendChild(iframe);
+
+  },
 
   // only locally
   save: (element)=>{
@@ -229,8 +248,6 @@ let editor = module.exports = {
       , block = editor.course.blocks[index];
 
     block.content[element.dataset.element] = element.value;
-
-    console.log(JSON.stringify(editor.course, null, 2));
 
   }
   ,

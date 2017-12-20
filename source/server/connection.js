@@ -478,13 +478,9 @@ function database() {
           show_title: { type: 'boolean' },
           show_text: { type: 'boolean' },
           show_buttons: { type: 'boolean' },
-          show_arrow: { type: 'boolean' },
           content_align: { type: 'align' },
-          background_image: { type: 'url' },
-          parallax: { type: 'boolean' },
           background_color: { type: 'color' },
-          background_video: { type: 'video' },
-          overlay: { type: 'overlay' }
+          video: { type: 'video', fullscreen: 'boolean', url: 'string' },
         }
       }
     }, { upsert: true }, ()=>{});
