@@ -235,6 +235,8 @@ let editor = module.exports = {
 
   load_title: (element) => {
 
+    //if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
+
   },
 
   load_text: (element) => {
@@ -242,17 +244,36 @@ let editor = module.exports = {
   },
 
   load_video: (element) => {
+  
+    let html = `
+      <div>
+        
+        <img src="/placeholder-video.png"><!--
 
-    //if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
+     --><input type="text" data-load="labels.youtube_placeholder"><!--
+        
+     --><button data-click="editor.insert_video"></button>
 
-    let source = "https://img.youtube.com/vi/T7Mm392tY1k/sddefault.jpg",
-        iframe = document.createElement( "iframe" );
- 
-        iframe.setAttribute("frameborder", "0");
-        iframe.setAttribute("allowfullscreen", "");
-        iframe.setAttribute("src", `https://www.youtube.com/embed/T7Mm392tY1k`);
+        <div class="player"></div>
 
-        element.appendChild(iframe);
+      </div>
+    `;
+  
+    element.innerHTML = html;
+
+  },
+
+  insert_video: (element) => {
+
+    let input = element.previousElementSibling,
+        container = element.nextElementSibling,
+        iframe = document.createElement("iframe");
+
+    iframe.setAttribute("frameborder", "0");
+    iframe.setAttribute("allowfullscreen", "");
+    iframe.setAttribute("src", `https://www.youtube.com/embed/${ input.value }`);    
+    container.innerHTML = '';
+    container.appendChild(iframe);
 
   },
 

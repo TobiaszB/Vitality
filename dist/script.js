@@ -1473,16 +1473,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-    load: function load(element) {
+  load: function load(element) {
 
-        root.calender = element;
+    root.calender = element;
 
-        var a = moment('2016-01-01');
-        var b = a.add(1, 'week');
-        a.format();
+    var a = moment('2016-01-01');
+    var b = a.add(1, 'week');
+    a.format();
 
-        console.log(a);
-    }
+    console.log(a);
+  }
 
 };
 });
@@ -1659,22 +1659,32 @@ var editor = module.exports = {
         element.dataset.load = 'editor.load_' + key;
     },
 
-    load_title: function load_title(element) {},
+    load_title: function load_title(element) {
+
+        //if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
+
+    },
 
     load_text: function load_text(element) {},
 
     load_video: function load_video(element) {
 
-        //if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
+        var html = '\n      <div>\n        \n        <img src="/placeholder-video.png"><!--\n\n     --><input type="text" data-load="labels.youtube_placeholder"><!--\n        \n     --><button data-click="editor.insert_video"></button>\n\n        <div class="player"></div>\n\n      </div>\n    ';
 
-        var source = "https://img.youtube.com/vi/T7Mm392tY1k/sddefault.jpg",
+        element.innerHTML = html;
+    },
+
+    insert_video: function insert_video(element) {
+
+        var input = element.previousElementSibling,
+            container = element.nextElementSibling,
             iframe = document.createElement("iframe");
 
         iframe.setAttribute("frameborder", "0");
         iframe.setAttribute("allowfullscreen", "");
-        iframe.setAttribute("src", 'https://www.youtube.com/embed/T7Mm392tY1k');
-
-        element.appendChild(iframe);
+        iframe.setAttribute("src", 'https://www.youtube.com/embed/' + input.value);
+        container.innerHTML = '';
+        container.appendChild(iframe);
     },
 
     // only locally
@@ -1792,7 +1802,8 @@ var labels = {
     contact_message: ['Bericht', 'Message'],
     send: ['Verstuur', 'Send'],
     progress: ['Progressie', 'Progress'],
-    video: ['Video', 'Video']
+    video: ['Video', 'Video'],
+    youtube_placeholder: [placeholder('mXq8SekC5Qg'), placeholder('mXq8SekC5Qg')]
 };
 
 for (var n in labels) {

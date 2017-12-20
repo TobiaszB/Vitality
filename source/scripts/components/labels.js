@@ -88,7 +88,8 @@ let labels = {
     contact_message: ['Bericht', 'Message'],
     send: ['Verstuur', 'Send'],
     progress: ['Progressie', 'Progress'],
-    video: ['Video', 'Video']
+    video: ['Video', 'Video'],
+    youtube_placeholder: [placeholder('mXq8SekC5Qg'), placeholder('mXq8SekC5Qg')],
 };
 
 for (let n in labels) {
