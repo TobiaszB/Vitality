@@ -246,17 +246,13 @@ let editor = module.exports = {
   load_video: (element) => {
   
     let html = `
-      <div>
-        
-        <img src="/placeholder-video.png"><!--
+      <img src="/placeholder-video.png"><!--
 
-     --><input type="text" data-load="labels.youtube_placeholder"><!--
-        
-     --><button data-click="editor.insert_video"></button>
+   --><input type="text" data-load="labels.youtube_placeholder"><!--
 
-        <div class="player"></div>
+   --><button data-click="editor.insert_video"></button>
 
-      </div>
+      <div class="player"></div>
     `;
   
     element.innerHTML = html;

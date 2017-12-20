@@ -1669,7 +1669,7 @@ var editor = module.exports = {
 
     load_video: function load_video(element) {
 
-        var html = '\n      <div>\n        \n        <img src="/placeholder-video.png"><!--\n\n     --><input type="text" data-load="labels.youtube_placeholder"><!--\n        \n     --><button data-click="editor.insert_video"></button>\n\n        <div class="player"></div>\n\n      </div>\n    ';
+        var html = '\n      <img src="/placeholder-video.png"><!--\n\n   --><input type="text" data-load="labels.youtube_placeholder"><!--\n\n   --><button data-click="editor.insert_video"></button>\n\n      <div class="player"></div>\n    ';
 
         element.innerHTML = html;
     },
