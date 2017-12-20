@@ -37,6 +37,9 @@ body {
   position: relative;
   height: 100%;
   transition: 200ms padding ease;
+  &.home-page {
+  	main { background-color: $dark-grey; }
+  }
   &.home-page, &.courses-page, .team-page {
   	padding: 70px 0 0 0;
   }
@@ -406,7 +409,6 @@ main {
   height: 100%;
   width: 100%;
   position: relative;
-  background-color: $dark-grey;
   &[data-mode="lists"] a {
   		&[data-mode="lists"] { border-bottom: 2px solid $blue; }
   		&[data-mode="cards"] { border-bottom: 2px solid transparent; }
