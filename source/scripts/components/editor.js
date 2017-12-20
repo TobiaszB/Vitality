@@ -22,8 +22,7 @@ let editor = module.exports = {
 
     element.dataset.device = 'desktop';
 
-    if (!course.blocks)
-      course.blocks = [];
+    if (!course.blocks) course.blocks = [];
 
     element.innerHTML = course.blocks.reduce((html,block,index)=>{
 
@@ -145,8 +144,7 @@ let editor = module.exports = {
     }
     );
 
-  }
-  ,
+  },
 
   add_block: (key)=>{
 
@@ -226,7 +224,7 @@ let editor = module.exports = {
     if (!block.content[key])
       block.content[key] = key;
 
-    element.innerHTML = block.content[key];
+    if(key !== 'video') element.innerHTML = block.content[key];
 
   }
   ,

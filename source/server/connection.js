@@ -465,6 +465,29 @@ function database() {
       }
     }, { upsert: true }, ()=>{});
 
+    db.collection('blocks').findAndModify({ key: 'blocks_video' }, [], {
+      $set: {
+        html: `
+          <textarea data-load="editor.load_element" data-element="title"></textarea>
+          <textarea data-load="editor.load_element" data-element="text"></textarea>
+          <div data-load="editor.load_element" data-element="video"></div>
+        `,
+        created_at: new Date(),
+        options: {
+          show_title: 'boolean',
+          show_text: 'boolean',
+          show_buttons: 'boolean',
+          show_arrow: 'boolean',
+          content_align: 'align',
+          background_image: 'url',
+          parallax: 'boolean',
+          background_color: 'color',
+          background_video: 'video',
+          overlay: 'overlay'
+        }
+      }
+    }, { upsert: true }, ()=>{});
+
     db.collection('blocks').findAndModify({ key: 'blocks_test' }, [], {
       $set: {
         html: `
