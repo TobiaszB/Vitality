@@ -491,26 +491,6 @@ function database() {
       }
     }, { upsert: true }, ()=>{});
 
-    db.collection('blocks').findAndModify({ key: 'blocks_video' }, [], {
-      $set: {
-        html: `
-          <textarea data-load="editor.load_element" data-element="title"></textarea>
-          <textarea data-load="editor.load_element" data-element="text"></textarea>
-          <div data-load="editor.load_element" data-element="video"></div>
-        `,
-        created_at: new Date(),
-        options: {
-          progress: { type: 'progress', trigger: 'editor.scroll_trigger' },
-          show_title: { type: 'boolean' },
-          show_text: { type: 'boolean' },
-          show_buttons: { type: 'boolean' },
-          content_align: { type: 'align' },
-          background_color: { type: 'color' },
-          video: { type: 'video', fullscreen: 'boolean', url: 'string' },
-        }
-      }
-    }, { upsert: true }, ()=>{});
-
     db.collection('blocks').findAndModify({ key: 'blocks_test' }, [], {
       $set: {
         html: `
@@ -537,6 +517,74 @@ function database() {
         }
       }
     }, { upsert: true }, ()=>{});
+
+    db.collection('blocks').findAndModify({ key: 'blocks_video' }, [], {
+      $set: {
+        html: `
+          <textarea data-load="editor.load_element" data-element="title"></textarea>
+          <textarea data-load="editor.load_element" data-element="text"></textarea>
+          <div data-load="editor.load_element" data-element="video"></div>
+        `,
+        created_at: new Date(),
+        options: {
+          progress: { type: 'progress', trigger: 'editor.scroll_trigger' },
+          show_title: { type: 'boolean' },
+          show_text: { type: 'boolean' },
+          show_buttons: { type: 'boolean' },
+          content_align: { type: 'align' },
+          background_color: { type: 'color' },
+          video: { type: 'video', fullscreen: 'boolean', url: 'string' },
+        }
+      }
+    }, { upsert: true }, ()=>{});
+
+    db.collection('blocks').findAndModify({ key: 'blocks_points' }, [], {
+      $set: {
+        html: `
+          <section>
+              <img src="/point-nutrition.png"><br>
+              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
+              <textarea data-load="editor.load_element" data-element="text"></textarea>
+          </section>
+          <section>
+              <img src="/point-training.png"><br>
+              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
+              <textarea data-load="editor.load_element" data-element="text"></textarea>
+          </section>
+          <section>
+              <img src="/point-lifestyle.png"><br>
+              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
+              <textarea data-load="editor.load_element" data-element="text"></textarea>
+          </section>
+          <section>
+              <img src="/point-lifestyle.png"><br>
+              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
+              <textarea data-load="editor.load_element" data-element="text"></textarea>
+          </section>
+          <section>
+              <img src="/point-lifestyle.png"><br>
+              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
+              <textarea data-load="editor.load_element" data-element="text"></textarea>
+          </section>
+          <section>
+              <img src="/point-lifestyle.png"><br>
+              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
+              <textarea data-load="editor.load_element" data-element="text"></textarea>
+          </section>
+        `,
+        created_at: new Date(),
+        options: {
+          progress: { type: 'progress', trigger: 'editor.scroll_trigger' },
+          show_title: { type: 'boolean' },
+          show_text: { type: 'boolean' },
+          show_buttons: { type: 'boolean' },
+          content_align: { type: 'align' },
+          background_color: { type: 'color' },
+          video: { type: 'video', fullscreen: 'boolean', url: 'string' },
+        }
+      }
+    }, { upsert: true }, ()=>{});
+
 
 
   });

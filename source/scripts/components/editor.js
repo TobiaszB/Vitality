@@ -118,41 +118,41 @@ let editor = module.exports = {
 
   tooltip: (iteration)=>{
 
-    if (history.state.page != 'edit' || editor.looping != iteration)
-      return;
+//     if (history.state.page != 'edit' || editor.looping != iteration)
+//       return;
 
-    setTimeout(editor.tooltip, 1000, iteration);
+//     setTimeout(editor.tooltip, 1000, iteration);
 
-    if (document.activeElement.tagName.toLowerCase() != 'textarea')
-      return editor.tooltip_list.map(close);
+//     if (document.activeElement.tagName.toLowerCase() != 'textarea')
+//       return editor.tooltip_list.map(close);
 
-    let index = document.activeElement.parentElement.dataset.index;
+//     let index = document.activeElement.parentElement.dataset.index;
 
-    editor.tooltip_list[index].style.bottom = `${ document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop}px`;
+//     editor.tooltip_list[index].style.bottom = `${ document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop}px`;
 
-    editor.tooltip_list[index].style.left = `${document.activeElement.offsetLeft}px`;
+//     editor.tooltip_list[index].style.left = `${document.activeElement.offsetLeft}px`;
 
-    editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
+//     editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
 
-    if (editor.tooltip_list[index].classList.contains('fade-in')) return;
+//     if (editor.tooltip_list[index].classList.contains('fade-in')) return;
     
-    editor.tooltip_list.map(close);
+//     editor.tooltip_list.map(close);
     
-    editor.tooltip_list[index].style.display = 'block';
+//     editor.tooltip_list[index].style.display = 'block';
 
-    requestAnimationFrame(()=>{
+//     requestAnimationFrame(()=>{
 
-      editor.tooltip_list[index].classList.add('fade-in');
+//       editor.tooltip_list[index].classList.add('fade-in');
 
-    });
+//     });
 
-    function close(element){
+//     function close(element){
 
-      element.style.display = 'none';
+//       element.style.display = 'none';
 
-      element.classList.remove('fade-in');
+//       element.classList.remove('fade-in');
 
-    }
+//     }
 
   },
 
@@ -217,15 +217,15 @@ let editor = module.exports = {
 
     element.dataset.input = 'editor.save';
 
-    element.addEventListener('mouseenter', ()=>{
+//     element.addEventListener('mouseenter', ()=>{
 
-      element.focus();
+//       element.focus();
 
-    });
+//     });
 
-    if(!block.content) block.content = {};
+//     if(!block.content) block.content = {};
 
-    if(!block.content[key]) block.content[key] = key;
+//     if(!block.content[key]) block.content[key] = key;
 
     if(key !== 'video') element.innerHTML = key;
 
@@ -279,7 +279,7 @@ let editor = module.exports = {
     let index = parseInt(element.parentElement.dataset.index, 10)
       , block = editor.course.blocks[index];
 
-    block.content[element.dataset.element] = element.value;
+//     block.content[element.dataset.element] = element.value;
 
   }
   ,

@@ -1183,8 +1183,8 @@ main.dropzone[data-load="edit.html"] {
 		top: 0;
 		font-size: 0;
 		text-align: center;
-		box-shadow: 1px 1px 1px #444444;
 		z-index: 5;
+		white-space: nowrap;
 	}
 	.block-config {
 	  display: block;
@@ -1224,6 +1224,57 @@ main.dropzone[data-load="edit.html"] {
 	  		background: rgba(0,0,0,0.2);
 	  	}
 	  }
+	}
+
+	&[data-key="blocks_points"] {
+		padding: 80px 40px 20px;
+		height: auto;
+		background-color: $cyan;
+		text-align: center;
+		> section {
+			width: 33%;
+			max-width: 256px;
+			display: inline-block;
+			vertical-align: top;
+			padding: 0 40px;
+			text-align: left;
+		}
+		img {
+			width: 100%;
+		}
+		textarea {
+			background: transparent;
+			border: 0;
+			position: relative;
+			z-index: 3;
+			resize: none;
+			width: 100%;
+			color: white;
+			outline: 0;
+			overflow: hidden;
+			&[data-element="title"] {
+				font-family: $changa;
+				font-size: 30px;
+				font-weight: bold;
+				height: 40px;
+				color: white;
+				white-space: normal;
+				display: inline-block;
+				vertical-align: top;
+				text-align: center;
+			}
+			&[data-element="text"] {
+				font-family: $raleway;
+				font-size: 16px;
+				font-weight: 500;
+				line-height: 30px;
+				height: 180px;
+				display: inline-block;
+				color: white;
+				padding: 10px 0 0 0;
+				text-align: justify;
+			}
+		}
 	}
 
 	&[data-key="blocks_video"] {
