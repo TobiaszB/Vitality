@@ -269,6 +269,7 @@ let courses = module.exports = {
         <a data-key="${ element.dataset.key }" data-click="courses.view" data-load="labels.view"></a>
         <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>
         <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>
+        <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.delete" data-load="labels.delete"></a>
       </div>`;
       
   },

@@ -116,43 +116,63 @@ let editor = module.exports = {
 
   },
 
-  tooltip: (iteration)=>{
+  tooltip: (iteration, block)=>{
 
-//     if (history.state.page != 'edit' || editor.looping != iteration)
-//       return;
+    if (history.state.page != 'edit' || editor.looping != iteration) return;
 
-//     setTimeout(editor.tooltip, 1000, iteration);
+    let focus = document.activeElement;
 
-//     if (document.activeElement.tagName.toLowerCase() != 'textarea')
-//       return editor.tooltip_list.map(close);
+    if (!focus || focus.tagName.toLowerCase() != 'textarea') {
 
-//     let index = document.activeElement.parentElement.dataset.index;
+      setTimeout(editor.tooltip, 500, iteration);
 
-//     editor.tooltip_list[index].style.bottom = `${ document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop}px`;
+      return editor.tooltip_list.map(close);
+      
+    }
 
-//     editor.tooltip_list[index].style.left = `${document.activeElement.offsetLeft}px`;
+    block = block || focus.parentElement;
 
-//     editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
+    if(!block.parentElement) return setTimeout(editor.tooltip, 500, iteration);
 
-//     if (editor.tooltip_list[index].classList.contains('fade-in')) return;
+    if(!block.classList.contains('block')) {
+
+      block = block.parentElement;
+
+      return editor.tooltip(iteration, block);
+
+    }
+   
+    setTimeout(editor.tooltip, 500, iteration);
+
+    let index = block.dataset.index;
+
+    if (typeof index == 'undefined') return editor.tooltip_list.map(close);
+      
+    editor.tooltip_list[index].style.bottom = `${ block.offsetHeight - focus.offsetTop }px`;
+
+    editor.tooltip_list[index].style.left = `${ focus.offsetLeft }px`;
+
+    editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
+
+    if (editor.tooltip_list[index].classList.contains('fade-in')) return;
     
-//     editor.tooltip_list.map(close);
+    editor.tooltip_list.map(close);
     
-//     editor.tooltip_list[index].style.display = 'block';
+    editor.tooltip_list[index].style.display = 'block';
 
-//     requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
 
-//       editor.tooltip_list[index].classList.add('fade-in');
+      editor.tooltip_list[index].classList.add('fade-in');
 
-//     });
+    });
 
-//     function close(element){
+    function close(element){
 
-//       element.style.display = 'none';
+      element.style.display = 'none';
 
-//       element.classList.remove('fade-in');
+      element.classList.remove('fade-in');
 
-//     }
+    }
 
   },
 
@@ -211,33 +231,37 @@ let editor = module.exports = {
 
   },
 
-  load_element: (element)=>{
+  load_element: (element, parent)=>{
 
-    let index = parseInt(element.parentElement.dataset.index, 10),
-        block = editor.course.blocks[index],
+    parent = parent || element.parentElement;
+
+    if(!parent.classList.contains('block'))
+      return editor.load_element(element, parent.parentElement);
+
+    let index = parent.dataset.index;
+
+    if(typeof index == 'undefined') return element.dataset.load = `editor.load_${ key }`;
+
+    index = parseInt(index, 10);
+
+    let block = editor.course.blocks[index],
         key = element.dataset.element;
 
     element.dataset.input = 'editor.save';
 
-//     element.addEventListener('mouseenter', ()=>{
+    element.addEventListener('mouseenter', ()=>{ element.focus(); });
 
-//       element.focus();
+    if(!block.content) block.content = {};
 
-//     });
+    if(!block.content[key]) block.content[key] = key;
 
-//     if(!block.content) block.content = {};
-
-//     if(!block.content[key]) block.content[key] = key;
-
-    if(key !== 'video') element.innerHTML = key;
+    if(element.tagName.toLowerCase() == 'textarea') element.value = block.content[key];
 
     element.dataset.load = `editor.load_${ key }`;
 
   },
 
   load_title: (element) => {
-
-    //if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
 
   },
 
@@ -278,10 +302,10 @@ let editor = module.exports = {
   // only locally
   save: (element)=>{
 
-    let index = parseInt(element.parentElement.dataset.index, 10)
-      , block = editor.course.blocks[index];
+    let index = parseInt(element.parentElement.dataset.index, 10),
+        block = editor.course.blocks[index];
 
-//     block.content[element.dataset.element] = element.value;
+     block.content[element.dataset.element] = element.value;
 
   }
   ,

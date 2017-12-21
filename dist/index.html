@@ -39,6 +39,8 @@
 		    <a data-load="labels.services" data-click="sessions.load_page" data-page="services"></a>
 			
 		    <a data-load="labels.courses" data-click="sessions.load_page" data-page="courses"></a>
+		    
+			<a data-click="sessions.load_page" data-page="invites" class="auth-only" data-load="labels.invitations"></a>
 			
 		    <a data-click="sessions.load_page" data-page="contact">Contact</a>
 			
@@ -54,23 +56,7 @@
 
 		    	<a data-load="labels.sign_in_link" data-modal="login.html" data-click="modal.open" data-page="login"></a>
 
-		    	<a data-modal="profile.html" data-click="modal.open" data-load="users.load_profile_link"></a>
-
-			</div>
-
-			<div class="sub-nav">
-
-				<div data-click="sessions.load_page" data-page="courses" class="row">
-					<i class="fa fa-book"></i> <span data-load="labels.courses"></span>
-				</div>
-
-				<div data-click="sessions.load_page" data-page="invites" class="row">
-					<i class="fa fa-user-plus"></i> <span data-load="labels.invitations"></span>
-				</div>
-
-				<div data-click="sessions.load_page" data-page="stats" class="row">
-					<i class="fa fa-line-chart"></i> <span data-load="labels.stats"></span>
-				</div>
+		    	<a class="auth-only" data-modal="profile.html" data-click="modal.open" data-load="users.load_profile_link"></a>
 
 			</div>
 
