@@ -1,0 +1,84 @@
+
+.upload {
+    position: relative;
+    overflow: hidden;
+    margin-top: 2px;
+    background: rgba(0, 0, 0, 0.1);
+    height: 100px;
+    .progress {
+        z-index: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 1;
+        .toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 5px;
+            cursor: pointer;
+            outline: none;
+            border: 0;
+            background-color: $light-grey;
+            color: white;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        height: 100%;
+        display: none;
+        width: 100%;
+        transition: opacity 200ms ease;
+        background: #e1e2e1;
+        font-size: 14px;
+        text-align: center;
+        line-height: 42px;
+        color: white;
+        text-shadow: 1px 1px 0 $dark-grey;
+        span {
+            background: $green;
+            display: inline-block;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            z-index: -1;
+        }
+    }
+    canvas,
+    img {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 9999;
+    }
+    img {
+        z-index: -1;
+        opacity: 0;
+    }
+    span {
+	  text-align: center;
+	  width: 100%;
+	  display: inline-block;
+	  padding: 10px 0;
+	  border-radius: 2px;
+	  padding-top: 46px;
+	  cursor: pointer;
+	  font-size: 16px;
+	  font-family: sans-serif, Arial;
+    }
+    input {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+    }
+    &:hover {
+        background: rgba(0, 0, 0, 0.2);
+    }
+}
+

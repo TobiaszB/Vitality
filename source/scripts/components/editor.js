@@ -48,9 +48,9 @@ let editor = module.exports = {
           </div>
         </div>
         <div class="block-options">
-          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
-          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
-          <a class="control-btn fa fa-cog"></a>
+          <a data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
+          <a data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
+          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>
           <div class="block-config">${Object.keys(block.options).reduce((html,option,id)=>{
 
         let element = `<label for="input-${id}" data-load="labels.${option}"></label><br>`;
@@ -61,19 +61,19 @@ let editor = module.exports = {
 
       }
       , '')}</div>
-          <a data-click="editor.update" class="control-btn fa fa-trash"></a>
+          <a data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>
         </div>
       </div>`;
 
     }
     , `
       <div class="control-editor">
-        <a data-click="editor.update" class="control-btn fa fa-save"></a>
-        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>
-        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>
-        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>
-        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>
-        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>
+        <a data-load="labels.title_save" data-click="editor.update" class="control-btn fa fa-save"></a>
+        <a data-load="labels.title_upload" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>
+        <a data-load="labels.title_download" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>
+        <a data-load="labels.title_preview" data-click="editor.preview" class="control-btn fa fa-eye"></a>
+        <a data-load="labels.title_mobile_view" data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>
+        <a data-load="labels.title_desktop_view" data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>
         <div data-load="blocks.load"></div>
       </div>
     `);

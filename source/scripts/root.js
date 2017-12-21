@@ -22,6 +22,8 @@ window.root = {
   
   modal: require('./components/modal.js'),
 
+  upload: require('./components/upload.js'),
+
   editor: require('./components/editor.js'),
   
   prefill: require('./components/prefill.js'),

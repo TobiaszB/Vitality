@@ -1,7 +1,4 @@
 @charset "utf-8";
-
-@import "imports";
-
 @import url('<link href="https://fonts.googleapis.com/css?family=Changa|Open+Sans:400,600|Raleway:400,700,900" rel="stylesheet">');
 
 /* Typography */
@@ -25,10 +22,14 @@ $grey: #ccc;
 $dark-grey: #444;
 $black: black;
 
+@import "partials/reset";
+@import "partials/aos";
+@import "partials/upload";
+
 // general
 html {
   height: 100%;
-  background-color: $dark-grey;
+  background-color: white;
 }
 
 body {
@@ -649,7 +650,7 @@ main {
 	position: relative;
 	display: inline-block;
 	white-space: nowrap;
-	input {
+	input[type="text"] {
 		background-color: $light-grey;
 		display: block;
 		width: 100%;
@@ -1355,6 +1356,7 @@ main.dropzone[data-load="edit.html"] {
 	.control-btn {
 	  font-size: 16px;
 	  display: inline-block;
+	  position: relative;
 	  width: 50px;
 	  height: 41px;
 	  background: #aaa;
@@ -1366,6 +1368,23 @@ main.dropzone[data-load="edit.html"] {
 	  &:hover {
 		color: #fff;
 		background: #999;
+	  }
+	  &::before {
+	  	position: relative;
+	  	top: -5px;
+	  }
+	  &::after {
+	  	content: attr(data-title);
+	  	font-size: 9px;
+	  	display: block;
+	  	position: absolute;
+	  	left: 0;
+	  	bottom: 3px;
+	  	line-height: 12px;
+	  	width: 100%;
+	  	text-align: center;
+	  	font-family: $changa;
+	  	color: white;
 	  }
 	}
 

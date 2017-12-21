@@ -235,7 +235,7 @@ let courses = module.exports = {
       <input placeholder="Naam" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
       <pre>${ JSON.stringify(course, null, 2) }</pre>
     ` : `
-      <div class="thumbnail" style="background-image:url(${ course.thumbnail })"></div>
+      <div data-key="${ course.key }" data-load="upload.render" class="upload thumbnail" style="background-image:url(${ course.thumbnail })"></div>
       ${ courses.course_nav(element) }
       <img src="${ root.users.memory[course.admin].avatar }">
       <input data-load="labels.name" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">

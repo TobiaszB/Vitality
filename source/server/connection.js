@@ -136,6 +136,24 @@ console.log(msg);
       });
 
     },
+    
+    set_course: (ws, msg, session) => {
+
+      db.collection('courses').findAndModify({
+        key: msg.key
+      }, [], {
+        $set: msg
+      }, { upsert: true, new: true }, (err, updated) => {
+
+        updated.value.callback = msg.callback;
+        
+        ws.send(JSON.stringify(updated.value));
+
+        handler('broadcast')(ws, updated.value, session);
+
+      });
+
+    },
 
     new_ticket: (ws, msg, session) => {
 

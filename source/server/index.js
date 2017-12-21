@@ -47,6 +47,8 @@ function Server(config, callback) {
 
 function handler(req, res) {
 
+  if(req.url.indexOf('/upload') == 0 && req.method.toLowerCase() != 'get') return upload(req, res);
+
   let file = url.parse(`../../dist${ req.url }`).pathname;
 
   fs.readFile(path.resolve(__dirname, file), function cb(err, body) {

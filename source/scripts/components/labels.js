@@ -5,6 +5,16 @@ let index = LANGS.indexOf(localStorage.getItem('language'));
 if (index == -1) index = 0;
 
 let labels = {
+    title_move_up: [title('Omhoog'), title('Move up')],
+    title_move_down: [title('Omlaag'), title('Move down')],
+    title_options: [title('Opties'), title('Options')],
+    title_delete: [title('Verwijder'), title('Delete')],
+    title_save: [title('Opslaan'), title('Save')],
+    title_upload: [title('Upload'), title('Upload')],
+    title_download: [title('Download'), title('Download')],
+    title_preview: [title('Preview'), title('Preview')],
+    title_mobile_view: [title('Mobile'), title('Mobile')],
+    title_desktop_view: [title('Desktop'), title('Desktop')],
     home: ['Home', 'Home'],
     home_text: ['De enige echte privéstudio!', 'The only real private studio!'],
     home_intake_button: ['Gratis intake', 'Free intake'],
@@ -23,6 +33,7 @@ let labels = {
     add: ['Toevoegen', 'Add'],
     invite: ['Uitnodigen', 'Invite'],
     team: ['Team', 'Team'],
+    progress: ['Progressie', 'Progress'],
     sign_in: [value('Inloggen'), value('Sign in')],
     sign_in_link: ['Inloggen', 'Sign in'],
     sign_in_input: [value('Inloggen', value('Sign in'))],
