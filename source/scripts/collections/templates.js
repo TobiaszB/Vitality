@@ -9,6 +9,8 @@ module.exports = {
 	
 		let course = root.courses.memory[keys[i]];
 
+		if(!course.published_at) continue;
+
 		html += `
 			<div class="invite-course" data-key="${ keys[i] }">
 

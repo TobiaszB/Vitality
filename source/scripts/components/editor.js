@@ -22,14 +22,16 @@ let editor = module.exports = {
 
     element.dataset.device = 'desktop';
 
-    if (!course.blocks)
-      course.blocks = [];
+    if (!course.blocks) course.blocks = [];
 
     element.innerHTML = course.blocks.reduce((html,block,index)=>{
 
-      let options = Object.keys(block.options).reduce((html,option)=>`${html} data-${option}="${block.options[option].value}"`, '');
+      let options = Object.keys(block.options).reduce((html,option)=>`${html} data-${option}="${block.options[option].value}"`, ''),
+          progress = '';
 
-      return `${html}<div class="block" ${options} data-key="${block.key}" data-index="${index}">
+      if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
+
+      return `${html}<div ${ progress } class="block" ${options} data-key="${block.key}" data-index="${index}">
         ${block.html}
         <div class="block-tooltip" data-index="${index}" data-load="editor.load_tooltip">
           <div class="inner">
@@ -49,20 +51,17 @@ let editor = module.exports = {
           <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
           <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
           <a class="control-btn fa fa-cog"></a>
-          <a data-click="editor.update" class="control-btn fa fa-trash"></a>
           <div class="block-config">${Object.keys(block.options).reduce((html,option,id)=>{
 
         let element = `<label for="input-${id}" data-load="labels.${option}"></label><br>`;
 
-        if (block.options[option].type == 'boolean')
-          element = `
-                <input data-option="${ option }" data-index="${ index }" data-change="editor.input_save" ${block.options[option].value ? 'checked' : ''} id="input-${id}" type="checkbox">${element}
-              `;
+        if (block.options[option].type == 'boolean') element = `<input data-option="${ option }" data-index="${ index }" data-change="editor.input_save" ${block.options[option].value ? 'checked' : ''} id="input-${id}" type="checkbox">${element}`;
 
         return `${html}${element}`;
 
       }
       , '')}</div>
+          <a data-click="editor.update" class="control-btn fa fa-trash"></a>
         </div>
       </div>`;
 
@@ -114,14 +113,7 @@ let editor = module.exports = {
     setTimeout(editor.tooltip, 1000, iteration);
 
     if (document.activeElement.dataset.load != 'editor.load_element')
-      return editor.tooltip_list.map((element)=>{
-
-        element.style.display = 'none';
-
-        element.classList.remove('fade-in');
-
-      }
-      );
+      return editor.tooltip_list.map(close);
 
     let index = document.activeElement.parentElement.dataset.index;
 
@@ -134,7 +126,7 @@ let editor = module.exports = {
     if (editor.tooltip_list[index].classList.contains('fade-in'))
       return;
 
-    editor.tooltip_list[index].classList.remove('fade-in');
+    editor.tooltip_list.map(close);
 
     editor.tooltip_list[index].style.display = 'block';
 
@@ -142,11 +134,17 @@ let editor = module.exports = {
 
       editor.tooltip_list[index].classList.add('fade-in');
 
-    }
-    );
+    });
 
-  }
-  ,
+    function close(element){
+
+      element.style.display = 'none';
+
+      element.classList.remove('fade-in');
+
+    }
+
+  },
 
   add_block: (key)=>{
 
@@ -190,17 +188,11 @@ let editor = module.exports = {
   }
   ,
 
-  set_option: (type,property)=>{
+  set_option: (config,property)=>{
 
-    let config = {
-      property: property,
-      type: type
-    };
+    config.property = property;
 
-    if (type == 'boolean')
-      config.value = true;
-
-    console.log(type, property);
+    if (config.type == 'boolean') config.value = true;
 
     return config;
 

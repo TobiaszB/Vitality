@@ -233,7 +233,7 @@ var courses = module.exports = {
 
       var course = root.courses.memory[key];
 
-      html += '\n\n        <div data-key="' + course.key + '">\n          <img src="' + course.thumbnail + '">\n          <span>' + course.name + '</span>\n        </div>\n\n      ';
+      if (course.published_at) html += '\n\n        <div data-key="' + course.key + '">\n          <img src="' + course.thumbnail + '">\n          <span>' + course.name + '</span>\n        </div>\n\n      ';
 
       return html;
     }, '');
@@ -617,6 +617,8 @@ module.exports = {
 				for (var i = 0; i < keys.length; i++) {
 
 						var course = root.courses.memory[keys[i]];
+
+						if (!course.published_at) continue;
 
 						html += '\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t</div>\n\t\t';
 				};
@@ -1516,18 +1518,21 @@ var editor = module.exports = {
 
       var options = Object.keys(block.options).reduce(function (html, option) {
         return html + ' data-' + option + '="' + block.options[option].value + '"';
-      }, '');
+      }, ''),
+          progress = '';
 
-      return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
+      if (block.options.progress && block.options.progress.trigger) progress = 'data-load="' + block.options.progress.trigger + '"';
+
+      return html + '<div ' + progress + ' class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
         return '<b style="background-color:#' + c + ';"></b>';
-      }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
+      }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
         var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
 
-        if (block.options[option].type == 'boolean') element = '\n                <input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element + '\n              ';
+        if (block.options[option].type == 'boolean') element = '<input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element;
 
         return '' + html + element;
-      }, '') + '</div>\n        </div>\n      </div>';
+      }, '') + '</div>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
     }, '\n      <div class="control-editor">\n        <a data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
   },
 
@@ -1559,12 +1564,7 @@ var editor = module.exports = {
 
     setTimeout(editor.tooltip, 1000, iteration);
 
-    if (document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map(function (element) {
-
-      element.style.display = 'none';
-
-      element.classList.remove('fade-in');
-    });
+    if (document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map(close);
 
     var index = document.activeElement.parentElement.dataset.index;
 
@@ -1576,7 +1576,7 @@ var editor = module.exports = {
 
     if (editor.tooltip_list[index].classList.contains('fade-in')) return;
 
-    editor.tooltip_list[index].classList.remove('fade-in');
+    editor.tooltip_list.map(close);
 
     editor.tooltip_list[index].style.display = 'block';
 
@@ -1584,6 +1584,13 @@ var editor = module.exports = {
 
       editor.tooltip_list[index].classList.add('fade-in');
     });
+
+    function close(element) {
+
+      element.style.display = 'none';
+
+      element.classList.remove('fade-in');
+    }
   },
 
   add_block: function add_block(key) {
@@ -1611,16 +1618,11 @@ var editor = module.exports = {
     console.log(course);
   },
 
-  set_option: function set_option(type, property) {
+  set_option: function set_option(config, property) {
 
-    var config = {
-      property: property,
-      type: type
-    };
+    config.property = property;
 
-    if (type == 'boolean') config.value = true;
-
-    console.log(type, property);
+    if (config.type == 'boolean') config.value = true;
 
     return config;
   },

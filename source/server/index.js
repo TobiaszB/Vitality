@@ -65,3 +65,25 @@ function handler(req, res) {
   });
 
 }
+
+function upload(req, res) {
+
+  let data = [];
+
+  req.on('data', (d)=> data.push(d));
+
+  req.on('end', ()=>{
+
+    let url = `/uploads/${ Math.round(Math.random() * 9999999) }.jpg`;
+    
+    fs.writeFile(path.resolve(__dirname, `../../dist${ url }`), Buffer.concat(data), (err)=>{
+      
+      if(err) console.log(err);
+      
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+
+      res.end(JSON.stringify({ url: `${ url }` }));
+
+    });
+
+  });
