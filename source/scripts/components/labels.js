@@ -90,6 +90,7 @@ let labels = {
     progress: ['Progressie', 'Progress'],
     video: ['Video', 'Video'],
     youtube_placeholder: [placeholder('mXq8SekC5Qg'), placeholder('mXq8SekC5Qg')],
+    points: ['Punten', 'Points']
 };
 
 for (let n in labels) {

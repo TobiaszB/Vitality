@@ -205,6 +205,8 @@ let editor = module.exports = {
 
     if (config.type == 'boolean') config.value = true;
 
+    if (config.type == 'number') config.value = 2;
+
     return config;
 
   },

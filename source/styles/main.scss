@@ -1239,6 +1239,13 @@ main.dropzone[data-load="edit.html"] {
 			padding: 0 40px;
 			text-align: left;
 		}
+		&[data-points="2"] {
+			section {
+				&[data-index="3"], &[data-index="4"], &[data-index="5"] {
+					display: none;
+				}
+			}
+		}
 		img {
 			width: 100%;
 		}

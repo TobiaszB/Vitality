@@ -1639,6 +1639,8 @@ var editor = module.exports = {
 
     if (config.type == 'boolean') config.value = true;
 
+    if (config.type == 'number') config.value = 2;
+
     return config;
   },
 
@@ -1809,7 +1811,8 @@ var labels = {
     send: ['Verstuur', 'Send'],
     progress: ['Progressie', 'Progress'],
     video: ['Video', 'Video'],
-    youtube_placeholder: [placeholder('mXq8SekC5Qg'), placeholder('mXq8SekC5Qg')]
+    youtube_placeholder: [placeholder('mXq8SekC5Qg'), placeholder('mXq8SekC5Qg')],
+    points: ['Punten', 'Points']
 };
 
 for (var n in labels) {

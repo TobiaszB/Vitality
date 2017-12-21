@@ -541,32 +541,32 @@ function database() {
     db.collection('blocks').findAndModify({ key: 'blocks_points' }, [], {
       $set: {
         html: `
-          <section>
+          <section data-index="0">
               <img src="/point-nutrition.png"><br>
               <textarea data-load="editor.load_element" data-element="title"></textarea><br>
               <textarea data-load="editor.load_element" data-element="text"></textarea>
           </section>
-          <section>
+          <section data-index="1">
               <img src="/point-training.png"><br>
               <textarea data-load="editor.load_element" data-element="title"></textarea><br>
               <textarea data-load="editor.load_element" data-element="text"></textarea>
           </section>
-          <section>
+          <section data-index="2">
               <img src="/point-lifestyle.png"><br>
               <textarea data-load="editor.load_element" data-element="title"></textarea><br>
               <textarea data-load="editor.load_element" data-element="text"></textarea>
           </section>
-          <section>
+          <section data-index="3">
               <img src="/point-lifestyle.png"><br>
               <textarea data-load="editor.load_element" data-element="title"></textarea><br>
               <textarea data-load="editor.load_element" data-element="text"></textarea>
           </section>
-          <section>
+          <section data-index="4">
               <img src="/point-lifestyle.png"><br>
               <textarea data-load="editor.load_element" data-element="title"></textarea><br>
               <textarea data-load="editor.load_element" data-element="text"></textarea>
           </section>
-          <section>
+          <section data-index="5">
               <img src="/point-lifestyle.png"><br>
               <textarea data-load="editor.load_element" data-element="title"></textarea><br>
               <textarea data-load="editor.load_element" data-element="text"></textarea>
@@ -574,6 +574,7 @@ function database() {
         `,
         created_at: new Date(),
         options: {
+          points: { type: 'number' },
           progress: { type: 'progress', trigger: 'editor.scroll_trigger' },
           show_title: { type: 'boolean' },
           show_text: { type: 'boolean' },
