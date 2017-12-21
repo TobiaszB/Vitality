@@ -1239,11 +1239,34 @@ main.dropzone[data-load="edit.html"] {
 			padding: 0 40px;
 			text-align: left;
 		}
-		&[data-points="2"] {
-			section {
-				&[data-index="3"], &[data-index="4"], &[data-index="5"] {
-					display: none;
-				}
+		&[data-points="-1"] section {
+			&[data-index="0"], &[data-index="1"], &[data-index="2"], &[data-index="3"], &[data-index="4"], &[data-index="5"] {
+				display: none;
+			}
+		}
+		&[data-points="0"] section {
+			&[data-index="1"], &[data-index="2"], &[data-index="3"], &[data-index="4"], &[data-index="5"] {
+				display: none;
+			}
+		}
+		&[data-points="1"] section {
+			&[data-index="2"], &[data-index="3"], &[data-index="4"], &[data-index="5"] {
+				display: none;
+			}
+		}
+		&[data-points="2"] section {
+			&[data-index="3"], &[data-index="4"], &[data-index="5"] {
+				display: none;
+			}
+		}
+		&[data-points="3"] section {
+			&[data-index="4"], &[data-index="5"] {
+				display: none;
+			}
+		}
+		&[data-points="4"] section {
+			&[data-index="5"] {
+				display: none;
 			}
 		}
 		img {
