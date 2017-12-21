@@ -28,6 +28,7 @@ $black: black;
 // general
 html {
   height: 100%;
+  background-color: $dark-grey;
 }
 
 body {
@@ -36,6 +37,9 @@ body {
   position: relative;
   height: 100%;
   transition: 200ms padding ease;
+  &.home-page {
+  	main { background-color: $dark-grey; }
+  }
   &.home-page, &.courses-page, .team-page {
   	padding: 70px 0 0 0;
   }
@@ -542,6 +546,7 @@ main {
 		
 		&[data-index="3"] {
 			text-align: left;
+			background-color: white;
 		}
 		
 		&[data-index="4"] {
@@ -631,7 +636,7 @@ main {
 			}
 		}
 		
-		&.home { background-image: url('/photo-joris-merel-1.jpg'); min-height: 100vh; }
+		&.home { background-image: url('/photo-gym.jpg'); min-height: 100vh; }
 		&.team { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh; }
 
 	}	

@@ -1473,16 +1473,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-    load: function load(element) {
+  load: function load(element) {
 
-        root.calender = element;
+    root.calender = element;
 
-        var a = moment('2016-01-01');
-        var b = a.add(1, 'week');
-        a.format();
+    var a = moment('2016-01-01');
+    var b = a.add(1, 'week');
+    a.format();
 
-        console.log(a);
-    }
+    console.log(a);
+  }
 
 };
 });
@@ -1492,30 +1492,31 @@ require.register("source/scripts/components/editor.js", function(exports, requir
 
 var editor = module.exports = {
 
-  course: null,
+    course: null,
 
-  load_course: function load_course(element) {
+    load_course: function load_course(element) {
 
-    var key = history.state.course,
-        course = root.courses.memory[key],
-        colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
+        var key = history.state.course,
+            course = root.courses.memory[key],
+            colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
 
-    editor.looping = Math.random();
+        editor.looping = Math.random();
 
-    editor.tooltip(editor.looping);
+        editor.tooltip(editor.looping);
 
-    editor.course = course;
+        editor.course = course;
 
-    editor.element = element;
+        editor.element = element;
 
-    element.dataset.published = 'yes';
+        element.dataset.published = 'yes';
 
-    element.dataset.device = 'desktop';
+        element.dataset.device = 'desktop';
 
-    if (!course.blocks) course.blocks = [];
+        if (!course.blocks) course.blocks = [];
 
-    element.innerHTML = course.blocks.reduce(function (html, block, index) {
+        element.innerHTML = course.blocks.reduce(function (html, block, index) {
 
+<<<<<<< HEAD
       var options = Object.keys(block.options).reduce(function (html, option) {
         return html + ' data-' + option + '="' + block.options[option].value + '"';
       }, ''),
@@ -1526,62 +1527,94 @@ var editor = module.exports = {
       return html + '<div ' + progress + ' class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
         return '<b style="background-color:#' + c + ';"></b>';
       }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
+=======
+            var options = Object.keys(block.options).reduce(function (html, option) {
+                return html + ' data-' + option + '="' + block.options[option].value + '"';
+            }, '');
 
-        var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
+            return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
+                return '<b style="background-color:#' + c + ';"></b>';
+            }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a class="control-btn fa fa-cog"></a>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
+>>>>>>> 2acdf9122fe99363b5c38e6fe3b6332fbe659110
 
+                var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
+
+<<<<<<< HEAD
         if (block.options[option].type == 'boolean') element = '<input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element;
 
         return '' + html + element;
       }, '') + '</div>\n          <a data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
     }, '\n      <div class="control-editor">\n        <a data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
   },
+=======
+                if (block.options[option].type == 'boolean') element = '\n                <input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element + '\n              ';
 
-  toggle_tooltip_submenu: function toggle_tooltip_submenu(element) {
+                return '' + html + element;
+            }, '') + '</div>\n        </div>\n      </div>';
+        }, '\n      <div class="control-editor">\n        <a data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
+    },
+>>>>>>> 2acdf9122fe99363b5c38e6fe3b6332fbe659110
 
-    element.parentElement.dataset.tab = element.dataset.tab;
-  },
+    toggle_tooltip_submenu: function toggle_tooltip_submenu(element) {
 
-  tooltip_list: [],
+        element.parentElement.dataset.tab = element.dataset.tab;
+    },
 
-  load_tooltip: function load_tooltip(element) {
+    tooltip_list: [],
 
-    editor.tooltip_list[parseInt(element.dataset.index, 10)] = element;
-  },
+    load_tooltip: function load_tooltip(element) {
 
-  input_save: function input_save(element) {
+        editor.tooltip_list[parseInt(element.dataset.index, 10)] = element;
+    },
 
-    var block = editor.course.blocks[parseInt(element.dataset.index, 10)],
-        option = block.options[element.dataset.option];
+    input_save: function input_save(element) {
 
-    if (option.type == 'boolean') option.value = !option.value;
+        var block = editor.course.blocks[parseInt(element.dataset.index, 10)],
+            option = block.options[element.dataset.option];
 
-    console.log(editor.course);
-  },
+        if (option.type == 'boolean') option.value = !option.value;
 
-  tooltip: function tooltip(iteration) {
+        console.log(editor.course);
+    },
 
-    if (history.state.page != 'edit' || editor.looping != iteration) return;
+    tooltip: function tooltip(iteration) {
 
-    setTimeout(editor.tooltip, 1000, iteration);
+        if (history.state.page != 'edit' || editor.looping != iteration) return;
 
+        setTimeout(editor.tooltip, 1000, iteration);
+
+<<<<<<< HEAD
     if (document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map(close);
+=======
+        if (document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map(function (element) {
 
-    var index = document.activeElement.parentElement.dataset.index;
+            element.style.display = 'none';
 
-    editor.tooltip_list[index].style.bottom = document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop + 'px';
+            element.classList.remove('fade-in');
+        });
+>>>>>>> 2acdf9122fe99363b5c38e6fe3b6332fbe659110
 
-    editor.tooltip_list[index].style.left = document.activeElement.offsetLeft + 'px';
+        var index = document.activeElement.parentElement.dataset.index;
 
-    editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
+        editor.tooltip_list[index].style.bottom = document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop + 'px';
 
-    if (editor.tooltip_list[index].classList.contains('fade-in')) return;
+        editor.tooltip_list[index].style.left = document.activeElement.offsetLeft + 'px';
 
+        editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
+
+        if (editor.tooltip_list[index].classList.contains('fade-in')) return;
+
+<<<<<<< HEAD
     editor.tooltip_list.map(close);
+=======
+        editor.tooltip_list[index].classList.remove('fade-in');
+>>>>>>> 2acdf9122fe99363b5c38e6fe3b6332fbe659110
 
-    editor.tooltip_list[index].style.display = 'block';
+        editor.tooltip_list[index].style.display = 'block';
 
-    requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
 
+<<<<<<< HEAD
       editor.tooltip_list[index].classList.add('fade-in');
     });
 
@@ -1592,85 +1625,103 @@ var editor = module.exports = {
       element.classList.remove('fade-in');
     }
   },
+=======
+            editor.tooltip_list[index].classList.add('fade-in');
+        });
+    },
+>>>>>>> 2acdf9122fe99363b5c38e6fe3b6332fbe659110
 
-  add_block: function add_block(key) {
+    add_block: function add_block(key) {
 
-    var course = root.courses.memory[history.state.course],
-        block = root.blocks.memory[key];
+        var course = root.courses.memory[history.state.course],
+            block = root.blocks.memory[key];
 
-    course.blocks = course.blocks || [];
+        course.blocks = course.blocks || [];
 
-    var demo = [{ page: 'Introduction', tab: 'Part I', index: 0 }, { progress: 5 }, { tab: 'Part II', index: 2, progress: 5 }, { tab: 'Part III', index: 3, progress: 5 }, { page: 'Learning the basics', tab: 'Module A', index: 4, progress: 15 }, { progress: 15 }, { progress: 15 }, { tab: 'Module B', index: 7, progress: 10 }, { page: 'Questions', index: 8, progress: 10 }, { progress: 10 }, { progress: 10 }, { page: 'Conclusion', index: 11 }];
+        var demo = [{ page: 'Introduction', tab: 'Part I', index: 0 }, { progress: 5 }, { tab: 'Part II', index: 2, progress: 5 }, { tab: 'Part III', index: 3, progress: 5 }, { page: 'Learning the basics', tab: 'Module A', index: 4, progress: 15 }, { progress: 15 }, { progress: 15 }, { tab: 'Module B', index: 7, progress: 10 }, { page: 'Questions', index: 8, progress: 10 }, { progress: 10 }, { progress: 10 }, { page: 'Conclusion', index: 11 }];
 
-    block = Object.assign(demo[course.blocks.length] || {}, block);
+        block = Object.assign(demo[course.blocks.length] || {}, block);
 
-    course.blocks.push(block);
+        course.blocks.push(block);
 
-    block.options = Object.keys(block.options).reduce(function (options, key) {
+        block.options = Object.keys(block.options).reduce(function (options, key) {
 
-      options[key] = editor.set_option(block.options[key], key);
+            options[key] = editor.set_option(block.options[key], key);
 
-      return options;
-    }, {});
+            return options;
+        }, {});
 
-    root.courses.updated = true;
+        root.courses.updated = true;
 
-    console.log(course);
-  },
+        console.log(course);
+    },
 
+<<<<<<< HEAD
   set_option: function set_option(config, property) {
 
     config.property = property;
 
     if (config.type == 'boolean') config.value = true;
+=======
+    set_option: function set_option(type, property) {
 
-    return config;
-  },
+        var config = {
+            property: property,
+            type: type
+        };
 
-  load_element: function load_element(element) {
+        if (type == 'boolean') config.value = true;
 
-    var index = parseInt(element.parentElement.dataset.index, 10),
-        block = editor.course.blocks[index],
-        key = element.dataset.element;
+        console.log(type, property);
+>>>>>>> 2acdf9122fe99363b5c38e6fe3b6332fbe659110
 
-    element.dataset.input = 'editor.save';
+        return config;
+    },
 
-    element.addEventListener('mouseenter', function () {
+    load_element: function load_element(element) {
 
-      element.focus();
-    });
+        var index = parseInt(element.parentElement.dataset.index, 10),
+            block = editor.course.blocks[index],
+            key = element.dataset.element;
 
-    if (!block.content) block.content = {};
+        element.dataset.input = 'editor.save';
 
-    if (!block.content[key]) block.content[key] = key;
+        element.addEventListener('mouseenter', function () {
 
-    element.innerHTML = block.content[key];
-  },
+            element.focus();
+        });
 
-  // only locally
-  save: function save(element) {
+        if (!block.content) block.content = {};
 
-    var index = parseInt(element.parentElement.dataset.index, 10),
-        block = editor.course.blocks[index];
+        if (!block.content[key]) block.content[key] = key;
 
-    block.content[element.dataset.element] = element.value;
+        element.innerHTML = block.content[key];
+    },
 
-    console.log(JSON.stringify(editor.course, null, 2));
-  },
+    // only locally
+    save: function save(element) {
 
-  // updates course in server
-  update: function update(element) {
+        var index = parseInt(element.parentElement.dataset.index, 10),
+            block = editor.course.blocks[index];
 
-    editor.element.classList.add('saving');
+        block.content[element.dataset.element] = element.value;
 
-    root.send({
-      request: 'save_course',
-      set: editor.course
-    }, function () {
+        console.log(JSON.stringify(editor.course, null, 2));
+    },
 
-      editor.element.classList.remove('saving');
-    });
-  }
+    // updates course in server
+    update: function update(element) {
+
+        editor.element.classList.add('saving');
+
+        root.send({
+            request: 'save_course',
+            set: editor.course
+        }, function () {
+
+            editor.element.classList.remove('saving');
+        });
+    }
 
 };
 });
@@ -1698,8 +1749,8 @@ var labels = {
     home_joris_merel: ['Joris Boon en Merel Witkamp', 'Joris Boon and Merel Witkamp'],
     home_joris_merel_description: ["Mogen we ons even aan u voorstellen. Wij zijn Joris Boon en Merel Witkamp. We zijn beiden fanatieke sporttrainers waarbij we weten dat individuele training allereerst tot resultaat moet leiden bijvoorbeeld afvallen, vitaler of gewoon \'je beter voelen\'. Maar we weten ook dat training alleen vaak niet voldoende is. Vandaar dat we een uniek coachingprogramma hebben geïntroduceerd onder de noemer \'Managers Vitality: for a work - life balance that boosts your management performance'. Het gaat dan om een programma om een betere werk - privé balans te vinden (ook in relatie tot fitness) alsmede omveel betere resultaten op het werk te behalen. Het focust zich op de '7th habit' van managementgoeroe Stephan Covey waar hij heeft over 'het scherp houden van de zaag'. Inmiddels hebben al vele managers zich voor dit programma ingeschreven.", "May we introduce ourselves to you, we are Joris Boon and Merel Witkamp We are both fanatical sports trainers where we know that individual training should lead to results first, for example losing weight, being more vital or just 'feeling better'. also that training alone is often not sufficient, which is why we have introduced a unique coaching program under the heading 'Managers Vitality: for a work - life balance that boosts your management performance' - a program for a better work - private life. To find a balance (also in relation to fitness) as well as to achieve much better results at work, it focuses on the '7th habit' of management guru Stephan Covey, who talks about 'keeping the saw sharp'. managers registered for this program."],
     team_text: ['Mogen wij uw personal trainer of personal coach zijn?', 'Can we be your personal trainer or personal coach?'],
-    team_joris: ["Onder andere samen met een collega een sportschool gehad, een sportschool waar ik overigens nog steeds met veel plezier training geef. Maar nu, na zoveel jaren les te hebben gegeven, merk ik ook waar mijn echte persoonlijke voorkeur ligt: personal training, trainen met kleine groepen en personal coaching. Ik merk daarbij dat kickboksen – een sport die ik al 27 jaar heb beoefend, en waar ik al 20 jaar les in geef – nu door grote groepen wordt gebruikt om zich vitaler te voelen, waarbij fysiek contact uiteraard vermeden wordt. Omdat ik dit vooral met ondernemers doe, heb ik de speciale vorm 'business boksen' bedacht: je lekker even op een bijzondere manier afreageren... heerlijk! Overigens gaat het niet alleen om business boksen, ook andere trainingsvormen bied ik als personal trainer aan. Het is juist de combinatie van verschillende vormen die de mensen zo aanspreekt.", "Together with a colleague I had a gym, a gym where I still enjoy training. But now, after having taught for so many years, I also notice my true personal preference: personal training, training with small groups and personal coaching. I notice that kick boxing - a sport that I have practiced for 27 years, and for which I have been teaching for 20 years - is now being used by large groups to feel more vital, whereby physical contact is naturally avoided. Because I mainly do this with entrepreneurs, I have come up with the special form of 'business boxing': you can have a nice chat in a special way ... delicious! Incidentally, it is not only about business boxing, other forms of training I offer as a personal trainer. It is precisely the combination of different forms that appeal to people in this way."],
-    team_merel: ["Ook mijn leven is door sport bepaald. Ik ben begonnen met een dansopleiding en vanuit de dans ben ik overgestapt naar Yoga en vandaar uit ben ik met heel veel trainingsvormen bezig geweest. Omdat professionaliteit bij mij hoog in het vaandel staat, heb ik waar mogelijk diploma\'s behaald. Naast de CIOS-opleiding heb ik diploma\'s in Personal Hormonal Profiling (alles wat te maken heeft met hormonen en hoe die beïnvloed kunnen worden door voeding en training), Fitness diploma A en B, diploma Perfect Pilates en het diploma in Oncologische Revalidatie. Daarnaast ben ik me gaan verdiepen in personal coaching om beter om mensen te kunnen coachen om beter om te kunnen gaan met de balans werk - privé. Veel drukke managers weten hoe belangrijk fysieke training is om dagelijks fit te kunnen blijven. Maar er is meer en met ons speciale coachingprogramma zult u al snel merken hoeveel voordeel u hiervan kunt hebben. Het belangrijkste voor mij is mensen te motiveren om in beweging te blijven.", "My life has been determined by sport, I started a dance education and from dance I switched to Yoga and from there I have been busy with a lot of training forms. Because professionalism is of paramount importance to me, I have, wherever possible, I have diplomas in Personal Hormonal Profiling (everything that has to do with hormones and how they can be influenced by nutrition and training), Fitness diploma A and B, diploma Perfect Pilates. and the diploma in Oncological Rehabilitation, I also went into personal coaching in order to better coach people in order to better deal with the work-life balance.Many busy managers know how important physical training is to be able to get fit every day But there is more and with our special coaching program you will soon see how much benefit you can have of this, the most important thing for me is to motivate people to keep moving."],
+    team_intro_1: ["Joris Boon en Merel Witkamp, beiden met een jarenlange ervaring in de sportbranche, bundelen hun krachten om jou een training op maat te kunnen bieden. Joris Boon is een zeer ervaren trainer op het gebied van vechtsport en krachttraining. Met zijn 25 jaar ervaring als sportinstructeur weet hij deze technieken perfect toe te passen bij personal training. Merel Witkamp is thuis in de wereld van personal training, yoga en pilates. Daarnaast is ze gespecialiseerd in revalidatietraining en revalidatietraining voor ex-kankerpatiënten.", "Joris Boon and Merel Witkamp, both with years of experience in the sports industry, join forces to offer you a tailor-made training. Joris Boon is a very experienced trainer in the field of martial arts and strength training. With his 25 years of experience as a sports instructor he knows how to perfectly apply these techniques to personal training. Merel Witkamp is at home in the world of personal training, yoga and pilates. She is also specialized in rehabilitation training and rehabilitation training for ex-cancer patients."],
+    team_intro_2: ["Afgelopen jaar besloten wij om samen een privéstudio te openen in een eigen luxe stijl. Een privéstudio waar je in alle rust ook echt privé traint! Jij alleen samen met een van ons. We willen jou door onze persoonlijke begeleiding helpen om op een snelle en effectieve wijze je doelen te verwezenlijken. Door het brede aanbod van krachttraining, conditietraining, revalidatietraining, bokstraining, yoga en pilates kunnen we jou de training bieden die op je lijf geschreven is. Durf jij nu de stap te nemen?", "Last year we decided to open a private studio together in our own luxury style. A private studio where you can practice private training in peace! You alone with one of us. We want to help you through our personal guidance to realize your goals in a fast and effective way. Through the wide range of strength training, fitness training, rehabilitation training, boxing training, yoga and pilates we can offer you the training that is right for you. Do you dare to take the step now?"],
     add: ['Toevoegen', 'Add'],
     invite: ['Uitnodigen', 'Invite'],
     team: ['Team', 'Team'],
