@@ -1055,6 +1055,7 @@ main {
 	  color: #555;
 	  transition: none;
   	  width: auto;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.44);
 	  &:after, &:before {
 		top: 100%;
 		left: 18px;
