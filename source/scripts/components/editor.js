@@ -2,6 +2,22 @@ let editor = module.exports = {
 
   course: null,
 
+  load_button_primary: ()=>{},
+
+  load_button_secondary: ()=>{},
+
+  load_overlay: ()=>{},
+
+  load_background: ()=>{},
+
+  toggle_publish: (element) => {
+
+    editor.course.published_at = editor.course.published_at ? '' : new Date();
+
+    editor.update();
+
+  },
+
   load_course: (element)=>{
 
     let key = history.state.course,
@@ -18,7 +34,7 @@ let editor = module.exports = {
 
     editor.element = element;
 
-    element.dataset.published = 'yes';
+    element.dataset.published = course.published_at ? 'yes' : 'no';
 
     element.dataset.device = 'desktop';
 
@@ -26,12 +42,9 @@ let editor = module.exports = {
 
     element.innerHTML = course.blocks.reduce((html,block,index)=>{
 
-      let options = Object.keys(block.options).reduce((html,option)=>`${html} data-${option}="${block.options[option].value}"`, ''),
-          progress = '';
+      let options = Object.keys(block.options).reduce((html,option)=>`${html} data-${option}="${block.options[option].value}"`, '');
 
-      if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
-
-      return `${html}<div ${ progress } class="block" ${options} data-key="${block.key}" data-index="${index}">
+      return `${html}<div class="block" ${options} data-key="${block.key}" data-index="${index}">
         ${block.html}
         <div class="block-tooltip" data-index="${index}" data-load="editor.load_tooltip">
           <div class="inner">
@@ -69,8 +82,8 @@ let editor = module.exports = {
     , `
       <div class="control-editor">
         <a data-load="labels.title_save" data-click="editor.update" class="control-btn fa fa-save"></a>
-        <a data-load="labels.title_upload" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>
-        <a data-load="labels.title_download" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>
+        <a data-load="labels.title_online" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>
+        <a data-load="labels.title_offline" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>
         <a data-load="labels.title_preview" data-click="editor.preview" class="control-btn fa fa-eye"></a>
         <a data-load="labels.title_mobile_view" data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>
         <a data-load="labels.title_desktop_view" data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>
@@ -101,8 +114,6 @@ let editor = module.exports = {
 
     if(option.type == 'boolean') option.value = !option.value;
 
-    console.log(editor.course);
-
   },
 
   tooltip: (iteration)=>{
@@ -112,7 +123,7 @@ let editor = module.exports = {
 
     setTimeout(editor.tooltip, 1000, iteration);
 
-    if (document.activeElement.dataset.load != 'editor.load_element')
+    if (document.activeElement.tagName.toLowerCase() != 'textarea')
       return editor.tooltip_list.map(close);
 
     let index = document.activeElement.parentElement.dataset.index;
@@ -123,11 +134,10 @@ let editor = module.exports = {
 
     editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
 
-    if (editor.tooltip_list[index].classList.contains('fade-in'))
-      return;
-
+    if (editor.tooltip_list[index].classList.contains('fade-in')) return;
+    
     editor.tooltip_list.map(close);
-
+    
     editor.tooltip_list[index].style.display = 'block';
 
     requestAnimationFrame(()=>{
@@ -183,10 +193,11 @@ let editor = module.exports = {
 
     root.courses.updated = true;
 
-    console.log(course);
+  },
 
-  }
-  ,
+  scroll_trigger: (element) =>  {
+    
+  },
 
   set_option: (config,property)=>{
 
@@ -212,16 +223,38 @@ let editor = module.exports = {
 
     });
 
-    if (!block.content)
-      block.content = {};
+    if(!block.content) block.content = {};
 
-    if (!block.content[key])
-      block.content[key] = key;
+    if(!block.content[key]) block.content[key] = key;
 
-    if(key !== 'video') element.innerHTML = block.content[key];
+    if(key !== 'video') element.innerHTML = key;
 
-  }
-  ,
+    element.dataset.load = `editor.load_${ key }`;
+
+  },
+
+  load_title: (element) => {
+
+  },
+
+  load_text: (element) => {
+
+  },
+
+  load_video: (element) => {
+
+    //if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
+
+    let source = "https://img.youtube.com/vi/T7Mm392tY1k/sddefault.jpg",
+        iframe = document.createElement( "iframe" );
+ 
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("src", `https://www.youtube.com/embed/T7Mm392tY1k`);
+
+        element.appendChild(iframe);
+
+  },
 
   // only locally
   save: (element)=>{
@@ -231,25 +264,24 @@ let editor = module.exports = {
 
     block.content[element.dataset.element] = element.value;
 
-    console.log(JSON.stringify(editor.course, null, 2));
-
   }
   ,
 
   // updates course in server
-  update: (element)=>{
+  update: ()=>{
 
     editor.element.classList.add('saving');
 
     root.send({
-      request: 'save_course',
+      request: 'set_course',
       set: editor.course
     }, ()=>{
 
       editor.element.classList.remove('saving');
 
-    }
-    );
+      root.main.dataset.load = root.main.dataset.load;
+
+    });
 
   }
 

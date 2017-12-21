@@ -10,8 +10,8 @@ let labels = {
     title_options: [title('Opties'), title('Options')],
     title_delete: [title('Verwijder'), title('Delete')],
     title_save: [title('Opslaan'), title('Save')],
-    title_upload: [title('Upload'), title('Upload')],
-    title_download: [title('Download'), title('Download')],
+    title_online: [title('Online'), title('Online')],
+    title_offline: [title('Offline'), title('Offline')],
     title_preview: [title('Preview'), title('Preview')],
     title_mobile_view: [title('Mobile'), title('Mobile')],
     title_desktop_view: [title('Desktop'), title('Desktop')],
@@ -33,7 +33,6 @@ let labels = {
     add: ['Toevoegen', 'Add'],
     invite: ['Uitnodigen', 'Invite'],
     team: ['Team', 'Team'],
-    progress: ['Progressie', 'Progress'],
     sign_in: [value('Inloggen'), value('Sign in')],
     sign_in_link: ['Inloggen', 'Sign in'],
     sign_in_input: [value('Inloggen', value('Sign in'))],
@@ -87,7 +86,9 @@ let labels = {
     contact_name: ['Naam', 'Name'],
     contact_email: ['Email', 'Email'],
     contact_message: ['Bericht', 'Message'],
-    send: ['Verstuur', 'Send']
+    send: ['Verstuur', 'Send'],
+    progress: ['Progressie', 'Progress'],
+    video: ['Video', 'Video']
 };
 
 for (let n in labels) {

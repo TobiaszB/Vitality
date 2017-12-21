@@ -1175,7 +1175,7 @@ main.dropzone[data-load="edit.html"] {
 	min-height: 500px;
 	.fa-cog:hover + .block-config,
 	.block-config:hover {
-		display: block
+		max-height: 400px;
 	}
 	.block-options {
 		position: absolute;
@@ -1187,14 +1187,17 @@ main.dropzone[data-load="edit.html"] {
 		z-index: 5;
 	}
 	.block-config {
-	  display: none;
+	  display: block;
+	  max-height: 0;
+	  overflow: hidden;
+	  transition: max-height 400ms ease;
 	  position: absolute;
 	  right: 0;
 	  width: 200px;
 	  background: $light-grey;
 	  top: 41px;
 	  font-size: 0;
-	  padding: 5px 0 5px;
+	  padding: 0;
 	  user-select: none;
   	  white-space: nowrap;
 	  input {
@@ -1226,46 +1229,46 @@ main.dropzone[data-load="edit.html"] {
 	&[data-key="blocks_video"] {
 		padding: 80px 40px 20px;
 		height: 500px;
+		background-color: white;
 		textarea {
 			background: transparent;
 			border: 0;
 			position: relative;
 			z-index: 3;
 			resize: none;
-			font-family: $changa;
 			color: white;
 			outline: 0;
 			overflow: hidden;
 			&[data-element="title"] {
-				font-size: 50px;
+				font-family: $changa;
+				font-size: 40px;
 				font-weight: bold;
 				max-width: 45%;
 				width: 100%;
-				height: auto;
+				height: 60px;
 				color: $dark-grey;
 				white-space: normal;
 				display: block;
 			}
 			&[data-element="text"] {
+				font-family: $raleway;
 				font-size: 18px;
-				font-weight: bold;
-				line-height: 26px;
+				font-weight: 500;
+				line-height: 30px;
 				max-width: 45%;
 				width: 100%;
 				height: 180px;
 				display: inline-block;
 				color: $dark-grey;
+				padding: 10px 0 0 0;
 			}
 		}
 		[data-element="video"] {
-			min-width: 300px;
-			min-height: 169px;
 			max-width: 50%;
 			width: 100%;
 			display: inline-block;
 			background-image: url(/placeholder-video.png);
 			background-size: contain;
-			background-color: #ccc;
 			background-position: center center;
 			z-index: 1;
   			position: absolute;
@@ -1288,7 +1291,7 @@ main.dropzone[data-load="edit.html"] {
 			outline: 0;
 			overflow: hidden;
 			&[data-element="title"] {
-				font-size: 50px;
+				font-size: 40px;
 				font-weight: bold;
 				width: 100%;
 				height: 60px;
@@ -1296,7 +1299,7 @@ main.dropzone[data-load="edit.html"] {
 			&[data-element="text"] {
 				font-size: 18px;
 				font-weight: bold;
-				line-height: 26px;
+				line-height: 30px;
 				width: 100%;
 				height: 180px;
 				max-width: 500px;

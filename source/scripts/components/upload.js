@@ -186,8 +186,7 @@ function upload(e, props) {
         
         root.send({
           request: `set_course`,
-          key: elem.dataset.key,
-          thumbnail: JSON.parse(xhr.responseText).url
+          set: { key: elem.dataset.key, thumbnail: JSON.parse(xhr.responseText).url }
         }, (res)=> {
 
           let course = root.courses.memory[elem.dataset.key];

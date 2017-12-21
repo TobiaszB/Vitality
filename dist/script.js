@@ -1494,6 +1494,21 @@ var editor = module.exports = {
 
     course: null,
 
+    load_button_primary: function load_button_primary() {},
+
+    load_button_secondary: function load_button_secondary() {},
+
+    load_overlay: function load_overlay() {},
+
+    load_background: function load_background() {},
+
+    toggle_publish: function toggle_publish(element) {
+
+        editor.course.published_at = editor.course.published_at ? '' : new Date();
+
+        editor.update();
+    },
+
     load_course: function load_course(element) {
 
         var key = history.state.course,
@@ -1508,7 +1523,7 @@ var editor = module.exports = {
 
         editor.element = element;
 
-        element.dataset.published = 'yes';
+        element.dataset.published = course.published_at ? 'yes' : 'no';
 
         element.dataset.device = 'desktop';
 
@@ -1518,12 +1533,9 @@ var editor = module.exports = {
 
             var options = Object.keys(block.options).reduce(function (html, option) {
                 return html + ' data-' + option + '="' + block.options[option].value + '"';
-            }, ''),
-                progress = '';
+            }, '');
 
-            if (block.options.progress && block.options.progress.trigger) progress = 'data-load="' + block.options.progress.trigger + '"';
-
-            return html + '<div ' + progress + ' class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
+            return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
                 return '<b style="background-color:#' + c + ';"></b>';
             }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
@@ -1533,7 +1545,7 @@ var editor = module.exports = {
 
                 return '' + html + element;
             }, '') + '</div>\n          <a data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
-        }, '\n      <div class="control-editor">\n        <a data-load="labels.title_save" data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-load="labels.title_upload" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-load="labels.title_download" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-load="labels.title_preview" data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-load="labels.title_mobile_view" data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-load="labels.title_desktop_view" data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
+        }, '\n      <div class="control-editor">\n        <a data-load="labels.title_save" data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-load="labels.title_online" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-load="labels.title_offline" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-load="labels.title_preview" data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-load="labels.title_mobile_view" data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-load="labels.title_desktop_view" data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
     },
 
     toggle_tooltip_submenu: function toggle_tooltip_submenu(element) {
@@ -1554,8 +1566,6 @@ var editor = module.exports = {
             option = block.options[element.dataset.option];
 
         if (option.type == 'boolean') option.value = !option.value;
-
-        console.log(editor.course);
     },
 
     tooltip: function tooltip(iteration) {
@@ -1564,7 +1574,7 @@ var editor = module.exports = {
 
         setTimeout(editor.tooltip, 1000, iteration);
 
-        if (document.activeElement.dataset.load != 'editor.load_element') return editor.tooltip_list.map(close);
+        if (document.activeElement.tagName.toLowerCase() != 'textarea') return editor.tooltip_list.map(close);
 
         var index = document.activeElement.parentElement.dataset.index;
 
@@ -1614,9 +1624,9 @@ var editor = module.exports = {
         }, {});
 
         root.courses.updated = true;
-
-        console.log(course);
     },
+
+    scroll_trigger: function scroll_trigger(element) {},
 
     set_option: function set_option(config, property) {
 
@@ -1644,7 +1654,27 @@ var editor = module.exports = {
 
         if (!block.content[key]) block.content[key] = key;
 
-        if (key !== 'video') element.innerHTML = block.content[key];
+        if (key !== 'video') element.innerHTML = key;
+
+        element.dataset.load = 'editor.load_' + key;
+    },
+
+    load_title: function load_title(element) {},
+
+    load_text: function load_text(element) {},
+
+    load_video: function load_video(element) {
+
+        //if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
+
+        var source = "https://img.youtube.com/vi/T7Mm392tY1k/sddefault.jpg",
+            iframe = document.createElement("iframe");
+
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("src", 'https://www.youtube.com/embed/T7Mm392tY1k');
+
+        element.appendChild(iframe);
     },
 
     // only locally
@@ -1654,21 +1684,21 @@ var editor = module.exports = {
             block = editor.course.blocks[index];
 
         block.content[element.dataset.element] = element.value;
-
-        console.log(JSON.stringify(editor.course, null, 2));
     },
 
     // updates course in server
-    update: function update(element) {
+    update: function update() {
 
         editor.element.classList.add('saving');
 
         root.send({
-            request: 'save_course',
+            request: 'set_course',
             set: editor.course
         }, function () {
 
             editor.element.classList.remove('saving');
+
+            root.main.dataset.load = root.main.dataset.load;
         });
     }
 
@@ -1690,8 +1720,8 @@ var labels = {
     title_options: [title('Opties'), title('Options')],
     title_delete: [title('Verwijder'), title('Delete')],
     title_save: [title('Opslaan'), title('Save')],
-    title_upload: [title('Upload'), title('Upload')],
-    title_download: [title('Download'), title('Download')],
+    title_online: [title('Online'), title('Online')],
+    title_offline: [title('Offline'), title('Offline')],
     title_preview: [title('Preview'), title('Preview')],
     title_mobile_view: [title('Mobile'), title('Mobile')],
     title_desktop_view: [title('Desktop'), title('Desktop')],
@@ -1713,7 +1743,6 @@ var labels = {
     add: ['Toevoegen', 'Add'],
     invite: ['Uitnodigen', 'Invite'],
     team: ['Team', 'Team'],
-    progress: ['Progressie', 'Progress'],
     sign_in: [value('Inloggen'), value('Sign in')],
     sign_in_link: ['Inloggen', 'Sign in'],
     sign_in_input: [value('Inloggen', value('Sign in'))],
@@ -1761,7 +1790,9 @@ var labels = {
     contact_name: ['Naam', 'Name'],
     contact_email: ['Email', 'Email'],
     contact_message: ['Bericht', 'Message'],
-    send: ['Verstuur', 'Send']
+    send: ['Verstuur', 'Send'],
+    progress: ['Progressie', 'Progress'],
+    video: ['Video', 'Video']
 };
 
 for (var n in labels) {
@@ -2102,8 +2133,7 @@ function upload(e, props) {
 
         root.send({
             request: 'set_course',
-            key: elem.dataset.key,
-            thumbnail: JSON.parse(xhr.responseText).url
+            set: { key: elem.dataset.key, thumbnail: JSON.parse(xhr.responseText).url }
         }, function (res) {
 
             var course = root.courses.memory[elem.dataset.key];

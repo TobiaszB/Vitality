@@ -139,17 +139,25 @@ console.log(msg);
     
     set_course: (ws, msg, session) => {
 
+      let key = msg.set.key;
+
+      delete msg.set.key;
+
+      delete msg.set._id;
+      
       db.collection('courses').findAndModify({
-        key: msg.key
+        key: key
       }, [], {
-        $set: msg
+        $set: msg.set
       }, { upsert: true, new: true }, (err, updated) => {
+
+        if(err) console.log(err);
+
+        handler('broadcast')(ws, updated.value, session);
 
         updated.value.callback = msg.callback;
         
         ws.send(JSON.stringify(updated.value));
-
-        handler('broadcast')(ws, updated.value, session);
 
       });
 
@@ -492,16 +500,13 @@ function database() {
         `,
         created_at: new Date(),
         options: {
-          show_title: 'boolean',
-          show_text: 'boolean',
-          show_buttons: 'boolean',
-          show_arrow: 'boolean',
-          content_align: 'align',
-          background_image: 'url',
-          parallax: 'boolean',
-          background_color: 'color',
-          background_video: 'video',
-          overlay: 'overlay'
+          progress: { type: 'progress', trigger: 'editor.scroll_trigger' },
+          show_title: { type: 'boolean' },
+          show_text: { type: 'boolean' },
+          show_buttons: { type: 'boolean' },
+          content_align: { type: 'align' },
+          background_color: { type: 'color' },
+          video: { type: 'video', fullscreen: 'boolean', url: 'string' },
         }
       }
     }, { upsert: true }, ()=>{});
