@@ -218,7 +218,7 @@ let editor = module.exports = {
     if (!block.content[key])
       block.content[key] = key;
 
-    element.innerHTML = block.content[key];
+    if(key !== 'video') element.innerHTML = block.content[key];
 
   }
   ,
