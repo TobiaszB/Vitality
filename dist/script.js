@@ -1473,16 +1473,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-    load: function load(element) {
+  load: function load(element) {
 
-        root.calender = element;
+    root.calender = element;
 
-        var a = moment('2016-01-01');
-        var b = a.add(1, 'week');
-        a.format();
+    var a = moment('2016-01-01');
+    var b = a.add(1, 'week');
+    a.format();
 
-        console.log(a);
-    }
+    console.log(a);
+  }
 
 };
 });
