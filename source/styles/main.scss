@@ -1050,6 +1050,13 @@ main {
 	opacity: 1;
 	transition: opacity 200ms ease;
   }
+  &.is-array {
+
+	  [data-tab="add"], [data-tab="delete"] {
+	  	display: inline-block;
+	  }
+	  
+  }
   > div {
 	  background: rgba(255, 255, 255, 0.95);
 	  border-radius: 2px;
@@ -1124,6 +1131,10 @@ main {
 	  .confirm-delete {
 	  	display: none;
 	  }
+	  [data-tab="add"], [data-tab="delete"] {
+	  	display: none;
+	  }
+	  &
 	  .set-link {
 	  	display: none;
 	  }

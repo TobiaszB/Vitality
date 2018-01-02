@@ -154,6 +154,10 @@ let editor = module.exports = {
 
     editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
 
+    let is_array = Array.isArray(editor.course.blocks[index].options[focus.dataset.element].content);
+
+    editor.tooltip_list[index].classList[is_array ? 'add' : 'remove']('is-array');
+
     if (editor.tooltip_list[index].classList.contains('fade-in')) return;
     
     editor.tooltip_list.map(close);
@@ -269,7 +273,8 @@ let editor = module.exports = {
         block = editor.course.blocks[index],
         options = block.options[element.dataset.element];
 
-    console.log(options);
+    element.innerHTML = `<textarea data-count="0" data-element="button_group" data-index="${ index }"></textarea>`;
+    
   },
 
   load_title: (element) => {

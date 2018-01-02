@@ -28,16 +28,6 @@ module.exports = (provide) => {
       }
     }, { upsert: true }, ()=>{});
 
-    db.collection('users').findAndModify({ key: 'users_peter' }, [], {
-      $set: {
-        name: 'Peter van Egeraat',
-        avatar: '/avatar-peter.jpg',
-        email: 'pit@fearless-apps.com',
-        password: '',
-        role: 'client'
-      }
-    }, { upsert: true }, ()=>{});
-
     db.collection('courses').findAndModify({ key: 'courses_test' }, [], {
       $set: {
         name: 'Test',
@@ -149,7 +139,7 @@ module.exports = (provide) => {
         }
       }
     }, { upsert: true }, ()=>{});
-
+/*
     db.collection('blocks').findAndModify({ key: 'blocks_mc' }, [], {
       $set: {
         html: `
@@ -181,7 +171,7 @@ module.exports = (provide) => {
         }
       }
     }, { upsert: true }, ()=>{});
-
+*/
 
     db.collection('blocks').findAndModify({ key: 'blocks_multiplechoice' }, [], {
       $set: {
@@ -194,7 +184,10 @@ module.exports = (provide) => {
         options: {
           progress: { type: 'progress', trigger: 'editor.scroll_trigger' },
           title: { type: 'boolean' },
-          text: { type: 'boolean' },
+          text: {
+              type: 'boolean',
+              content: 'hello'
+          },
           button_group: {
             type: 'boolean',
             content: ['a', 'b']
