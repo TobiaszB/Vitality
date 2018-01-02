@@ -141,6 +141,7 @@ body > nav {
   white-space: nowrap;
   width: 100%;
   overflow: visible;
+  overflow-x: hidden;
   z-index: 7;
 
   .logo { 

@@ -71,14 +71,12 @@ function create_websocket() {
   for(let i in localStorage)
     query += (query ? '&' : '?') + encodeURIComponent(i) + '=' +  encodeURIComponent(localStorage.getItem(i));
 
-  new WebSocket(DEV_MODE ?
+  let ws = new WebSocket(DEV_MODE ?
     `ws://localhost:443/${ query }` :
     `wss://vitalityone.fearless-apps.com/${ query }`
-  ).addEventListener('message', function listener(e){
+  );
 
-    let ws = e.target;
-
-    root.send = Send(ws, callbacks);
+  ws.addEventListener('message', function listener(e){
 
     incoming(JSON.parse(e.data), callbacks);
 
@@ -87,6 +85,8 @@ function create_websocket() {
     ws.addEventListener('message', (e) => incoming(JSON.parse(e.data), callbacks));
 
   });
+
+  root.send = Send(ws, callbacks);
 
 }
 

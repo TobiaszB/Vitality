@@ -1537,7 +1537,7 @@ var editor = module.exports = {
 
             return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
                 return '<b style="background-color:#' + c + ';"></b>';
-            }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
+            }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-index="' + index + '" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-index="' + index + '" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
                 var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
 
@@ -1730,18 +1730,38 @@ var editor = module.exports = {
         var index = parseInt(element.parentElement.dataset.index, 10),
             block = editor.course.blocks[index];
 
-        block.content[element.dataset.element] = element.value;
+        block.options[element.dataset.element].content = element.value;
     },
 
     // updates course in server
     update: function update(element) {
 
-        var index = parseInt(element.dataset.index, 10);
+        var index = parseInt(element.dataset.index, 10),
+            temp_index = void 0,
+            moved = void 0;
 
         switch (element.dataset.action) {
 
             case 'delete':
                 editor.course.blocks.splice(index, 1);
+                break;
+
+            case 'move-down':
+                if (index + 2 > editor.course.blocks.length) return;
+                moved = editor.course.blocks.splice(index, 2).reverse();
+                temp_index = moved[1].index;
+                moved[1].index = moved[0].index;
+                moved[0].index = temp_index;
+                editor.course.blocks.splice(index, 0, moved[0], moved[1]);
+                break;
+
+            case 'move-up':
+                if (index < 1) return;
+                moved = editor.course.blocks.splice(index - 1, 2).reverse();
+                temp_index = moved[1].index;
+                moved[1].index = moved[0].index;
+                moved[0].index = temp_index;
+                editor.course.blocks.splice(index - 1, 0, moved[0], moved[1]);
                 break;
 
         }
@@ -2604,11 +2624,9 @@ function create_websocket() {
 
   for (var i in localStorage) {
     query += (query ? '&' : '?') + encodeURIComponent(i) + '=' + encodeURIComponent(localStorage.getItem(i));
-  }new WebSocket(DEV_MODE ? 'ws://localhost:443/' + query : 'wss://vitalityone.fearless-apps.com/' + query).addEventListener('message', function listener(e) {
+  }var ws = new WebSocket(DEV_MODE ? 'ws://localhost:443/' + query : 'wss://vitalityone.fearless-apps.com/' + query);
 
-    var ws = e.target;
-
-    root.send = Send(ws, callbacks);
+  ws.addEventListener('message', function listener(e) {
 
     incoming(JSON.parse(e.data), callbacks);
 
@@ -2618,6 +2636,8 @@ function create_websocket() {
       return incoming(JSON.parse(e.data), callbacks);
     });
   });
+
+  root.send = Send(ws, callbacks);
 }
 
 function error(element) {

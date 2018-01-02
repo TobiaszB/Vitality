@@ -61,8 +61,8 @@ let editor = module.exports = {
           </div>
         </div>
         <div class="block-options">
-          <a data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
-          <a data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
+          <a data-index="${ index }" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
+          <a data-index="${ index }" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
           <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>
           <div class="block-config">${Object.keys(block.options).reduce((html,option,id)=>{
 
@@ -252,7 +252,7 @@ let editor = module.exports = {
     element.addEventListener('mouseenter', ()=>{ element.focus(); });
 
     if(!block.options[key]) return console.log(key, editor.course.key, index, block);
-    
+
     if(!block.options[key].content) block.options[key].content = key;
 
     if(element.tagName.toLowerCase() == 'textarea') element.value = block.options[key].content;
@@ -316,19 +316,39 @@ let editor = module.exports = {
     let index = parseInt(element.parentElement.dataset.index, 10),
         block = editor.course.blocks[index];
 
-     block.content[element.dataset.element] = element.value;
+     block.options[element.dataset.element].content = element.value;
 
   },
 
   // updates course in server
   update: (element)=>{
 
-    let index = parseInt(element.dataset.index, 10);
+    let index = parseInt(element.dataset.index, 10),
+        temp_index,
+        moved;
 
     switch(element.dataset.action) {
 
       case 'delete':
         editor.course.blocks.splice(index, 1);
+        break;
+
+      case 'move-down':
+        if(index + 2 > editor.course.blocks.length) return;
+        moved = editor.course.blocks.splice(index, 2).reverse();
+        temp_index = moved[1].index;
+        moved[1].index = moved[0].index;
+        moved[0].index = temp_index;
+        editor.course.blocks.splice(index, 0, moved[0], moved[1]);
+        break;
+
+      case 'move-up':
+        if(index < 1) return;
+        moved = editor.course.blocks.splice(index - 1, 2).reverse();
+        temp_index = moved[1].index;
+        moved[1].index = moved[0].index;
+        moved[0].index = temp_index;
+        editor.course.blocks.splice(index - 1, 0, moved[0], moved[1]);
         break;
 
     }
