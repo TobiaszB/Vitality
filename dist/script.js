@@ -607,72 +607,88 @@ var sessions = module.exports = {
 require.register("source/scripts/collections/templates.js", function(exports, require, module) {
 'use strict';
 
-module.exports = {
+var templates = module.exports = {
 
-		load_courses: function load_courses(element) {
+  ticket: {},
 
-				var html = '',
-				    keys = Object.keys(root.courses.memory);
+  select_course: function select_course(element) {
 
-				for (var i = 0; i < keys.length; i++) {
+    templates.ticket.course = element.id;
 
-						var course = root.courses.memory[keys[i]];
+    console.log(templates.ticket);
+  },
 
-						if (!course.published_at) continue;
+  save_name: function save_name(element) {
 
-						html += '\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t</div>\n\t\t';
-				};
+    templates.ticket.client = element.value;
 
-				element.innerHTML = html;
-		},
+    console.log(templates.ticket);
+  },
 
-		load_calender: function load_calender(element) {
+  load_courses: function load_courses(element) {
 
-				element.innerHTML = '\n\t\t\n\t\t\n\t\t\n\t';
-		},
+    var html = '',
+        keys = Object.keys(root.courses.memory);
 
-		change_language: function change_language(element) {
+    for (var i = 0; i < keys.length; i++) {
 
-				localStorage.setItem('language', element.dataset.language);
+      var course = root.courses.memory[keys[i]];
 
-				location.reload();
-		},
+      if (!course.published_at) continue;
 
-		highlight_lang: function highlight_lang(element) {
+      html += '\n\t\t    <input data-change="templates.select_course" id="' + course.key + '" type="radio" name="course_list" value="' + course.key + '">\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t\t<label for="' + course.key + '"></label>\n\n\t\t\t</div>\n\t\t';
+    };
 
-				if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
+    element.innerHTML = html;
+  },
 
-				element.classList.add('active');
-		},
+  load_calender: function load_calender(element) {
 
-		format_date: function format_date(element) {
+    element.innerHTML = '\n\t\t\n\t\t\n\t\t\n\t';
+  },
 
-				var date = new Date(element.dataset.date),
-				    months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+  change_language: function change_language(element) {
 
-				if (!date || String(date).toLowerCase() == 'invalid date') return;
+    localStorage.setItem('language', element.dataset.language);
 
-				element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
-		},
+    location.reload();
+  },
 
-		format_time: function format_time(element) {
+  highlight_lang: function highlight_lang(element) {
 
-				var date = new Date(element.dataset.date);
+    if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
 
-				if (!date || String(date).toLowerCase() == 'invalid date') return;
+    element.classList.add('active');
+  },
 
-				element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
-		},
+  format_date: function format_date(element) {
 
-		start: function start(element) {
+    var date = new Date(element.dataset.date),
+        months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
-				console.log('e', element);
-		},
+    if (!date || String(date).toLowerCase() == 'invalid date') return;
 
-		hide_notification: function hide_notification(element) {
+    element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+  },
 
-				document.querySelector('body').classList.remove('notified');
-		}
+  format_time: function format_time(element) {
+
+    var date = new Date(element.dataset.date);
+
+    if (!date || String(date).toLowerCase() == 'invalid date') return;
+
+    element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
+  },
+
+  start: function start(element) {
+
+    console.log('e', element);
+  },
+
+  hide_notification: function hide_notification(element) {
+
+    document.querySelector('body').classList.remove('notified');
+  }
 
 };
 });
@@ -854,6 +870,8 @@ var tickets = module.exports = {
 
         var ticket = tickets.memory[element.dataset.ticket],
             user = root.users.memory[ticket.user];
+
+        if (!user) return;
 
         element.innerHTML = '\n\n      <div class="' + (user.key == root.me.user ? 'me' : '') + '" data-key="' + user.key + '">\n        <img src="' + user.avatar + '">\n        <span data-load="users.memory.' + user.key + '.name"></span>\n        <span data-load="users.memory.' + user.key + '.email"></span>\n      </div>\n\n    ';
     }
@@ -1508,7 +1526,7 @@ var editor = module.exports = {
 
         editor.course.published_at = editor.course.published_at ? '' : new Date();
 
-        editor.update();
+        editor.update(element);
     },
 
     load_course: function load_course(element) {

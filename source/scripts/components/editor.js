@@ -16,7 +16,7 @@ let editor = module.exports = {
 
     editor.course.published_at = editor.course.published_at ? '' : new Date();
 
-    editor.update();
+    editor.update(element);
 
   },
 
