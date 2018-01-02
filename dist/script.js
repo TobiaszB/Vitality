@@ -1494,6 +1494,8 @@ var editor = module.exports = {
 
     course: null,
 
+    ticket: null,
+
     load_button_primary: function load_button_primary() {},
 
     load_button_secondary: function load_button_secondary() {},
@@ -1514,6 +1516,8 @@ var editor = module.exports = {
         var key = history.state.course,
             course = root.courses.memory[key],
             colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
+
+        if (editor.ticket) root.main.classList.add('ticket-mode');
 
         editor.looping = Math.random();
 
@@ -1723,7 +1727,12 @@ var editor = module.exports = {
 
         if (!block.options[key].content) block.options[key].content = key;
 
-        if (element.tagName.toLowerCase() == 'textarea') element.value = block.options[key].content;
+        if (element.tagName.toLowerCase() == 'textarea') {
+
+            element.value = block.options[key].content;
+
+            if (editor.ticket) element.disabled = true;
+        }
 
         element.dataset.index = index;
 
@@ -1737,7 +1746,7 @@ var editor = module.exports = {
             options = block.options[element.dataset.element];
 
         element.innerHTML = options.content.map(function (string, count) {
-            return '<textarea data-input="editor.save" data-count="' + count + '" data-element="button_group" data-index="' + index + '">' + string + '</textarea>';
+            return '<textarea ' + (editor.ticket ? 'disabled' : '') + ' data-input="editor.save" data-count="' + count + '" data-element="button_group" data-index="' + index + '">' + string + '</textarea>';
         }).join('');
     },
 

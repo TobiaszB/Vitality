@@ -633,6 +633,14 @@ main {
 
 }
 
+// ticket
+main.ticket-mode {
+	padding-right: 0;
+	.block-options, .control-editor {
+		display: none;
+	}
+}
+
 // course
 [data-load="courses.render_one"] {
 	margin: 20px 20px 0 0;
