@@ -51,7 +51,6 @@ let editor = module.exports = {
            <div class="color-picker">${
              colors.map((c)=>`<b style="background-color:#${ c };"></b>`).join('')
            }</div>
-           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>
            <div class="set-link"><button>set link</button></div>
            <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>
            <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>
@@ -95,7 +94,38 @@ let editor = module.exports = {
 
   toggle_tooltip_submenu: (element) => {
 
+    let data = editor.focus.dataset,
+        index = parseInt(data.index, 10),
+        count = parseInt(data.count, 10),
+        options;
+
     element.parentElement.dataset.tab = element.dataset.tab;
+
+    switch(element.dataset.tab) {
+
+      case 'add':
+
+        options = editor.course.blocks[index].options[data.element];
+
+        options.content.splice(count + 1, 0, '');
+
+        root.main.dataset.load = root.main.dataset.load;
+
+        break;
+
+      case 'delete':
+
+        options = editor.course.blocks[index].options[data.element];
+
+        if(options.content.length < 2) options.value = false;
+
+        else options.content.splice(count, 1);
+console.log(options)
+        root.main.dataset.load = root.main.dataset.load;
+
+        break;
+        
+    }
     
   },
 
@@ -113,6 +143,8 @@ let editor = module.exports = {
         option = block.options[element.dataset.option];
 
     if(option.type == 'boolean') option.value = !option.value;
+    
+    root.main.dataset.load = root.main.dataset.load;
 
   },
 
@@ -129,6 +161,8 @@ let editor = module.exports = {
       return editor.tooltip_list.map(close);
       
     }
+
+    editor.focus = focus;
 
     block = block || focus.parentElement;
 
@@ -257,6 +291,8 @@ let editor = module.exports = {
 
     if(!block.options[key]) return console.log(key, editor.course.key, index, block);
 
+    if(!block.options[key].value) return element.style.display = 'none';
+
     if(!block.options[key].content) block.options[key].content = key;
 
     if(element.tagName.toLowerCase() == 'textarea') element.value = block.options[key].content;
@@ -273,7 +309,9 @@ let editor = module.exports = {
         block = editor.course.blocks[index],
         options = block.options[element.dataset.element];
 
-    element.innerHTML = `<textarea data-count="0" data-element="button_group" data-index="${ index }"></textarea>`;
+    element.innerHTML = options.content.map((string, count) => {
+      return `<textarea data-input="editor.save" data-count="${ count }" data-element="button_group" data-index="${ index }">${ string }</textarea>`
+    }).join('');
     
   },
 
@@ -321,7 +359,12 @@ let editor = module.exports = {
     let index = parseInt(element.parentElement.dataset.index, 10),
         block = editor.course.blocks[index];
 
-     block.options[element.dataset.element].content = element.value;
+     if(typeof element.dataset.count == 'undefined') 
+      return  block.options[element.dataset.element].content = element.value;
+
+     let count = parseInt(element.dataset.count, 10);
+
+     block.options[element.dataset.element].content[count] = element.value;
 
   },
 

@@ -1097,17 +1097,6 @@ main {
 	  	&:after { border-top-color: #ddd; }
 	  	[data-tab="link"], &:after { background: rgba(0,0,0,0.1); }
 	  }
-	  &[data-tab="delete"] {
-	  	.confirm-delete { display: block; }
-	  	[data-tab="delete"] { background: rgba(0,0,0,0.1); }
-	  }
-	  .confirm-delete button {
-	  	width: 100%;
-	  	&:hover {
-	  		background: #f44336;
-	  		color: white;
-	  	}
-	  }
 	  .set-link button {
 	  	width: 100%;
 	  	&:hover {
@@ -1127,9 +1116,6 @@ main {
 			width: 14.28%;
 			height: 30px;
 	  	}
-	  }
-	  .confirm-delete {
-	  	display: none;
 	  }
 	  [data-tab="add"], [data-tab="delete"] {
 	  	display: none;

@@ -65,7 +65,7 @@ module.exports = (provide) => {
           button_primary: { type: 'boolean' },
           button_secondary: { type: 'boolean' },
           arrow: { type: 'boolean' },
-          background: { type: 'background' },
+          background: { type: 'boolean' },
           parallax: { type: 'boolean' },
           overlay: { type: 'overlay' }
         }

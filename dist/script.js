@@ -1537,7 +1537,7 @@ var editor = module.exports = {
 
             return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
                 return '<b style="background-color:#' + c + ';"></b>';
-            }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-index="' + index + '" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-index="' + index + '" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
+            }).join('') + '</div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-index="' + index + '" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-index="' + index + '" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
                 var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
 
@@ -1550,7 +1550,36 @@ var editor = module.exports = {
 
     toggle_tooltip_submenu: function toggle_tooltip_submenu(element) {
 
+        var data = editor.focus.dataset,
+            index = parseInt(data.index, 10),
+            count = parseInt(data.count, 10),
+            options = void 0;
+
         element.parentElement.dataset.tab = element.dataset.tab;
+
+        switch (element.dataset.tab) {
+
+            case 'add':
+
+                options = editor.course.blocks[index].options[data.element];
+
+                options.content.splice(count + 1, 0, '');
+
+                root.main.dataset.load = root.main.dataset.load;
+
+                break;
+
+            case 'delete':
+
+                options = editor.course.blocks[index].options[data.element];
+
+                if (options.content.length < 2) options.value = false;else options.content.splice(count, 1);
+                console.log(options);
+                root.main.dataset.load = root.main.dataset.load;
+
+                break;
+
+        }
     },
 
     tooltip_list: [],
@@ -1566,6 +1595,8 @@ var editor = module.exports = {
             option = block.options[element.dataset.option];
 
         if (option.type == 'boolean') option.value = !option.value;
+
+        root.main.dataset.load = root.main.dataset.load;
     },
 
     tooltip: function tooltip(iteration, block) {
@@ -1580,6 +1611,8 @@ var editor = module.exports = {
 
             return editor.tooltip_list.map(close);
         }
+
+        editor.focus = focus;
 
         block = block || focus.parentElement;
 
@@ -1686,6 +1719,8 @@ var editor = module.exports = {
 
         if (!block.options[key]) return console.log(key, editor.course.key, index, block);
 
+        if (!block.options[key].value) return element.style.display = 'none';
+
         if (!block.options[key].content) block.options[key].content = key;
 
         if (element.tagName.toLowerCase() == 'textarea') element.value = block.options[key].content;
@@ -1701,7 +1736,9 @@ var editor = module.exports = {
             block = editor.course.blocks[index],
             options = block.options[element.dataset.element];
 
-        element.innerHTML = '<textarea data-count="0" data-element="button_group" data-index="' + index + '"></textarea>';
+        element.innerHTML = options.content.map(function (string, count) {
+            return '<textarea data-input="editor.save" data-count="' + count + '" data-element="button_group" data-index="' + index + '">' + string + '</textarea>';
+        }).join('');
     },
 
     load_title: function load_title(element) {},
@@ -1734,7 +1771,11 @@ var editor = module.exports = {
         var index = parseInt(element.parentElement.dataset.index, 10),
             block = editor.course.blocks[index];
 
-        block.options[element.dataset.element].content = element.value;
+        if (typeof element.dataset.count == 'undefined') return block.options[element.dataset.element].content = element.value;
+
+        var count = parseInt(element.dataset.count, 10);
+
+        block.options[element.dataset.element].content[count] = element.value;
     },
 
     // updates course in server
