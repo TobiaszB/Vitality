@@ -1225,11 +1225,41 @@ main.dropzone[data-load="edit.html"] {
 	  }
 	}
 
+	&[data-key="blocks_mc"] {
+		background-color: white;
+		h2 {
+			color: $dark-grey;
+			font-family: $raleway;
+			font-size: 40px;
+			padding-right: 150px;
+		}
+		textarea {
+			color: $dark-grey;
+		}
+		img {
+			width: 150px;
+			height: 150px;
+			position: absolute;
+			top: 50px;
+			right: 50px;
+		}
+	}
+
 	&[data-key="blocks_points"] {
+		background-color: $cyan;
+		textarea {
+			color: white;
+		}
+		img {
+			width: 100%;
+		}
+	}
+
+	&[data-key="blocks_points"], &[data-key="blocks_mc"] {
 		padding: 80px 40px 20px;
 		height: auto;
-		background-color: $cyan;
 		text-align: center;
+		position: relative;
   		font-size: 0;
 		> section {
 			width: 33%;
@@ -1269,8 +1299,10 @@ main.dropzone[data-load="edit.html"] {
 				display: none;
 			}
 		}
-		img {
-			width: 100%;
+		h1 {
+			font-family: $changa;
+			font-size: 100px;
+			color: $dark-grey;
 		}
 		textarea {
 			background: transparent;
@@ -1279,7 +1311,6 @@ main.dropzone[data-load="edit.html"] {
 			z-index: 3;
 			resize: none;
 			width: 100%;
-			color: white;
 			outline: 0;
 			overflow: hidden;
 			&[data-element="title"] {
@@ -1287,7 +1318,6 @@ main.dropzone[data-load="edit.html"] {
 				font-size: 30px;
 				font-weight: bold;
 				height: 40px;
-				color: white;
 				white-space: normal;
 				display: inline-block;
 				vertical-align: top;
@@ -1300,7 +1330,6 @@ main.dropzone[data-load="edit.html"] {
 				line-height: 30px;
 				height: 180px;
 				display: inline-block;
-				color: white;
 				padding: 10px 0 0 0;
 				text-align: justify;
 			}

@@ -589,34 +589,18 @@ function database() {
     db.collection('blocks').findAndModify({ key: 'blocks_mc' }, [], {
       $set: {
         html: `
+          <h2>Lorem ipsum dolor sit amet, conse tetur adipiscing elit</h2>
+          <img src="/mc-questionmark.png">
           <section data-index="0">
-              <img src="/point-nutrition.png"><br>
-              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
+              <h1>A</h1><br>
               <textarea data-load="editor.load_element" data-element="text"></textarea>
           </section>
           <section data-index="1">
-              <img src="/point-training.png"><br>
-              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
+              <h1>B</h1><br>
               <textarea data-load="editor.load_element" data-element="text"></textarea>
           </section>
           <section data-index="2">
-              <img src="/point-lifestyle.png"><br>
-              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
-              <textarea data-load="editor.load_element" data-element="text"></textarea>
-          </section>
-          <section data-index="3">
-              <img src="/point-lifestyle.png"><br>
-              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
-              <textarea data-load="editor.load_element" data-element="text"></textarea>
-          </section>
-          <section data-index="4">
-              <img src="/point-lifestyle.png"><br>
-              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
-              <textarea data-load="editor.load_element" data-element="text"></textarea>
-          </section>
-          <section data-index="5">
-              <img src="/point-lifestyle.png"><br>
-              <textarea data-load="editor.load_element" data-element="title"></textarea><br>
+              <h1>C</h1><br>
               <textarea data-load="editor.load_element" data-element="text"></textarea>
           </section>
         `,
