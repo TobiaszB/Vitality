@@ -251,14 +251,25 @@ let editor = module.exports = {
 
     element.addEventListener('mouseenter', ()=>{ element.focus(); });
 
-    if(!block.content) block.content = {};
+    if(!block.options[key]) return console.log(key, editor.course.key, index, block);
+    
+    if(!block.options[key].content) block.options[key].content = key;
 
-    if(!block.content[key]) block.content[key] = key;
+    if(element.tagName.toLowerCase() == 'textarea') element.value = block.options[key].content;
 
-    if(element.tagName.toLowerCase() == 'textarea') element.value = block.content[key];
+    element.dataset.index = index;
 
     element.dataset.load = `editor.load_${ key }`;
 
+  },
+
+  load_button_group: (element) => {
+
+    let index = parseInt(element.dataset.index, 10),
+        block = editor.course.blocks[index],
+        options = block.options[element.dataset.element];
+
+    console.log(options);
   },
 
   load_title: (element) => {
@@ -307,8 +318,7 @@ let editor = module.exports = {
 
      block.content[element.dataset.element] = element.value;
 
-  }
-  ,
+  },
 
   // updates course in server
   update: (element)=>{

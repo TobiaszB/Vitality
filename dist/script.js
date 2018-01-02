@@ -495,7 +495,7 @@ var sessions = module.exports = {
 
     load_login: function load_login(element) {
 
-        if (!root.me.session) return;
+        if (!root.me || !root.me.session) return;
 
         sessions.url('/courses');
 
@@ -1680,13 +1680,24 @@ var editor = module.exports = {
             element.focus();
         });
 
-        if (!block.content) block.content = {};
+        if (!block.options[key]) return console.log(key, editor.course.key, index, block);
 
-        if (!block.content[key]) block.content[key] = key;
+        if (!block.options[key].content) block.options[key].content = key;
 
-        if (element.tagName.toLowerCase() == 'textarea') element.value = block.content[key];
+        if (element.tagName.toLowerCase() == 'textarea') element.value = block.options[key].content;
+
+        element.dataset.index = index;
 
         element.dataset.load = 'editor.load_' + key;
+    },
+
+    load_button_group: function load_button_group(element) {
+
+        var index = parseInt(element.dataset.index, 10),
+            block = editor.course.blocks[index],
+            options = block.options[element.dataset.element];
+
+        console.log(options);
     },
 
     load_title: function load_title(element) {},
@@ -1823,12 +1834,15 @@ var labels = {
     password: [placeholder('Wachtwoord'), placeholder('Password')],
     send_invite: ['Verstuur uitnodiging', 'Send invite'],
     events: ['Evenementen', 'Events'],
-    show_title: ['Show Title', 'Show Title'],
-    show_text: ['Show Text', 'Show Text'],
-    show_buttons: ['Show Buttons', 'Show Buttons'],
-    show_arrow: ['Show Arrow', 'Show Arrow'],
+    title: ['Show Title', 'Show Title'],
+    text: ['Show Text', 'Show Text'],
+    button_primary: ['Show Primary Button', 'Show Primary Button'],
+    button_secondary: ['Show Secondary Button', 'Show Secondary Button'],
+    buttons: ['Show Buttons', 'Show Buttons'],
+    button_group: ['Show Buttons', 'Show Buttons'],
+    arrow: ['Show Arrow', 'Show Arrow'],
     content_align: ['Content Align', 'Content Align'],
-    background_image: ['Background Image', 'Background Image'],
+    background: ['Background', 'Background'],
     parallax: ['Parallax', 'Parallax'],
     background_color: ['Background Color', 'Background Color'],
     background_video: ['Background Video', 'Background Video'],

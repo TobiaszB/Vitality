@@ -20,7 +20,7 @@ let sessions = module.exports = {
 
   load_login: (element) => {
 
-    if(!root.me.session) return;
+    if(!root.me || !root.me.session) return;
 
     sessions.url('/courses');
 
