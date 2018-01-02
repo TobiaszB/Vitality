@@ -1856,7 +1856,7 @@ var labels = {
     title_preview: [title('Preview'), title('Preview')],
     title_mobile_view: [title('Mobile'), title('Mobile')],
     title_desktop_view: [title('Desktop'), title('Desktop')],
-    delete: ['Verwijder', 'Delete'],
+
     home: ['Home', 'Home'],
     home_text: ['De enige echte privéstudio!', 'The only real private studio!'],
     home_intake_button: ['Gratis intake', 'Free intake'],
@@ -1869,10 +1869,35 @@ var labels = {
     home_share_page: ['Deel deze pagina', 'Share this page'],
     home_joris_merel: ['Joris Boon en Merel Witkamp', 'Joris Boon and Merel Witkamp'],
     home_joris_merel_description: ["Mogen we ons even aan u voorstellen. Wij zijn Joris Boon en Merel Witkamp. We zijn beiden fanatieke sporttrainers waarbij we weten dat individuele training allereerst tot resultaat moet leiden bijvoorbeeld afvallen, vitaler of gewoon \'je beter voelen\'. Maar we weten ook dat training alleen vaak niet voldoende is. Vandaar dat we een uniek coachingprogramma hebben geïntroduceerd onder de noemer \'Managers Vitality: for a work - life balance that boosts your management performance'. Het gaat dan om een programma om een betere werk - privé balans te vinden (ook in relatie tot fitness) alsmede omveel betere resultaten op het werk te behalen. Het focust zich op de '7th habit' van managementgoeroe Stephan Covey waar hij heeft over 'het scherp houden van de zaag'. Inmiddels hebben al vele managers zich voor dit programma ingeschreven.", "May we introduce ourselves to you, we are Joris Boon and Merel Witkamp We are both fanatical sports trainers where we know that individual training should lead to results first, for example losing weight, being more vital or just 'feeling better'. also that training alone is often not sufficient, which is why we have introduced a unique coaching program under the heading 'Managers Vitality: for a work - life balance that boosts your management performance' - a program for a better work - private life. To find a balance (also in relation to fitness) as well as to achieve much better results at work, it focuses on the '7th habit' of management guru Stephan Covey, who talks about 'keeping the saw sharp'. managers registered for this program."],
+
     team_text: ['Mogen wij uw personal trainer of personal coach zijn?', 'Can we be your personal trainer or personal coach?'],
     team_intro_1: ["Joris Boon en Merel Witkamp, beiden met een jarenlange ervaring in de sportbranche, bundelen hun krachten om jou een training op maat te kunnen bieden. Joris Boon is een zeer ervaren trainer op het gebied van vechtsport en krachttraining. Met zijn 25 jaar ervaring als sportinstructeur weet hij deze technieken perfect toe te passen bij personal training. Merel Witkamp is thuis in de wereld van personal training, yoga en pilates. Daarnaast is ze gespecialiseerd in revalidatietraining en revalidatietraining voor ex-kankerpatiënten.", "Joris Boon and Merel Witkamp, both with years of experience in the sports industry, join forces to offer you a tailor-made training. Joris Boon is a very experienced trainer in the field of martial arts and strength training. With his 25 years of experience as a sports instructor he knows how to perfectly apply these techniques to personal training. Merel Witkamp is at home in the world of personal training, yoga and pilates. She is also specialized in rehabilitation training and rehabilitation training for ex-cancer patients."],
     team_intro_2: ["Afgelopen jaar besloten wij om samen een privéstudio te openen in een eigen luxe stijl. Een privéstudio waar je in alle rust ook echt privé traint! Jij alleen samen met een van ons. We willen jou door onze persoonlijke begeleiding helpen om op een snelle en effectieve wijze je doelen te verwezenlijken. Door het brede aanbod van krachttraining, conditietraining, revalidatietraining, bokstraining, yoga en pilates kunnen we jou de training bieden die op je lijf geschreven is. Durf jij nu de stap te nemen?", "Last year we decided to open a private studio together in our own luxury style. A private studio where you can practice private training in peace! You alone with one of us. We want to help you through our personal guidance to realize your goals in a fast and effective way. Through the wide range of strength training, fitness training, rehabilitation training, boxing training, yoga and pilates we can offer you the training that is right for you. Do you dare to take the step now?"],
+
+    services_personal_training_title: ['Persoonlijke training', 'Personal training'],
+    services_personal_training_text_1: ['We weten allemaal dat gezonde voeding en beweging goed voor ons is. Maar hoe ga je dat aanpakken? Waar begin je en wat moet je doen om het juiste resultaat te behalen? Daar zijn wij voor!', 'We all know that healthy food and exercise is good for us. But how are you going to deal with that? Where do you start and what do you have to do to achieve the right result? That is what we are for!'],
+    services_personal_training_text_2: ['Door het geven van persoonlijke aandacht en de juiste fysieke training zijn wij een stok achter de deur en helpen wij je bij het behalen van jouw doelstellingen. Meer energie, een fitter en sterker lichaam, meer zelfvertrouwen en minder stress.', 'By giving personal attention and the right physical training, we are behind the door and we help you achieve your goals. More energy, a fitter and stronger body, more self-confidence and less stress.'],
+    services_personal_training_text_3: ['VitalityOne geeft je resultaat, een fysieke basis. Kortom: fit,sterk en in balans.', 'VitalityOne geeft je resultaat, een fysieke basis. Kortom: fit,sterk en in balans.'],
+    services_personal_training_text_4: ['Daarnaast train je in een luxe omgeving waar je in alle rust en privacy aan je doelen kunt werken. Door de individuele begeleiding kun je de training afstemmen op jouw wensen, in de tijd die jou uitkomt.', 'By giving personal attention and the right physical training, we are behind the door and we help you achieve your goals. More energy, a fitter and stronger body, more self-confidence and less stress.'],
+    services_personal_boxing_title: ['Persoonlijke boxing', 'Personal training'],
+    services_personal_boxing_text_1: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus. Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus. Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.'],
+
+    services_personal_yoga_and_pilates_title: ['Persoonlijk yoga en Pilates', 'Personal yoga and Pilates'],
+    services_personal_yoga_and_pilates_text_1: ['Met personal yoga en pilates laat ik u ervaren wat deze techniek met je lijf en je gedachten doen. Ik creëer rust juist in deze tijd waarin we het al zo druk hebben. Het een kan niet zonder het ander.', 'With personal yoga and pilates I let you experience what this technique does to your body and your thoughts. I create peace in this time where we are already so busy. The one can not do without the other.'],
+    services_personal_yoga_and_pilates_text_2: ['Aenean arcu mi, facilisis quis neque nec, pulvinar congue ipsum. In aliquam dictum maximus. Sed ipsum metus, vulputate maximus porta ac, convallis vitae mi.', 'Aenean arcu mi, facilisis quis neque nec, pulvinar congue ipsum. In aliquam dictum maximus. Sed ipsum metus, vulputate maximus porta ac, convallis vitae mi.'],
+
+    onco_personal_training_title: ['Onco Persoonlijke Training', 'Onco Personal Training'],
+    onco_personal_training_sub: ['Persoonlijke Fysieke training na kanker.', 'Personal Physical training after cancer.'],
+    onco_personal_training_text_1: ['Onco Personal Training is erop gericht om de kwaliteit van leven van ex kankerpatiënten te verbeteren.', 'Onco Personal Training is aimed at improving the quality of life of ex cancer patients.'],
+    onco_personal_training_text_2: ['', ''],
+    onco_personal_training_text_3: ['', ''],
+    onco_personal_training_text_4: ['', ''],
+
+    contact_name: ['Naam', 'Name'],
+    contact_email: ['Email', 'Email'],
+
     add: ['Toevoegen', 'Add'],
+    delete: ['Verwijder', 'Delete'],
     invite: ['Uitnodigen', 'Invite'],
     team: ['Team', 'Team'],
     sign_in: [value('Inloggen'), value('Sign in')],
@@ -1922,8 +1947,6 @@ var labels = {
     background_video: ['Background Video', 'Background Video'],
     overlay: ['Overlay', 'Overlay'],
     services: ['Diensten', 'Services'],
-    contact_name: ['Naam', 'Name'],
-    contact_email: ['Email', 'Email'],
     contact_message: ['Bericht', 'Message'],
     send: ['Verstuur', 'Send'],
     progress: ['Progressie', 'Progress'],
