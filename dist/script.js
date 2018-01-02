@@ -1473,16 +1473,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-  load: function load(element) {
+    load: function load(element) {
 
-    root.calender = element;
+        root.calender = element;
 
-    var a = moment('2016-01-01');
-    var b = a.add(1, 'week');
-    a.format();
+        var a = moment('2016-01-01');
+        var b = a.add(1, 'week');
+        a.format();
 
-    console.log(a);
-  }
+        console.log(a);
+    }
 
 };
 });
@@ -1544,7 +1544,7 @@ var editor = module.exports = {
                 if (block.options[option].type == 'boolean') element = '<input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element;
 
                 return '' + html + element;
-            }, '') + '</div>\n          <a data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
+            }, '') + '</div>\n          <a data-action="delete" data-index="' + index + '" data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
         }, '\n      <div class="control-editor">\n        <a data-load="labels.title_save" data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-load="labels.title_online" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-load="labels.title_offline" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-load="labels.title_preview" data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-load="labels.title_mobile_view" data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-load="labels.title_desktop_view" data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
     },
 
@@ -1723,7 +1723,17 @@ var editor = module.exports = {
     },
 
     // updates course in server
-    update: function update() {
+    update: function update(element) {
+
+        var index = parseInt(element.dataset.index, 10);
+
+        switch (element.dataset.action) {
+
+            case 'delete':
+                editor.course.blocks.splice(index, 1);
+                break;
+
+        }
 
         editor.element.classList.add('saving');
 
@@ -2648,6 +2658,8 @@ function incoming(message, callbacks) {
   if (!message.token) root.sessions.url('/');
 
   localStorage.setItem('authenticated', message.token || '');
+
+  if (history.state.page == 'home') root.sessions.url('/courses');
 
   root.sessions.load_page(null, { prevent_url: true });
 }

@@ -74,7 +74,7 @@ let editor = module.exports = {
 
       }
       , '')}</div>
-          <a data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>
+          <a data-action="delete" data-index="${ index }" data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>
         </div>
       </div>`;
 
@@ -311,7 +311,17 @@ let editor = module.exports = {
   ,
 
   // updates course in server
-  update: ()=>{
+  update: (element)=>{
+
+    let index = parseInt(element.dataset.index, 10);
+
+    switch(element.dataset.action) {
+
+      case 'delete':
+        editor.course.blocks.splice(index, 1);
+        break;
+
+    }
 
     editor.element.classList.add('saving');
 

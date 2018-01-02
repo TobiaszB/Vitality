@@ -147,9 +147,11 @@ function incoming(message, callbacks){
   if(!message.token) root.sessions.url('/');
 
   localStorage.setItem('authenticated', message.token || '');
-
-  root.sessions.load_page(null, { prevent_url: true });
   
+  if(history.state.page == 'home') root.sessions.url('/courses');
+  
+  root.sessions.load_page(null, { prevent_url: true });
+
 }
 
 function notify(message) {
