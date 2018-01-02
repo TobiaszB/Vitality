@@ -506,8 +506,9 @@ main {
 		display: inline-block;
 		margin: 20px;
 		
-		&.joris {
+		&.team {
 			float: left;
+			margin: 35px 20px 20px 20px;
 		}
 		
 		&.merel {
@@ -593,6 +594,11 @@ main {
 			border: 1px solid white;
 			cursor: pointer;
 			display: inline-block;
+			&.team {
+				position: absolute;
+				left: 210px;
+				top: 20px;
+			}
 			&:hover {
 				background-color: lighten($orange, 5);
 			}
@@ -627,7 +633,7 @@ main {
 		}
 		
 		&.home { background-image: url('/photo-gym.jpg'); min-height: 100vh; }
-		&.team { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh; }
+		&.team { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh;}
 
 	}	
 
