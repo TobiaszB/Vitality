@@ -68,11 +68,11 @@ function handler(request) {
 
             delete user.password;
 
+            updated.value.callback = msg.callback;
+
             ws.send(JSON.stringify(updated.value));
 
             ws.send(JSON.stringify(user));
-
-            updated.value.callback = msg.callback;
 
             callback(updated.value);
 

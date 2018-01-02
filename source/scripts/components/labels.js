@@ -15,6 +15,7 @@ let labels = {
     title_preview: [title('Preview'), title('Preview')],
     title_mobile_view: [title('Mobile'), title('Mobile')],
     title_desktop_view: [title('Desktop'), title('Desktop')],
+    delete: ['Verwijder', 'Delete'],
     home: ['Home', 'Home'],
     home_text: ['De enige echte privéstudio!', 'The only real private studio!'],
     home_intake_button: ['Gratis intake', 'Free intake'],

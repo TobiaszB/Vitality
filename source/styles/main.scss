@@ -38,23 +38,12 @@ body {
   position: relative;
   height: 100%;
   transition: 200ms padding ease;
-  &.home-page {
-  	main { background-color: $dark-grey; }
-  }
-  &.home-page, &.courses-page, .team-page {
-  	padding: 70px 0 0 0;
-  }
-  &.notified {
-    padding: 40px 0 0 0;
-    .notification { max-height: 40px; }
-  }
+  &.home-page main { background-color: $dark-grey; }
+  &.notified .notification { max-height: 40px; }
   &.authenticated {
-	padding: 130px 0 0 0;
-    > nav .sub-nav {
-	  display: block;
-    }
     > nav a {
-	  &[data-modal="profile.html"] {
+   	  margin: 0 30px 0 0;
+	  &.auth-only {
 	    display: inline-block;
 	    height: 70px;
 	  }
@@ -81,12 +70,15 @@ body {
   }
 }
 
-body.profile-page [data-page="profile"],
+body.home-page [data-page="home"],
+body.team-page [data-page="team"],
+body.services-page [data-page="services"],
 body.edit-page [data-page="courses"],
 body.courses-page [data-page="courses"],
 body.invites-page [data-page="invites"],
+body.contact-page [data-page="contact"],
 body.stats-page [data-page="stats"] {
-    border-bottom: 3px solid $blue;
+    text-decoration: underline;
 }
 
 [data-modal="profile.html"] {
@@ -173,9 +165,7 @@ body > nav {
     font-weight: 400;
     font-size: 14px;
     &:hover { color: $blue; }
-    &[data-page="courses"], &[data-modal="profile.html"] {
-      display: none;
-    }
+    &.auth-only { display: none; }
   }
   .divider {
     height: 60px;
@@ -190,17 +180,7 @@ body > nav {
     vertical-align: top;
     height: 70px;
   	white-space: nowrap;
-  }
-  .sub-nav {
-    display: none;
-    text-align: center;
-    background-color: #f6f6f6;
-    border-bottom: 3px solid #ccc;
-    background-image: url('/pattern-ruffles.png');
-    background-repeat: repeat;
-    z-index: 1;
-    height: 60px;
-    line-height: 60px;
+  	background: #000;
   }
   .row {
     display: inline-block;
@@ -334,8 +314,16 @@ input {
   }
 }
 
+
+body.authenticated.courses-page, body.authenticated.invites-page {
+	.side-nav, main > .content { display: block; }
+    .public-page { display: none; }
+    main { padding: 20px 20px 20px 200px; }
+}
+
 .side-nav {
   position: absolute;
+  display: none;
   left: 0;
   border-right: 1px solid $grey;
   top: 30px;
@@ -418,7 +406,7 @@ main {
   	padding: 0;
   }
   &[data-load="courses.html"] {
-    padding: 20px 20px 20px 200px;
+    .content { display: none; }
   }
   &[data-load="stats.html"] {
     padding: 20px 20px 20px 200px;
@@ -732,6 +720,11 @@ main {
 				content: "\f201";
 				padding: 0 5px 0 0;
 			}
+			&[data-modal="courses.delete"]:before {
+				font-family: FontAwesome;
+				content: "\f1f8";
+				padding: 0 5px 0 0;
+			}
 			&:hover {
 				color: $blue;
 			}
@@ -1029,6 +1022,11 @@ main {
 	}
 }
 
+.excessive-padding {
+	padding: 50px;
+	display: inline-block;
+}
+
 .calender {
 	min-height: 400px;
 	background-color: $light-grey;
@@ -1057,6 +1055,7 @@ main {
 	  color: #555;
 	  transition: none;
   	  width: auto;
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.44);
 	  &:after, &:before {
 		top: 100%;
 		left: 18px;
@@ -1231,6 +1230,7 @@ main.dropzone[data-load="edit.html"] {
 		height: auto;
 		background-color: $cyan;
 		text-align: center;
+  		font-size: 0;
 		> section {
 			width: 33%;
 			max-width: 256px;
@@ -1519,7 +1519,7 @@ main.dropzone[data-load="edit.html"] {
 		user-select: none;
 		z-index: 6;
 		font-size: 0;
-  		padding-top: 130px;
+  		padding-top: 70px;
 	}
 	
 	[data-load="blocks.load"] {

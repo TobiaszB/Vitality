@@ -431,7 +431,7 @@ var courses = module.exports = {
 
     var course = root.courses.memory[element.dataset.key];
 
-    return '<div class="course-nav">\n        ' + (course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>') + '<br>\n        <a data-key="' + element.dataset.key + '" data-click="courses.view" data-load="labels.view"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>\n      </div>';
+    return '<div class="course-nav">\n        ' + (course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>') + '<br>\n        <a data-key="' + element.dataset.key + '" data-click="courses.view" data-load="labels.view"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.delete" data-load="labels.delete"></a>\n      </div>';
   },
 
   view: function view(element) {
@@ -478,7 +478,7 @@ var sessions = module.exports = {
 
     default_page: 'home',
 
-    public_pages: ['home', 'login', 'about', 'team', 'services', 'contact'],
+    public_pages: ['home', 'courses', 'login', 'about', 'team', 'services', 'contact'],
 
     memory: {},
 
@@ -509,7 +509,7 @@ var sessions = module.exports = {
             email: element.parentElement.querySelector('[type="email"]').value || '',
             password: element.parentElement.querySelector('[type="password"]').value || ''
         }, function () {
-            console.log(231232);
+
             sessions.url('/courses');
 
             sessions.load_page(null, { prevent_url: true });
@@ -1473,16 +1473,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-  load: function load(element) {
+    load: function load(element) {
 
-    root.calender = element;
+        root.calender = element;
 
-    var a = moment('2016-01-01');
-    var b = a.add(1, 'week');
-    a.format();
+        var a = moment('2016-01-01');
+        var b = a.add(1, 'week');
+        a.format();
 
-    console.log(a);
-  }
+        console.log(a);
+    }
 
 };
 });
@@ -1492,233 +1492,251 @@ require.register("source/scripts/components/editor.js", function(exports, requir
 
 var editor = module.exports = {
 
-  course: null,
+    course: null,
 
-  load_button_primary: function load_button_primary() {},
+    load_button_primary: function load_button_primary() {},
 
-  load_button_secondary: function load_button_secondary() {},
+    load_button_secondary: function load_button_secondary() {},
 
-  load_overlay: function load_overlay() {},
+    load_overlay: function load_overlay() {},
 
-  load_background: function load_background() {},
+    load_background: function load_background() {},
 
-  toggle_publish: function toggle_publish(element) {
+    toggle_publish: function toggle_publish(element) {
 
-    editor.course.published_at = editor.course.published_at ? '' : new Date();
+        editor.course.published_at = editor.course.published_at ? '' : new Date();
 
-    editor.update();
-  },
+        editor.update();
+    },
 
-  load_course: function load_course(element) {
+    load_course: function load_course(element) {
 
-    var key = history.state.course,
-        course = root.courses.memory[key],
-        colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
+        var key = history.state.course,
+            course = root.courses.memory[key],
+            colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
 
-    editor.looping = Math.random();
+        editor.looping = Math.random();
 
-    editor.tooltip(editor.looping);
+        editor.tooltip(editor.looping);
 
-    editor.course = course;
+        editor.course = course;
 
-    editor.element = element;
+        editor.element = element;
 
-    element.dataset.published = course.published_at ? 'yes' : 'no';
+        element.dataset.published = course.published_at ? 'yes' : 'no';
 
-    element.dataset.device = 'desktop';
+        element.dataset.device = 'desktop';
 
-    if (!course.blocks) course.blocks = [];
+        if (!course.blocks) course.blocks = [];
 
-    element.innerHTML = course.blocks.reduce(function (html, block, index) {
+        element.innerHTML = course.blocks.reduce(function (html, block, index) {
 
-      var options = Object.keys(block.options).reduce(function (html, option) {
-        return html + ' data-' + option + '="' + block.options[option].value + '"';
-      }, '');
+            var options = Object.keys(block.options).reduce(function (html, option) {
+                return html + ' data-' + option + '="' + block.options[option].value + '"';
+            }, '');
 
-      return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
-        return '<b style="background-color:#' + c + ';"></b>';
-      }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
+            return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
+                return '<b style="background-color:#' + c + ';"></b>';
+            }).join('') + '</div>\n           <div class="confirm-delete"><button data-load="labels.confirm_delete"></button></div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
-        var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
+                var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
 
-        if (block.options[option].type == 'boolean') element = '<input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element;
+                if (block.options[option].type == 'boolean') element = '<input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element;
 
-        return '' + html + element;
-      }, '') + '</div>\n          <a data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
-    }, '\n      <div class="control-editor">\n        <a data-load="labels.title_save" data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-load="labels.title_online" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-load="labels.title_offline" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-load="labels.title_preview" data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-load="labels.title_mobile_view" data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-load="labels.title_desktop_view" data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
-  },
+                return '' + html + element;
+            }, '') + '</div>\n          <a data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
+        }, '\n      <div class="control-editor">\n        <a data-load="labels.title_save" data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-load="labels.title_online" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-load="labels.title_offline" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-load="labels.title_preview" data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-load="labels.title_mobile_view" data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-load="labels.title_desktop_view" data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
+    },
 
-  toggle_tooltip_submenu: function toggle_tooltip_submenu(element) {
+    toggle_tooltip_submenu: function toggle_tooltip_submenu(element) {
 
-    element.parentElement.dataset.tab = element.dataset.tab;
-  },
+        element.parentElement.dataset.tab = element.dataset.tab;
+    },
 
-  tooltip_list: [],
+    tooltip_list: [],
 
-  load_tooltip: function load_tooltip(element) {
+    load_tooltip: function load_tooltip(element) {
 
-    editor.tooltip_list[parseInt(element.dataset.index, 10)] = element;
-  },
+        editor.tooltip_list[parseInt(element.dataset.index, 10)] = element;
+    },
 
-  input_save: function input_save(element) {
+    input_save: function input_save(element) {
 
-    var block = editor.course.blocks[parseInt(element.dataset.index, 10)],
-        option = block.options[element.dataset.option];
+        var block = editor.course.blocks[parseInt(element.dataset.index, 10)],
+            option = block.options[element.dataset.option];
 
-    if (option.type == 'boolean') option.value = !option.value;
-  },
+        if (option.type == 'boolean') option.value = !option.value;
+    },
 
-  tooltip: function tooltip(iteration) {
+    tooltip: function tooltip(iteration, block) {
 
-    //     if (history.state.page != 'edit' || editor.looping != iteration)
-    //       return;
+        if (history.state.page != 'edit' || editor.looping != iteration) return;
 
-    //     setTimeout(editor.tooltip, 1000, iteration);
+        var focus = document.activeElement;
 
-    //     if (document.activeElement.tagName.toLowerCase() != 'textarea')
-    //       return editor.tooltip_list.map(close);
+        if (!focus || focus.tagName.toLowerCase() != 'textarea') {
 
-    //     let index = document.activeElement.parentElement.dataset.index;
+            setTimeout(editor.tooltip, 500, iteration);
 
-    //     editor.tooltip_list[index].style.bottom = `${ document.activeElement.parentElement.clientHeight - document.activeElement.offsetTop}px`;
+            return editor.tooltip_list.map(close);
+        }
 
-    //     editor.tooltip_list[index].style.left = `${document.activeElement.offsetLeft}px`;
+        block = block || focus.parentElement;
 
-    //     editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
+        if (!block.parentElement) return setTimeout(editor.tooltip, 500, iteration);
 
-    //     if (editor.tooltip_list[index].classList.contains('fade-in')) return;
+        if (!block.classList.contains('block')) {
 
-    //     editor.tooltip_list.map(close);
+            block = block.parentElement;
 
-    //     editor.tooltip_list[index].style.display = 'block';
+            return editor.tooltip(iteration, block);
+        }
 
-    //     requestAnimationFrame(()=>{
+        setTimeout(editor.tooltip, 500, iteration);
 
-    //       editor.tooltip_list[index].classList.add('fade-in');
+        var index = block.dataset.index;
 
-    //     });
+        if (typeof index == 'undefined') return editor.tooltip_list.map(close);
 
-    //     function close(element){
+        editor.tooltip_list[index].style.bottom = block.offsetHeight - focus.offsetTop + 'px';
 
-    //       element.style.display = 'none';
+        editor.tooltip_list[index].style.left = focus.offsetLeft + 'px';
 
-    //       element.classList.remove('fade-in');
+        editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
 
-    //     }
+        if (editor.tooltip_list[index].classList.contains('fade-in')) return;
 
-  },
+        editor.tooltip_list.map(close);
 
-  add_block: function add_block(key) {
+        editor.tooltip_list[index].style.display = 'block';
 
-    var course = root.courses.memory[history.state.course],
-        block = root.blocks.memory[key];
+        requestAnimationFrame(function () {
 
-    course.blocks = course.blocks || [];
+            editor.tooltip_list[index].classList.add('fade-in');
+        });
 
-    var demo = [{ page: 'Introduction', tab: 'Part I', index: 0 }, { progress: 5 }, { tab: 'Part II', index: 2, progress: 5 }, { tab: 'Part III', index: 3, progress: 5 }, { page: 'Learning the basics', tab: 'Module A', index: 4, progress: 15 }, { progress: 15 }, { progress: 15 }, { tab: 'Module B', index: 7, progress: 10 }, { page: 'Questions', index: 8, progress: 10 }, { progress: 10 }, { progress: 10 }, { page: 'Conclusion', index: 11 }];
+        function close(element) {
 
-    block = Object.assign(demo[course.blocks.length] || {}, block);
+            element.style.display = 'none';
 
-    course.blocks.push(block);
+            element.classList.remove('fade-in');
+        }
+    },
 
-    block.options = Object.keys(block.options).reduce(function (options, key) {
+    add_block: function add_block(key) {
 
-      options[key] = editor.set_option(block.options[key], key);
+        var course = root.courses.memory[history.state.course],
+            block = root.blocks.memory[key];
 
-      return options;
-    }, {});
+        course.blocks = course.blocks || [];
 
-    root.courses.updated = true;
-  },
+        var demo = [{ page: 'Introduction', tab: 'Part I', index: 0 }, { progress: 5 }, { tab: 'Part II', index: 2, progress: 5 }, { tab: 'Part III', index: 3, progress: 5 }, { page: 'Learning the basics', tab: 'Module A', index: 4, progress: 15 }, { progress: 15 }, { progress: 15 }, { tab: 'Module B', index: 7, progress: 10 }, { page: 'Questions', index: 8, progress: 10 }, { progress: 10 }, { progress: 10 }, { page: 'Conclusion', index: 11 }];
 
-  scroll_trigger: function scroll_trigger(element) {},
+        block = Object.assign(demo[course.blocks.length] || {}, block);
 
-  set_option: function set_option(config, property) {
+        course.blocks.push(block);
 
-    config.property = property;
+        block.options = Object.keys(block.options).reduce(function (options, key) {
 
-    if (config.type == 'boolean') config.value = true;
+            options[key] = editor.set_option(block.options[key], key);
 
-    if (config.type == 'number') config.value = 2;
+            return options;
+        }, {});
 
-    return config;
-  },
+        root.courses.updated = true;
+    },
 
-  load_element: function load_element(element) {
+    scroll_trigger: function scroll_trigger(element) {},
 
-    var index = parseInt(element.parentElement.dataset.index, 10),
-        block = editor.course.blocks[index],
-        key = element.dataset.element;
+    set_option: function set_option(config, property) {
 
-    element.dataset.input = 'editor.save';
+        config.property = property;
 
-    //     element.addEventListener('mouseenter', ()=>{
+        if (config.type == 'boolean') config.value = true;
 
-    //       element.focus();
+        if (config.type == 'number') config.value = 2;
 
-    //     });
+        return config;
+    },
 
-    //     if(!block.content) block.content = {};
+    load_element: function load_element(element, parent) {
 
-    //     if(!block.content[key]) block.content[key] = key;
+        parent = parent || element.parentElement;
 
-    if (key !== 'video') element.innerHTML = key;
+        if (!parent.classList.contains('block')) return editor.load_element(element, parent.parentElement);
 
-    element.dataset.load = 'editor.load_' + key;
-  },
+        var index = parent.dataset.index;
 
-  load_title: function load_title(element) {
+        if (typeof index == 'undefined') return element.dataset.load = 'editor.load_' + key;
 
-    //if(block.options.progress && block.options.progress.trigger) progress = `data-load="${ block.options.progress.trigger }"`;
+        index = parseInt(index, 10);
 
-  },
+        var block = editor.course.blocks[index],
+            key = element.dataset.element;
 
-  load_text: function load_text(element) {},
+        element.dataset.input = 'editor.save';
 
-  load_video: function load_video(element) {
+        element.addEventListener('mouseenter', function () {
+            element.focus();
+        });
 
-    var html = '\n      <img src="/placeholder-video.png"><!--\n\n   --><input type="text" data-load="labels.youtube_placeholder"><!--\n\n   --><button data-click="editor.insert_video"></button>\n\n      <div class="player"></div>\n    ';
+        if (!block.content) block.content = {};
 
-    element.innerHTML = html;
-  },
+        if (!block.content[key]) block.content[key] = key;
 
-  insert_video: function insert_video(element) {
+        if (element.tagName.toLowerCase() == 'textarea') element.value = block.content[key];
 
-    var input = element.previousElementSibling,
-        container = element.nextElementSibling,
-        iframe = document.createElement("iframe");
+        element.dataset.load = 'editor.load_' + key;
+    },
 
-    iframe.setAttribute("frameborder", "0");
-    iframe.setAttribute("allowfullscreen", "");
-    iframe.setAttribute("src", 'https://www.youtube.com/embed/' + input.value);
-    container.innerHTML = '';
-    container.appendChild(iframe);
-  },
+    load_title: function load_title(element) {},
 
-  // only locally
-  save: function save(element) {
+    load_text: function load_text(element) {},
 
-    var index = parseInt(element.parentElement.dataset.index, 10),
-        block = editor.course.blocks[index];
+    load_video: function load_video(element) {
 
-    //     block.content[element.dataset.element] = element.value;
-  },
+        var html = '\n      <img src="/placeholder-video.png"><!--\n\n   --><input type="text" data-load="labels.youtube_placeholder"><!--\n\n   --><button data-click="editor.insert_video"></button>\n\n      <div class="player"></div>\n    ';
 
-  // updates course in server
-  update: function update() {
+        element.innerHTML = html;
+    },
 
-    editor.element.classList.add('saving');
+    insert_video: function insert_video(element) {
 
-    root.send({
-      request: 'set_course',
-      set: editor.course
-    }, function () {
+        var input = element.previousElementSibling,
+            container = element.nextElementSibling,
+            iframe = document.createElement("iframe");
 
-      editor.element.classList.remove('saving');
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("allowfullscreen", "");
+        iframe.setAttribute("src", 'https://www.youtube.com/embed/' + input.value);
+        container.innerHTML = '';
+        container.appendChild(iframe);
+    },
 
-      root.main.dataset.load = root.main.dataset.load;
-    });
-  }
+    // only locally
+    save: function save(element) {
+
+        var index = parseInt(element.parentElement.dataset.index, 10),
+            block = editor.course.blocks[index];
+
+        block.content[element.dataset.element] = element.value;
+    },
+
+    // updates course in server
+    update: function update() {
+
+        editor.element.classList.add('saving');
+
+        root.send({
+            request: 'set_course',
+            set: editor.course
+        }, function () {
+
+            editor.element.classList.remove('saving');
+
+            root.main.dataset.load = root.main.dataset.load;
+        });
+    }
 
 };
 });
@@ -1743,6 +1761,7 @@ var labels = {
     title_preview: [title('Preview'), title('Preview')],
     title_mobile_view: [title('Mobile'), title('Mobile')],
     title_desktop_view: [title('Desktop'), title('Desktop')],
+    delete: ['Verwijder', 'Delete'],
     home: ['Home', 'Home'],
     home_text: ['De enige echte privéstudio!', 'The only real private studio!'],
     home_intake_button: ['Gratis intake', 'Free intake'],
