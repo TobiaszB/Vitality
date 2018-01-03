@@ -1,4 +1,22 @@
-module.exports = {
+let templates = module.exports = {
+
+  ticket: {},
+
+  select_course: (element) =>{
+
+  	templates.ticket.course = element.id;
+
+  	console.log(templates.ticket);
+
+  },
+
+  save_name: (element) =>{
+
+  	templates.ticket.client = element.value;
+
+  	console.log(templates.ticket);
+
+  },
 
   load_courses: (element) => {
 
@@ -12,6 +30,7 @@ module.exports = {
 		if(!course.published_at) continue;
 
 		html += `
+		    <input data-change="templates.select_course" id="${ course.key }" type="radio" name="course_list" value="${course.key}">
 			<div class="invite-course" data-key="${ keys[i] }">
 
 				<div class="thumbnail-container"><img src="${ course.thumbnail }"></div>
@@ -19,6 +38,8 @@ module.exports = {
 				<span>${ course.name }</span>
 
 				<small class="lang ${ course.language }"></small>
+
+				<label for="${ course.key }"></label>
 
 			</div>
 		`;

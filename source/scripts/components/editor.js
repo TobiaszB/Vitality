@@ -16,7 +16,7 @@ let editor = module.exports = {
 
     editor.course.published_at = editor.course.published_at ? '' : new Date();
 
-    editor.update();
+    editor.update(element);
 
   },
 
@@ -320,8 +320,16 @@ console.log(options)
         block = editor.course.blocks[index],
         options = block.options[element.dataset.element];
 
+    console.log('options', options);
+
     element.innerHTML = options.content.map((string, count) => {
-      return `<textarea ${ editor.ticket ? 'disabled' : ''} data-input="editor.save" data-count="${ count }" data-element="button_group" data-index="${ index }">${ string }</textarea>`
+
+      return `
+      <div class="option" data-option="${string}">
+        <textarea ${ editor.ticket ? 'disabled' : ''} data-input="editor.save" data-count="${ count }" data-element="button_group" data-index="${ index }">${ string }</textarea>
+        <label></label>
+      </div>
+      `
     }).join('');
     
   },

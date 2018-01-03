@@ -178,6 +178,7 @@ module.exports = (provide) => {
         html: `
           <textarea data-load="editor.load_element" data-element="title"></textarea>
           <textarea data-load="editor.load_element" data-element="text"></textarea>
+          <div class="divider"></div>
           <div data-load="editor.load_element" data-element="button_group"></div>
         `,
         created_at: new Date(),
@@ -190,7 +191,8 @@ module.exports = (provide) => {
           },
           button_group: {
             type: 'boolean',
-            content: ['a', 'b']
+            content: ['De content voor optie A', 'De content voor optie B'],
+            value: ['A', 'B']
           }
         }
       }

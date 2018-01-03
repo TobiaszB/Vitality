@@ -1034,7 +1034,27 @@ main.ticket-mode {
 		padding: 0 0 0 5px;
 	}
 
-	input {
+	label {
+	  position: absolute;
+	  left: 0;
+	  top: 0;
+	  width: 100%;
+	  height: 100%;
+	  cursor: pointer;
+    }
+
+	input[type="radio"] {
+		position: absolute;
+		right: 0;
+		top: 0;
+		opacity: 0;
+		z-index: -1;
+		&:checked + div {
+			background-color: red;
+		}
+	}
+
+	input[type="text"] {
 		background-color: $grey;
 		margin: 10px 0 0 0;
 		font-family: $raleway;
@@ -1268,26 +1288,6 @@ main.dropzone[data-load="edit.html"] {
 	  }
 	}
 
-	&[data-key="blocks_mc"] {
-		background-color: white;
-		h2 {
-			color: $dark-grey;
-			font-family: $raleway;
-			font-size: 40px;
-			padding-right: 150px;
-		}
-		textarea {
-			color: $dark-grey;
-		}
-		img {
-			width: 150px;
-			height: 150px;
-			position: absolute;
-			top: 50px;
-			right: 50px;
-		}
-	}
-
 	&[data-key="blocks_points"] {
 		background-color: $cyan;
 		textarea {
@@ -1376,6 +1376,89 @@ main.dropzone[data-load="edit.html"] {
 				padding: 10px 0 0 0;
 				text-align: justify;
 			}
+		}
+	}
+
+	&[data-key="blocks_multiplechoice"] {
+		background-color: white;
+		padding: 50px;
+		h2 {
+			color: $dark-grey;
+			font-family: $raleway;
+			font-size: 40px;
+			padding-right: 150px;
+		}
+		.divider {
+			height: 20px;
+			display: block;
+			background-color: $dark-grey;
+		}
+		.option {
+			display: inline-block;
+			font-size: 40px;
+			line-height: 50px;
+			text-align: center;
+			color: red;
+			font-family: $cyan;
+			vertical-align: top;
+			border: gold;
+			position: relative;
+			background-color: $dark-grey;
+			margin: 30px;
+		}
+		label {
+			display: inline-block;
+			background-color: red;
+			width: 50px;
+			height: 50px;
+			line-height: 50px;
+			color: white;
+			font-size: 30px;
+			font-family: $changa;
+		}
+		.block-tooltip {
+			top: 410px !important;
+			left: 80px !important;
+		}
+		textarea {
+			color: $dark-grey;
+			display: inline-block;
+			vertical-align: top;
+			background-color: transparent;
+			color: white;
+			border: none;
+			padding: 20px;
+			&[data-load="editor.load_title"] {
+				color: $dark-grey;
+				font-size: 60px;
+				font-family: $changa;
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+			&[data-load="editor.load_text"] {
+				color: $dark-grey;
+				font-size: 20px;
+				font-family: $raleway;
+				font-weight: 500;
+				width: 100%;
+				display: block;
+				height: auto;
+			}
+			&[data-count="0"] {
+				+label {
+					content: "A";	
+				}
+			}
+			&[data-count="1"] {
+			}
+		}
+		img {
+			width: 150px;
+			height: 150px;
+			position: absolute;
+			top: 50px;
+			right: 50px;
 		}
 	}
 
@@ -1532,6 +1615,7 @@ main.dropzone[data-load="edit.html"] {
 			z-index: 2;
 		}
 	}
+
 }
 
 [data-load="edit.html"] {

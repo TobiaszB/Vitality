@@ -196,6 +196,8 @@ let tickets = module.exports = {
     let ticket = tickets.memory[element.dataset.ticket],
         user = root.users.memory[ticket.user];
 
+    if(!user) return;
+    
     element.innerHTML = `
 
       <div class="${ user.key == root.me.user ? 'me' : '' }" data-key="${ user.key }">
