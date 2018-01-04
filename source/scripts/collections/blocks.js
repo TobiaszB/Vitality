@@ -4,6 +4,8 @@ let blocks = module.exports = {
 
   load: (element) => {
 
+    console.log('e', element);
+
     element.innerHTML = Object.keys(blocks.memory).reduce((html, key) => `${ html }
       <div><a data-key="${ key }" data-load="blocks.render_one"></a></div>`, '');
       

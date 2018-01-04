@@ -156,6 +156,8 @@ var blocks = module.exports = {
 
   load: function load(element) {
 
+    console.log('e', element);
+
     element.innerHTML = Object.keys(blocks.memory).reduce(function (html, key) {
       return html + '\n      <div><a data-key="' + key + '" data-load="blocks.render_one"></a></div>';
     }, '');
@@ -1596,7 +1598,7 @@ var editor = module.exports = {
                 options = editor.course.blocks[index].options[data.element];
 
                 if (options.content.length < 2) options.value = false;else options.content.splice(count, 1);
-                console.log(options);
+
                 root.main.dataset.load = root.main.dataset.load;
 
                 break;
@@ -1767,7 +1769,9 @@ var editor = module.exports = {
 
         element.innerHTML = options.content.map(function (string, count) {
 
-            return '\n      <div class="option" data-option="' + string + '">\n        <textarea ' + (editor.ticket ? 'disabled' : '') + ' data-input="editor.save" data-count="' + count + '" data-element="button_group" data-index="' + index + '">' + string + '</textarea>\n        <label></label>\n      </div>\n      ';
+            var options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
+            return '\n      <div class="option" data-option="' + string + '">\n        <label>' + options[count] + '</label><br>\n        <textarea ' + (editor.ticket ? 'disabled' : '') + ' data-input="editor.save" data-count="' + count + '" data-element="button_group" data-index="' + index + '">' + string + '</textarea>\n      </div>\n      ';
         }).join('');
     },
 

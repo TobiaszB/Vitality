@@ -1298,7 +1298,7 @@ main.dropzone[data-load="edit.html"] {
 		}
 	}
 
-	&[data-key="blocks_points"], &[data-key="blocks_mc"] {
+	&[data-key="blocks_points"] {
 		padding: 80px 40px 20px;
 		height: auto;
 		text-align: center;
@@ -1392,6 +1392,7 @@ main.dropzone[data-load="edit.html"] {
 			height: 20px;
 			display: block;
 			background-color: $dark-grey;
+			margin-bottom: 30px;
 		}
 		.option {
 			display: inline-block;
@@ -1401,33 +1402,39 @@ main.dropzone[data-load="edit.html"] {
 			color: red;
 			font-family: $cyan;
 			vertical-align: top;
+			background-color: $light-grey;
 			border: gold;
 			position: relative;
-			background-color: $dark-grey;
-			margin: 30px;
+			margin: 10px;
+			padding: 0 10px;
+			text-align: center;
+			border-radius: 5px;
 		}
 		label {
 			display: inline-block;
-			background-color: red;
 			width: 50px;
 			height: 50px;
 			line-height: 50px;
-			color: white;
+			color: $dark-grey;
 			font-size: 30px;
 			font-family: $changa;
 		}
 		.block-tooltip {
-			top: 410px !important;
-			left: 80px !important;
+			top: 240px;
+			left: 50px !important;
 		}
 		textarea {
 			color: $dark-grey;
 			display: inline-block;
 			vertical-align: top;
 			background-color: transparent;
-			color: white;
+			color: $dark-grey;
 			border: none;
-			padding: 20px;
+			font-family: $raleway;
+			font-size: 22px;
+			line-height: 44px;
+			outline: none;
+			border-top: 1px solid $grey;
 			&[data-load="editor.load_title"] {
 				color: $dark-grey;
 				font-size: 60px;
@@ -1435,6 +1442,7 @@ main.dropzone[data-load="edit.html"] {
 				display: block;
 				width: 100%;
 				height: auto;
+				border: none;
 			}
 			&[data-load="editor.load_text"] {
 				color: $dark-grey;
@@ -1444,6 +1452,7 @@ main.dropzone[data-load="edit.html"] {
 				width: 100%;
 				display: block;
 				height: auto;
+				border: none;
 			}
 			&[data-count="0"] {
 				+label {

@@ -125,7 +125,7 @@ let editor = module.exports = {
         if(options.content.length < 2) options.value = false;
 
         else options.content.splice(count, 1);
-console.log(options)
+
         root.main.dataset.load = root.main.dataset.load;
 
         break;
@@ -324,10 +324,12 @@ console.log(options)
 
     element.innerHTML = options.content.map((string, count) => {
 
+      let options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
       return `
       <div class="option" data-option="${string}">
+        <label>${ options[count] }</label><br>
         <textarea ${ editor.ticket ? 'disabled' : ''} data-input="editor.save" data-count="${ count }" data-element="button_group" data-index="${ index }">${ string }</textarea>
-        <label></label>
       </div>
       `
     }).join('');

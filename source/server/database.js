@@ -139,40 +139,7 @@ module.exports = (provide) => {
         }
       }
     }, { upsert: true }, ()=>{});
-/*
-    db.collection('blocks').findAndModify({ key: 'blocks_mc' }, [], {
-      $set: {
-        html: `
-          <h2>Lorem ipsum dolor sit amet, conse tetur adipiscing elit</h2>
-          <img src="/mc-questionmark.png">
-          <section data-index="0">
-              <h1>A</h1><br>
-              <textarea data-load="editor.load_element" data-element="text"></textarea>
-          </section>
-          <section data-index="1">
-              <h1>B</h1><br>
-              <textarea data-load="editor.load_element" data-element="text"></textarea>
-          </section>
-          <section data-index="2">
-              <h1>C</h1><br>
-              <textarea data-load="editor.load_element" data-element="text"></textarea>
-          </section>
-        `,
-        created_at: new Date(),
-        options: {
-          points: { type: 'number' },
-          progress: { type: 'progress', trigger: 'editor.scroll_trigger' },
-          title: { type: 'boolean' },
-          text: { type: 'boolean' },
-          buttons: { type: 'boolean' },
-          content_align: { type: 'align' },
-          background_color: { type: 'color' },
-          video: { type: 'video', fullscreen: 'boolean', url: 'string' },
-        }
-      }
-    }, { upsert: true }, ()=>{});
-*/
-
+    
     db.collection('blocks').findAndModify({ key: 'blocks_multiplechoice' }, [], {
       $set: {
         html: `
@@ -191,8 +158,8 @@ module.exports = (provide) => {
           },
           button_group: {
             type: 'boolean',
-            content: ['De content voor optie A', 'De content voor optie B'],
-            value: ['A', 'B']
+            content: ['De content voor optie A', 'De content voor optie B',  'De content voor optie C',  'De content voor optie D'],
+            value: ['A', 'B', 'C', 'D']
           }
         }
       }
