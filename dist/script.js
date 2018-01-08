@@ -611,86 +611,100 @@ require.register("source/scripts/collections/templates.js", function(exports, re
 
 var templates = module.exports = {
 
-  ticket: {},
+		ticket: {},
 
-  select_course: function select_course(element) {
+		select_course: function select_course(element) {
 
-    templates.ticket.course = element.id;
+				templates.ticket.course = element.id;
+		},
 
-    console.log(templates.ticket);
-  },
+		save_name: function save_name(element) {
 
-  save_name: function save_name(element) {
+				templates.ticket.client = element.value;
+		},
 
-    templates.ticket.client = element.value;
+		send_ticket: function send_ticket(element) {
 
-    console.log(templates.ticket);
-  },
+				if (!templates.ticket.client || !templates.ticket.course) return;
 
-  load_courses: function load_courses(element) {
+				root.send({
+						request: 'create_ticket',
+						client: templates.ticket.client,
+						course: templates.ticket.course
+				}, function (res) {
 
-    var html = '',
-        keys = Object.keys(root.courses.memory);
+						console.log(res);
 
-    for (var i = 0; i < keys.length; i++) {
+						templates.ticket = {};
 
-      var course = root.courses.memory[keys[i]];
+						root.main.dataset.load = root.main.dataset.load;
+				});
+		},
 
-      if (!course.published_at) continue;
+		load_courses: function load_courses(element) {
 
-      html += '\n\t\t    <input data-change="templates.select_course" id="' + course.key + '" type="radio" name="course_list" value="' + course.key + '">\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t\t<label for="' + course.key + '"></label>\n\n\t\t\t</div>\n\t\t';
-    };
+				var html = '',
+				    keys = Object.keys(root.courses.memory);
 
-    element.innerHTML = html;
-  },
+				for (var i = 0; i < keys.length; i++) {
 
-  load_calender: function load_calender(element) {
+						var course = root.courses.memory[keys[i]];
 
-    element.innerHTML = '\n\t\t\n\t\t\n\t\t\n\t';
-  },
+						if (!course.published_at) continue;
 
-  change_language: function change_language(element) {
+						html += '\n\t\t    <input data-change="templates.select_course" id="' + course.key + '" type="radio" name="course_list" value="' + course.key + '">\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t\t<label for="' + course.key + '"></label>\n\n\t\t\t</div>\n\t\t';
+				};
 
-    localStorage.setItem('language', element.dataset.language);
+				element.innerHTML = html;
+		},
 
-    location.reload();
-  },
+		load_calender: function load_calender(element) {
 
-  highlight_lang: function highlight_lang(element) {
+				element.innerHTML = '\n\t\t\n\t\t\n\t\t\n\t';
+		},
 
-    if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
+		change_language: function change_language(element) {
 
-    element.classList.add('active');
-  },
+				localStorage.setItem('language', element.dataset.language);
 
-  format_date: function format_date(element) {
+				location.reload();
+		},
 
-    var date = new Date(element.dataset.date),
-        months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+		highlight_lang: function highlight_lang(element) {
 
-    if (!date || String(date).toLowerCase() == 'invalid date') return;
+				if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
 
-    element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
-  },
+				element.classList.add('active');
+		},
 
-  format_time: function format_time(element) {
+		format_date: function format_date(element) {
 
-    var date = new Date(element.dataset.date);
+				var date = new Date(element.dataset.date),
+				    months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
-    if (!date || String(date).toLowerCase() == 'invalid date') return;
+				if (!date || String(date).toLowerCase() == 'invalid date') return;
 
-    element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
-  },
+				element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+		},
 
-  start: function start(element) {
+		format_time: function format_time(element) {
 
-    console.log('e', element);
-  },
+				var date = new Date(element.dataset.date);
 
-  hide_notification: function hide_notification(element) {
+				if (!date || String(date).toLowerCase() == 'invalid date') return;
 
-    document.querySelector('body').classList.remove('notified');
-  }
+				element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
+		},
+
+		start: function start(element) {
+
+				console.log('e', element);
+		},
+
+		hide_notification: function hide_notification(element) {
+
+				document.querySelector('body').classList.remove('notified');
+		}
 
 };
 });
@@ -870,12 +884,11 @@ var tickets = module.exports = {
 
     render_one: function render_one(element) {
 
-        var ticket = tickets.memory[element.dataset.ticket],
-            user = root.users.memory[ticket.user];
+        var ticket = tickets.memory[element.dataset.ticket];
 
-        if (!user) return;
+        if (!ticket.client) return;
 
-        element.innerHTML = '\n\n      <div class="' + (user.key == root.me.user ? 'me' : '') + '" data-key="' + user.key + '">\n        <img src="' + user.avatar + '">\n        <span data-load="users.memory.' + user.key + '.name"></span>\n        <span data-load="users.memory.' + user.key + '.email"></span>\n      </div>\n\n    ';
+        element.innerHTML = '\n\n      <div>\n        ' + ticket.name + ', \n        ' + ticket.client + ',\n        <a href="/ticket/code/' + ticket.code + '">Link</a>\n      </div>\n\n    ';
     }
 
 };
@@ -1493,16 +1506,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-  load: function load(element) {
+    load: function load(element) {
 
-    root.calender = element;
+        root.calender = element;
 
-    var a = moment('2016-01-01');
-    var b = a.add(1, 'week');
-    a.format();
+        var a = moment('2016-01-01');
+        var b = a.add(1, 'week');
+        a.format();
 
-    console.log(a);
-  }
+        console.log(a);
+    }
 
 };
 });
@@ -1531,7 +1544,24 @@ var editor = module.exports = {
         editor.update(element);
     },
 
+    load_ticket: function load_ticket(element) {
+
+        root.send({
+            request: 'load_ticket',
+            code: history.state.code
+        }, function (res) {
+
+            root.editor.ticket = res;
+
+            history.state.course = res.course;
+
+            editor.load_course(element);
+        });
+    },
+
     load_course: function load_course(element) {
+
+        if (history.state.page != 'ticket') editor.ticket = false;else if (!history.state.course) return editor.load_ticket(element);
 
         var key = history.state.course,
             course = root.courses.memory[key],

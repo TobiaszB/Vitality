@@ -6,15 +6,31 @@ let templates = module.exports = {
 
   	templates.ticket.course = element.id;
 
-  	console.log(templates.ticket);
-
   },
 
   save_name: (element) =>{
 
   	templates.ticket.client = element.value;
 
-  	console.log(templates.ticket);
+  },
+
+  send_ticket: (element) => {
+
+	if(!templates.ticket.client || !templates.ticket.course) return;
+
+	root.send({
+		request: 'create_ticket',
+		client: templates.ticket.client,
+		course: templates.ticket.course
+	}, (res)=>{
+
+		console.log(res);
+
+		templates.ticket = {};
+
+        root.main.dataset.load = root.main.dataset.load;
+
+	});
 
   },
 

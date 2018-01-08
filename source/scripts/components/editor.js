@@ -20,7 +20,28 @@ let editor = module.exports = {
 
   },
 
+  load_ticket: (element) => {
+
+    root.send({
+      request: 'load_ticket',
+      code: history.state.code
+    }, (res) => {
+
+      root.editor.ticket = res;
+
+      history.state.course = res.course;
+
+      editor.load_course(element);
+
+    });
+    
+  },
+
   load_course: (element)=>{
+
+    if(history.state.page != 'ticket') editor.ticket = false;
+    
+    else if(!history.state.course) return editor.load_ticket(element);
 
     let key = history.state.course,
         course = root.courses.memory[key],

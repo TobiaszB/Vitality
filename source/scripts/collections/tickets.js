@@ -193,17 +193,16 @@ let tickets = module.exports = {
 
   render_one: (element) => {
 
-    let ticket = tickets.memory[element.dataset.ticket],
-        user = root.users.memory[ticket.user];
+    let ticket = tickets.memory[element.dataset.ticket];
 
-    if(!user) return;
+    if(!ticket.client) return;
     
     element.innerHTML = `
 
-      <div class="${ user.key == root.me.user ? 'me' : '' }" data-key="${ user.key }">
-        <img src="${ user.avatar }">
-        <span data-load="users.memory.${ user.key }.name"></span>
-        <span data-load="users.memory.${ user.key }.email"></span>
+      <div>
+        ${ ticket.name }, 
+        ${ ticket.client },
+        <a href="/ticket/code/${ ticket.code }">Link</a>
       </div>
 
     `;

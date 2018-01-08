@@ -31,6 +31,61 @@ function handler(request) {
 
     },
 
+    load_ticket: (ws, msg, session) => {
+
+      db.collection('tickets').findOne({ code: msg.code }, (err, ticket) => {
+
+        if(err || !ticket) return console.log(err || 'no ticket');
+
+        ticket.callback = msg.callback;
+
+        ws.send(JSON.stringify(ticket));
+
+      });
+      
+    },
+
+    create_ticket: (ws, msg, session) => {
+
+      db.collection('courses').findOne({ key: msg.course }, (err, course) => {
+
+        if(err) return console.log(err);
+
+        let ticket = Object.assign(course, {
+          client: msg.client || '',
+          manager: session.user,
+          course: course.key,
+          code: 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          })
+        });
+
+        delete ticket.key;
+
+        delete ticket._id;
+
+        db.collection('tickets').findAndModify({
+          key: `tickets_${ Math.floor(Math.random() * 99999999) }`
+        }, [], {
+          $set: ticket
+        }, {
+          upsert: true,
+          new: true
+        }, (err, updated) => {
+          
+          if(err) return console.log(err);
+
+          updated.value.callback = msg.callback;
+      
+          ws.send(JSON.stringify(updated.value));
+
+        });
+
+      });
+
+    },
+
     sign_in: (ws, msg, session, callback) => {
 
       db.collection('users').findOne({ email: String(msg.email).toLowerCase() }, (err, user) => {
