@@ -142,6 +142,8 @@ function incoming(message, callbacks){
 
   if(typeof message.token == 'undefined') return;
 
+  if(!message.token && history.state.code) return root.sessions.load_page(null, { prevent_url: true });
+  
   root.me = Object.assign(root.me || {}, message);
 
   document.body.classList[message.token ? 'add' : 'remove']('authenticated');

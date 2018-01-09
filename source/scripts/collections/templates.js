@@ -34,6 +34,12 @@ let templates = module.exports = {
 
   },
 
+  load_client: (element) => {
+
+	templates.client_element = element;
+
+  },
+
   load_courses: (element) => {
 
 	let html = '',
