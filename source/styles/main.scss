@@ -236,6 +236,13 @@ h2 {
   margin: 0 10px 0 0;
 }
 
+h3 {
+	font-family: $os;
+	font-size: 14px;
+	color: $dark-grey;
+	display: inline-block;
+}
+
 label {
   font-family: $changa;
   font-weight: 500;
@@ -445,33 +452,28 @@ main {
 }
 
 [data-load="services.html"] {
-	section {
-		padding: 50px;
-		min-height: 300px;
-		&[data-index="0"] {
-			img { float: left; }
-		}
-		&[data-index="1"] {
-			background-color: $cyan;
-			img { float: right; }
-			h3, p { color: white; }
-		}
-		&[data-index="2"] {
-			img { float: left; }
-		}
-		&[data-index="3"] {
-			background-color: $cyan;
-			img { float: right; }
-			h3, p { color: white; }
-		}
-	}
 	p {
 		padding: 10px 0;
+		font-family: $raleway;
+		font-size: 14px;
+  		line-height: 24px;
 	}
 
 	img {
 		max-height: 200px;
-		margin: 0 30px 30px 30px;
+		margin: 0;
+	}
+	section {
+		padding: 40px 20%;
+		overflow: hidden;
+		&[data-index="0"], &[data-index="2"], &[data-index="4"] {
+			img { float: left; margin: 0 20px 20px 0; }
+		}
+		&[data-index="1"], &[data-index="3"] {
+			background-color: $cyan;
+			img { float: right; margin: 0 0 20px 20px; }
+			h2, h3, p { color: white; }
+		}
 	}
 }
 
@@ -1384,7 +1386,6 @@ main.dropzone[data-load="edit.html"] {
 		padding: 50px;
 		h2 {
 			color: $dark-grey;
-			font-family: $raleway;
 			font-size: 40px;
 			padding-right: 150px;
 		}
