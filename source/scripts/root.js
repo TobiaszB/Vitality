@@ -24,6 +24,8 @@ window.root = {
 
   upload: require('./components/upload.js'),
 
+  contact: require('./components/contact.js'),
+
   editor: require('./components/editor.js'),
   
   prefill: require('./components/prefill.js'),

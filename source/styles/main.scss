@@ -337,6 +337,11 @@ input {
   }
 }
 
+[data-load="contact.render"] {
+	display: inline-block;
+	width: 600px;
+	background-color: $cyan;
+}
 
 body.authenticated.courses-page, body.authenticated.invites-page {
 	.side-nav, main > .content { display: block; }
@@ -492,37 +497,59 @@ main {
 	}
 }
 
+form {
+	text-align: left;
+	max-width: 600px;
+	width: 100%;
+	padding: 20px;
+	display: inline-block;
+	label {
+		width: 50px;
+		display: inline-block;
+		vertical-align: top;
+		padding: 0;
+		margin: 20px 0 0 0;
+		font-family: $raleway;
+		color: white;
+		text-transform: uppercase;
+	}
+	input, textarea {
+		width: 100%;
+	}
+	input {
+		height: 40px;
+	}
+	textarea {
+		height: 200px;
+	}
+}
+
+.social {
+	background-color: #3e5b98;
+	width: 60px;
+	height: 60px;
+	display: inline-block;
+	text-align: center;
+	line-height: 60px;
+	margin: 0 0 0 20px;
+	&:hover {
+		background-color: lighten(#3e5b98, 5);
+	}
+
+	&:before {
+		content: "\f09a";
+		font-family: FontAwesome;
+		color: white;
+		font-size: 26px;
+	}
+}
+
 // home 
 [data-load="home.html"], [data-load="team.html"] {
 	positon: relative;
 	padding: 0;
 
-	form {
-		text-align: left;
-		max-width: 600px;
-		width: 100%;
-		padding: 20px;
-		display: inline-block;
-		label {
-			width: 50px;
-			display: inline-block;
-			vertical-align: top;
-			padding: 0;
-			margin: 20px 0 0 0;
-			font-family: $raleway;
-			color: white;
-			text-transform: uppercase;
-		}
-		input, textarea {
-			width: 100%;
-		}
-		input {
-			height: 40px;
-		}
-		textarea {
-			height: 200px;
-		}
-	}
+
 
 	.point {
 		max-width: 33%;
@@ -660,32 +687,86 @@ main {
 			margin: 0 auto;
 		}
 
-		.social {
-			background-color: #3e5b98;
-			width: 60px;
-			height: 60px;
-			display: inline-block;
-			text-align: center;
-			line-height: 60px;
-			margin: 0 0 0 20px;
-			&:hover {
-				background-color: lighten(#3e5b98, 5);
-			}
-
-			&:before {
-				content: "\f09a";
-   				font-family: FontAwesome;
-   				color: white;
-   				font-size: 26px;
-			}
-		}
-		
 		&.home { background-image: url('/photo-gym.jpg'); min-height: 100vh; }
 		&.team { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh;}
 
 	}	
 
 }
+
+[data-load="contact.html"] {
+	background-color: $cyan;
+	padding: 50px 0;
+	text-align: center;
+	
+	[data-load="contact.render"] {
+		padding: 0 0 0 30px;
+	}
+
+	header {
+		border-bottom: 1px solid white;
+		position: relative;
+		display: block;
+		margin: 30px 0 0 0;
+		img {
+			width: 50px;
+			height: 30px;
+			overflow: hidden;
+			background-color: $cyan;
+			padding: 0 10px;
+			display: inline-block;
+			transform: translateX(-50%);
+			position: absolute;
+			left: 50%;
+			bottom: -10px;
+		}
+	}
+
+	section {
+		display: inline-block;
+		vertical-align: top;
+		text-align: center;
+		position: relative;
+
+		&.info {
+			padding: 0 30px 0 0;
+			> img {
+				margin: 20px 0 0 0;
+				width: 400px;
+			}
+		}
+
+	}
+
+	.part {
+		display: inline-block;
+		width: 49%;
+		position: relative;
+		&.left {
+			margin-right: 5px;
+		}
+	}
+
+	.text {
+		padding: 5px 5px 0 5px;
+		text-align: left;
+	}
+
+	small {
+		font-family: $raleway;
+		font-size: 14px;
+		line-height: 28px;
+		color: white;
+	}
+
+	.social-container {
+		background-color: white;
+		padding: 30px 0;
+		margin: 30px 0;
+	}
+
+}
+
 
 // ticket
 main.ticket-mode {

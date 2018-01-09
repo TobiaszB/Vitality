@@ -1525,6 +1525,31 @@ var calender = module.exports = {
 };
 });
 
+require.register("source/scripts/components/contact.js", function(exports, require, module) {
+'use strict';
+
+var contact = module.exports = {
+
+    render: function render(element) {
+
+        element.innerHTML = '';
+
+        var form = document.createElement('form'),
+            html = '\n      <label data-load="labels.contact_name"></label>\n      <input type="text"><br>\n\n      <label data-load="labels.contact_email"></label>\n      <input type="text"><br>\n\n      <label data-load="labels.contact_message"></label>\n      <textarea type="text"></textarea><br>\n\n      <button data-click="contact.send" data-load="labels.send"></button>\n    ';
+
+        form.innerHTML = html;
+
+        element.appendChild(form);
+    },
+
+    send: function send(element) {
+
+        console.log('send', element);
+    }
+
+};
+});
+
 require.register("source/scripts/components/editor.js", function(exports, require, module) {
 'use strict';
 
@@ -2749,6 +2774,8 @@ window.root = {
   modal: require('./components/modal.js'),
 
   upload: require('./components/upload.js'),
+
+  contact: require('./components/contact.js'),
 
   editor: require('./components/editor.js'),
 
