@@ -24,7 +24,6 @@ $black: black;
 
 @import "partials/reset";
 @import "partials/aos";
-@import "partials/upload";
 
 // general
 html {
@@ -322,12 +321,6 @@ input {
   }
 }
 
-[data-load="contact.render"] {
-	display: inline-block;
-	width: 600px;
-	background-color: $cyan;
-}
-
 body.authenticated.courses-page, body.authenticated.invites-page {
 	.side-nav, main > .content { display: block; }
     .public-page { display: none; }
@@ -484,9 +477,6 @@ main {
 
 form {
 	text-align: left;
-	max-width: 600px;
-	width: 100%;
-	padding: 20px;
 	display: inline-block;
 	label {
 		width: 50px;
@@ -533,8 +523,6 @@ form {
 [data-load="home.html"], [data-load="team.html"] {
 	positon: relative;
 	padding: 0;
-
-
 
 	.point {
 		max-width: 33%;
@@ -681,12 +669,8 @@ form {
 
 [data-load="contact.html"] {
 	background-color: $cyan;
-	padding: 50px 0;
+	padding: 20px 0;
 	text-align: center;
-	
-	[data-load="contact.render"] {
-		padding: 0 0 0 30px;
-	}
 
 	header {
 		border-bottom: 1px solid white;
@@ -707,34 +691,26 @@ form {
 		}
 	}
 
+	.info, .contact {
+		background-color: $cyan;
+		img { margin: 20px 0 0 0;}
+	}
+
 	section {
 		display: inline-block;
 		vertical-align: top;
 		text-align: center;
 		position: relative;
-
-		&.info {
-			padding: 0 30px 0 0;
-			> img {
-				margin: 20px 0 0 0;
-				width: 400px;
-			}
-		}
-
 	}
-
+ 
 	.part {
 		display: inline-block;
 		width: 49%;
 		position: relative;
-		&.left {
-			margin-right: 5px;
-		}
 	}
 
 	.text {
 		padding: 5px 5px 0 5px;
-		text-align: left;
 	}
 
 	small {
@@ -746,8 +722,9 @@ form {
 
 	.social-container {
 		background-color: white;
-		padding: 30px 0;
+		padding: 30px 50px;
 		margin: 30px 0;
+		text-align: left;
 	}
 
 }
@@ -1798,5 +1775,7 @@ main.dropzone[data-load="edit.html"] {
 
 
 }
-
 // END EDITOR
+
+@import "desktop";
+@import "mobile";
