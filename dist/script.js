@@ -480,7 +480,7 @@ var sessions = module.exports = {
 
     default_page: 'home',
 
-    public_pages: ['home', 'courses', 'login', 'about', 'team', 'services', 'contact'],
+    public_pages: ['home', 'courses', 'login', 'about', 'team', 'services', 'contact', 'ticket'],
 
     memory: {},
 
@@ -639,6 +639,11 @@ var templates = module.exports = {
 
 						root.main.dataset.load = root.main.dataset.load;
 				});
+		},
+
+		load_client: function load_client(element) {
+
+				templates.client_element = element;
 		},
 
 		load_courses: function load_courses(element) {
@@ -1506,16 +1511,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-  load: function load(element) {
+    load: function load(element) {
 
-    root.calender = element;
+        root.calender = element;
 
-    var a = moment('2016-01-01');
-    var b = a.add(1, 'week');
-    a.format();
+        var a = moment('2016-01-01');
+        var b = a.add(1, 'week');
+        a.format();
 
-    console.log(a);
-  }
+        console.log(a);
+    }
 
 };
 });
@@ -1559,15 +1564,25 @@ var editor = module.exports = {
         });
     },
 
+    save_block_element: function save_block_element(element) {
+
+        editor.block_elements[parseInt(element.dataset.index, 10)] = element;
+    },
+
     load_course: function load_course(element) {
 
         if (history.state.page != 'ticket') editor.ticket = false;else if (!history.state.course) return editor.load_ticket(element);
 
         var key = history.state.course,
-            course = root.courses.memory[key],
+            course = editor.ticket || root.courses.memory[key],
             colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
 
-        if (editor.ticket) root.main.classList.add('ticket-mode');
+        if (editor.ticket) {
+
+            root.main.classList.add('ticket-mode');
+
+            root.templates.client_element.dataset.load = 'editor.ticket.client';
+        }
 
         editor.looping = Math.random();
 
@@ -1583,13 +1598,15 @@ var editor = module.exports = {
 
         if (!course.blocks) course.blocks = [];
 
+        editor.block_elements = [];
+
         element.innerHTML = course.blocks.reduce(function (html, block, index) {
 
             var options = Object.keys(block.options).reduce(function (html, option) {
                 return html + ' data-' + option + '="' + block.options[option].value + '"';
             }, '');
 
-            return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
+            return html + '<div data-load="editor.save_block_element" data-answer="' + (block.answer || '') + '" class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
                 return '<b style="background-color:#' + c + ';"></b>';
             }).join('') + '</div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-index="' + index + '" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-index="' + index + '" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
@@ -1789,6 +1806,21 @@ var editor = module.exports = {
         element.dataset.load = 'editor.load_' + key;
     },
 
+    give_answer: function give_answer(element) {
+
+        var index = parseInt(element.dataset.index, 10),
+            count = parseInt(element.dataset.count, 10);
+
+        editor.block_elements[index].dataset.answer = count;
+
+        editor.ticket.blocks[index].answer = count;
+
+        root.send({
+            request: 'save_ticket',
+            ticket: editor.ticket
+        });
+    },
+
     load_button_group: function load_button_group(element) {
 
         var index = parseInt(element.dataset.index, 10),
@@ -1801,7 +1833,7 @@ var editor = module.exports = {
 
             var options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-            return '\n      <div class="option" data-option="' + string + '">\n        <label>' + options[count] + '</label><br>\n        <textarea ' + (editor.ticket ? 'disabled' : '') + ' data-input="editor.save" data-count="' + count + '" data-element="button_group" data-index="' + index + '">' + string + '</textarea>\n      </div>\n      ';
+            return '\n      <div class="option" ' + (editor.ticket ? 'data-index="' + index + '" data-count="' + count + '" data-click="editor.give_answer"' : '') + ' data-option="' + string + '">\n        <label>' + options[count] + '</label><br>\n        <textarea ' + (editor.ticket ? 'disabled' : '') + ' data-input="editor.save" data-count="' + count + '" data-element="button_group" data-index="' + index + '">' + string + '</textarea>\n      </div>\n      ';
         }).join('');
     },
 
@@ -2821,6 +2853,8 @@ function incoming(message, callbacks) {
   }
 
   if (typeof message.token == 'undefined') return;
+
+  if (!message.token && history.state.code) return root.sessions.load_page(null, { prevent_url: true });
 
   root.me = Object.assign(root.me || {}, message);
 

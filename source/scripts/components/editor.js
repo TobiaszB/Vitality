@@ -37,6 +37,12 @@ let editor = module.exports = {
     
   },
 
+  save_block_element: (element) => {
+
+    editor.block_elements[parseInt(element.dataset.index, 10)] = element;
+
+  },
+
   load_course: (element)=>{
 
     if(history.state.page != 'ticket') editor.ticket = false;
@@ -44,13 +50,19 @@ let editor = module.exports = {
     else if(!history.state.course) return editor.load_ticket(element);
 
     let key = history.state.course,
-        course = root.courses.memory[key],
+        course = editor.ticket || root.courses.memory[key],
         colors = ['7ac673','1abc9c','27aae0','2c82c9','9365b8','4c6972','ffffff','41a85f','00a885','3d8eb9',
                   '2969b0','553982','475577','efefef','f7da64','faaf40','eb6b56','e25041','a38f84','28324e',
                   'cccccc','fac51c','f97352','d14841','b8312f','7c706b','000000','c1c1c1'];
 
 
-    if(editor.ticket) root.main.classList.add('ticket-mode');
+    if(editor.ticket) {
+
+      root.main.classList.add('ticket-mode');
+
+      root.templates.client_element.dataset.load = 'editor.ticket.client';
+
+    }
     
     editor.looping = Math.random();
 
@@ -66,11 +78,13 @@ let editor = module.exports = {
 
     if (!course.blocks) course.blocks = [];
 
+    editor.block_elements = [];
+
     element.innerHTML = course.blocks.reduce((html,block,index)=>{
 
       let options = Object.keys(block.options).reduce((html,option)=>`${html} data-${option}="${block.options[option].value}"`, '');
 
-      return `${html}<div class="block" ${options} data-key="${block.key}" data-index="${index}">
+      return `${html}<div data-load="editor.save_block_element" data-answer="${ block.answer || '' }" class="block" ${options} data-key="${block.key}" data-index="${index}">
         ${block.html}
         <div class="block-tooltip" data-index="${index}" data-load="editor.load_tooltip">
           <div class="inner">
@@ -335,6 +349,22 @@ let editor = module.exports = {
 
   },
 
+  give_answer: (element) => {
+
+    let index = parseInt(element.dataset.index, 10),
+        count = parseInt(element.dataset.count, 10);
+
+    editor.block_elements[index].dataset.answer = count;
+
+    editor.ticket.blocks[index].answer = count;
+
+    root.send({
+      request: 'save_ticket',
+      ticket: editor.ticket
+    });
+
+  },
+
   load_button_group: (element) => {
 
     let index = parseInt(element.dataset.index, 10),
@@ -348,7 +378,7 @@ let editor = module.exports = {
       let options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
       return `
-      <div class="option" data-option="${string}">
+      <div class="option" ${ editor.ticket ? `data-index="${ index }" data-count="${ count }" data-click="editor.give_answer"` : ''} data-option="${string}">
         <label>${ options[count] }</label><br>
         <textarea ${ editor.ticket ? 'disabled' : ''} data-input="editor.save" data-count="${ count }" data-element="button_group" data-index="${ index }">${ string }</textarea>
       </div>
