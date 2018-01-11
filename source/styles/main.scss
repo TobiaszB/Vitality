@@ -358,6 +358,7 @@ body.authenticated.courses-page, body.authenticated.invites-page {
   	font-family: $changa;
   	font-size: 14px;
   	font-weight: 500;
+  	display: block;
   	margin: 20px 0 0 0;
   	text-transform: uppercase;
   	&.no-margin { margin: 0; }
