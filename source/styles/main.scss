@@ -28,12 +28,12 @@ $black: black;
 // general
 html {
   height: 100%;
-  background-color: white;
+  background-image: url("/white2.png");
 }
 
 body {
   padding: 70px 0 0 0;
-  background-color: white;
+  background-image: url("/white2.png");
   position: relative;
   height: 100%;
   transition: 200ms padding ease;
@@ -484,7 +484,7 @@ main {
 			img { float: left; margin: 0 20px 20px 0; }
 		}
 		&[data-index="1"], &[data-index="3"] {
-			background-color: $cyan;
+			background-image: url("/cyanlight.png");
 			img { float: right; margin: 0 0 20px 20px; }
 			h2, h3, p { color: white; }
 		}
