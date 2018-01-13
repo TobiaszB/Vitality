@@ -231,7 +231,7 @@ let courses = module.exports = {
 
     element.dataset.key = element.dataset.course;
 
-    element.innerHTML = courses.mode == 'lists' ? `
+    element.innerHTML = courses.mode == 'list' ? `
       <input placeholder="Naam" data-property="name" data-course="${ course.key }" data-input="courses.edit" type="text" value="${ course.name }">
       <pre>${ JSON.stringify(course, null, 2) }</pre>
     ` : `
