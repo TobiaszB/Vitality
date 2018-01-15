@@ -15,7 +15,7 @@ $orange: hsl(41, 100%, 39%);
 $green: hsl(103, 39%, 62%);
 $pink: hsl(322, 100%, 39%);
 $yellow: hsl(60, 100%, 39%);
-$dark-blue: hsl(250, 100%, 39%);
+$dark-blue:hsl(223, 76%, 42%);
 
 $light-grey: #efefef;
 $grey: #ccc;
@@ -88,7 +88,7 @@ body.courses-page [data-page="courses"],
 body.invites-page [data-page="invites"],
 body.contact-page [data-page="contact"],
 body.stats-page [data-page="stats"] {
-    text-decoration: underline;
+    color: $cyan;
 }
 
 a.ticket-client {
@@ -484,7 +484,8 @@ main {
 			img { float: left; margin: 0 20px 20px 0; }
 		}
 		&[data-index="1"], &[data-index="3"] {
-			background-image: url("/cyan5.png");
+			background-color: $dark-grey;
+			background-image: url("/pattern-twill.png");
 			img { float: right; margin: 0 0 20px 20px; }
 			h2, h3, p { color: white; }
 		}
@@ -587,16 +588,14 @@ form {
 	}
 
 	section {
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-position: center center;
 		position: relative;
 		overflow: hidden;
 		height: auto;
 		text-align: center;
 		
 		&[data-index="2"] {
-			background-color: $cyan;
+			background-color: $dark-grey;
+			background-image: url("/pattern-twill.png");
 		}
 		
 		&[data-index="3"] {
@@ -605,7 +604,8 @@ form {
 		}
 		
 		&[data-index="4"] {
-			background-color: $cyan;
+			background-color: $dark-grey;
+			background-image: url("/pattern-twill.png");
 		}
 
 		.text {
@@ -654,7 +654,7 @@ form {
 			padding: 0 10px;
 			margin: 10px 0 0 0;
 			text-transform: uppercase;
-			background-color: $orange;
+			background-color: $cyan;
 			border: 1px solid white;
 			cursor: pointer;
 			display: inline-block;
@@ -664,7 +664,7 @@ form {
 				top: 20px;
 			}
 			&:hover {
-				background-color: lighten($orange, 5);
+				background-color: lighten($cyan, 5);
 			}
 		}
 		
@@ -684,31 +684,35 @@ form {
 }
 
 [data-load="contact.html"] {
-	background-color: $cyan;
+	background-color: $dark-grey;
+	background-image: url("/pattern-twill.png");
 	padding: 20px 0;
 	text-align: center;
 
 	header {
-		border-bottom: 1px solid white;
+		border-bottom: 1px solid $cyan;
 		position: relative;
 		display: block;
 		margin: 30px 0 0 0;
+
 		img {
 			width: 50px;
 			height: 30px;
 			overflow: hidden;
-			background-color: $cyan;
 			padding: 0 10px;
 			display: inline-block;
 			transform: translateX(-50%);
 			position: absolute;
 			left: 50%;
+			overflow: hidden;
 			bottom: -10px;
+			border-radius: 4px;
+			background-color: $dark-grey;
+			background-image: url("/pattern-twill.png");
 		}
 	}
 
 	.info, .contact {
-		background-color: $cyan;
 		img { margin: 20px 0 0 0;}
 	}
 

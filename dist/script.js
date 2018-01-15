@@ -1510,16 +1510,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-    load: function load(element) {
+  load: function load(element) {
 
-        root.calender = element;
+    root.calender = element;
 
-        var a = moment('2016-01-01');
-        var b = a.add(1, 'week');
-        a.format();
+    var a = moment('2016-01-01');
+    var b = a.add(1, 'week');
+    a.format();
 
-        console.log(a);
-    }
+    console.log(a);
+  }
 
 };
 });
@@ -1529,22 +1529,22 @@ require.register("source/scripts/components/contact.js", function(exports, requi
 
 var contact = module.exports = {
 
-    render: function render(element) {
+  render: function render(element) {
 
-        element.innerHTML = '';
+    element.innerHTML = '';
 
-        var form = document.createElement('form'),
-            html = '\n      <label data-load="labels.contact_name"></label>\n      <input type="text"><br>\n\n      <label data-load="labels.contact_email"></label>\n      <input type="text"><br>\n\n      <label data-load="labels.contact_message"></label>\n      <textarea type="text"></textarea><br>\n\n      <button data-click="contact.send" data-load="labels.send"></button>\n    ';
+    var form = document.createElement('form'),
+        html = '\n      <label data-load="labels.contact_name"></label>\n      <input type="text"><br>\n\n      <label data-load="labels.contact_email"></label>\n      <input type="text"><br>\n\n      <label data-load="labels.contact_message"></label>\n      <textarea type="text"></textarea><br>\n\n      <button data-click="contact.send" data-load="labels.send"></button>\n    ';
 
-        form.innerHTML = html;
+    form.innerHTML = html;
 
-        element.appendChild(form);
-    },
+    element.appendChild(form);
+  },
 
-    send: function send(element) {
+  send: function send(element) {
 
-        console.log('send', element);
-    }
+    console.log('send', element);
+  }
 
 };
 });
