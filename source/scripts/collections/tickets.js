@@ -138,7 +138,7 @@ let tickets = module.exports = {
 
     });
 
-    let elem = document.createElement('div');
+    let elem = document.createElement('a');
 
     elem.dataset.load = 'tickets.render_one';
 
@@ -195,18 +195,14 @@ let tickets = module.exports = {
     
     let ticket = tickets.memory[element.dataset.ticket];
    
-    
     if(!ticket.client) return ;
     element.innerHTML = `
-    
-      <div>
-        ${ ticket.name }, 
-        ${ ticket.client },
-        <a href="/ticket/code/${ ticket.code }">Link</a>
-      </div>
-
+        <span>${ ticket.client }</span>
+        <small>${ ticket.name }</small>
     `
     ;
+
+    element.setAttribute('href', `/ticket/code/${ ticket.code }`);
 
   },
 
