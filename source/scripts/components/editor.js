@@ -104,7 +104,7 @@ let editor = module.exports = {
           <a data-index="${ index }" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
           <a data-index="${ index }" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
           <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>
-          <div class="block-config">${Object.keys(block.options).reduce((html,option,id)=>{
+          <div data-load="editor.clear_style" class="block-config"${ editor.ticket ? '' : ` style="max-height: 1000px;"` }>${Object.keys(block.options).reduce((html,option,id)=>{
 
         let element = `<label for="input-${id}" data-load="labels.${option}"></label><br>`;
 
@@ -130,6 +130,16 @@ let editor = module.exports = {
         <div data-load="blocks.load"></div>
       </div>
     `);
+
+  },
+
+  clear_style: (element) => {
+
+    setTimeout(()=>{
+
+      element.setAttribute('style', null);
+      
+    }, 500);
 
   },
 
