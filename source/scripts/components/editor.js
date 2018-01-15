@@ -137,7 +137,7 @@ let editor = module.exports = {
 
     setTimeout(()=>{
 
-      element.setAttribute('style', null);
+      element.setAttribute('style', '');
       
     }, 500);
 

@@ -6,6 +6,11 @@ function init() {
 
   bind();
 
+  addEventListener('scroll', (e)=>{
+    console.log(scrollY);
+    root.scroll_distance = scrollY;
+    });
+
   document.documentElement.addEventListener('click', listener);
 
   document.documentElement.addEventListener('change', listener);
@@ -184,7 +189,11 @@ function load_file(element) {
 
     }
 
+    let scroll = root.scroll_distance;
+
     element.innerHTML = target.html = this.responseText;
+
+    setTimeout(()=>{ window.scrollTo(0, scroll); }, 30);
 
   }
 

@@ -1657,7 +1657,7 @@ var editor = module.exports = {
 
         setTimeout(function () {
 
-            element.setAttribute('style', null);
+            element.setAttribute('style', '');
         }, 500);
     },
 
@@ -2510,6 +2510,11 @@ function init() {
 
   bind();
 
+  addEventListener('scroll', function (e) {
+    console.log(scrollY);
+    root.scroll_distance = scrollY;
+  });
+
   document.documentElement.addEventListener('click', listener);
 
   document.documentElement.addEventListener('change', listener);
@@ -2669,7 +2674,13 @@ function load_file(element) {
       target = target[parts[i]];
     }
 
+    var scroll = root.scroll_distance;
+
     element.innerHTML = target.html = this.responseText;
+
+    setTimeout(function () {
+      window.scrollTo(0, scroll);
+    }, 30);
   };
 
   xhr.send();
