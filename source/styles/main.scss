@@ -1479,6 +1479,12 @@ main.dropzone[data-load="edit.html"] {
 			background-color: $dark-grey;
 			margin-bottom: 30px;
 		}
+		[data-load="editor.load_button_group"][data-correct="0"] .option:nth-child(1),
+		[data-load="editor.load_button_group"][data-correct="1"] .option:nth-child(2),
+		[data-load="editor.load_button_group"][data-correct="2"] .option:nth-child(3),
+		[data-load="editor.load_button_group"][data-correct="3"] .option:nth-child(4) {
+			background-color: red;
+		}
 		.option {
 			display: inline-block;
 			font-size: 40px;

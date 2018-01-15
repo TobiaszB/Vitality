@@ -1686,7 +1686,13 @@ var editor = module.exports = {
 
             case 'correct':
 
-                editor.course.blocks[index].options[data.element].correct = count;
+                var opt = editor.course.blocks[index].options[data.element];
+
+                if (opt.correct == count) count = null;
+
+                opt.correct = count;
+
+                document.querySelector('[data-load="editor.load_button_group"][data-index="' + index + '"]').dataset.correct = count;
 
                 console.log(editor.course.blocks[index].options);
 
@@ -1878,6 +1884,8 @@ var editor = module.exports = {
         var index = parseInt(element.dataset.index, 10),
             block = editor.course.blocks[index],
             options = block.options[element.dataset.element];
+
+        element.dataset.correct = block.options.button_group.correct;
 
         console.log('options', options);
 
