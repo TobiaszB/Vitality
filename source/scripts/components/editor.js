@@ -96,6 +96,7 @@ let editor = module.exports = {
            <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>
            <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>
            <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>
+           <i data-click="editor.toggle_tooltip_submenu" data-tab="correct" class="fa fa-check"></i>
            <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>
           </div>
         </div>
@@ -165,6 +166,14 @@ let editor = module.exports = {
 
         break;
         
+      case 'correct':
+
+        editor.course.blocks[index].options[data.element].correct = count;
+
+        console.log(editor.course.blocks[index].options)
+
+        break;
+
     }
     
   },
@@ -222,9 +231,20 @@ let editor = module.exports = {
 
     if (typeof index == 'undefined') return editor.tooltip_list.map(close);
       
-    editor.tooltip_list[index].style.bottom = `${ block.offsetHeight - focus.offsetTop }px`;
+    let top = block.offsetHeight - focus.offsetTop,
+        left = focus.offsetLeft;
 
-    editor.tooltip_list[index].style.left = `${ focus.offsetLeft }px`;
+    if(focus.parentNode.classList.contains('option')) {
+
+      left += focus.parentNode.offsetLeft;
+
+      top -= focus.parentNode.offsetTop;
+
+    }
+      
+    editor.tooltip_list[index].style.bottom = `${ top }px`;
+
+    editor.tooltip_list[index].style.left = `${ left }px`;
 
     editor.tooltip_list[index].querySelector('.block-tooltip .inner').dataset.tab = '';
 

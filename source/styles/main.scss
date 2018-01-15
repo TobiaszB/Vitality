@@ -1197,7 +1197,7 @@ main.ticket-mode {
   }
   &.is-array {
 
-	  [data-tab="add"], [data-tab="delete"] {
+	  [data-tab="add"], [data-tab="delete"], [data-tab="correct"] {
 	  	display: inline-block;
 	  }
 	  
@@ -1262,7 +1262,7 @@ main.ticket-mode {
 			height: 30px;
 	  	}
 	  }
-	  [data-tab="add"], [data-tab="delete"] {
+	  [data-tab="add"], [data-tab="correct"], [data-tab="delete"] {
 	  	display: none;
 	  }
 	  &
@@ -1504,10 +1504,6 @@ main.dropzone[data-load="edit.html"] {
 			color: $dark-grey;
 			font-size: 30px;
 			font-family: $changa;
-		}
-		.block-tooltip {
-			top: 240px;
-			left: 50px !important;
 		}
 		textarea {
 			color: $dark-grey;
