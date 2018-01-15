@@ -1,5 +1,6 @@
 let bcrypt = require('bcryptjs'),
     qs = require('querystring'),
+    gmail = require('./gmail'),
     ws = require('ws'),
     server, db;
 
@@ -30,6 +31,23 @@ function handler(request) {
       });
 
     },
+
+    contact: (ws, msg, session) => {
+
+        let data = msg.data;
+
+        gmail.write('info@fearless-apps.com', `VitalityOne contact request from ${ data.name || '' }`, `
+            ${ data.message || '' }
+            
+            Sent: ${ new Date().toJSON() }
+            From: ${ data.name || '' }<${ data.email || '' }>
+
+        `);
+
+        ws.send(JSON.stringify(msg));
+
+    },
+
 
     save_ticket: (ws, msg, session) => {
       
@@ -101,6 +119,8 @@ function handler(request) {
         }, (err, updated) => {
           
           if(err) return console.log(err);
+
+          gmail.write('info@fearless-apps.com', 'Ticket Created', JSON.stringify(updated.value, null, 2));
 
           updated.value.callback = msg.callback;
       

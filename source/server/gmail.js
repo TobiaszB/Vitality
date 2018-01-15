@@ -1,37 +1,43 @@
-let mailer = init([
+module.exports = init([
   '151622309174-ufqkb0shfhmm3k263pb6j4ma8ril9j7v.apps.googleusercontent.com',
   'PQ_B5r3Gvp4_BbAe4YXxl8Jr',
   // 'https://api.fearless-apps.com/gmail/success'
   'http://localhost:8443/gmail/success'
 ]);
 
-require('http').createServer((req, res) => {
-
-  if(req.url.indexOf('/gmail/') == 0) return mailer.load(req, res);
-
-  res.writeHead(200);
-
-  res.end('hi');
-
-}).listen(8443);
-
 function init(config) {
 
-  let google = require('googleapis'),
-      gmail = google.gmail('v1'),
-      url = require('url'),
-      auth_set = false,
-      auth = new google.auth.OAuth2(config[0], config[1], config[2]);
+  let tokens = {
+    access_token: 'ya29.GltDBc8wa7Xd8k4pulrEWMdyYoR1wTg355Izxup5c0eDaqm2RITJ5h5KK69SJfCkMN0peNUgXaRpXtHdfnthHx9rh2MSuEe8XXHA9rnjK9e2FHLbR6hGQddV0F6v',
+    refresh_token: '1/oOcGuR9S50HAuQZlInzszxhvp673oqbHMtWaLKyJMOk',
+    token_type: 'Bearer',
+    expiry_date: true
+  };
 
-  console.log('allow gmail access -', auth.generateAuthUrl({
-      access_type: 'offline',
-      scope: ['https://www.googleapis.com/auth/gmail.send']
-  }));
-
-  return {
+  let mailer = {
     load: load,
     write: write
   };
+
+  let google = require('googleapis'),
+      gmail = google.gmail('v1'),
+      url = require('url');
+
+  let auth_set = false,
+      auth = new google.auth.OAuth2(config[0], config[1], config[2]);
+
+  if(!tokens) return console.log('allow gmail access -', auth.generateAuthUrl({
+    access_type: 'offline',
+    scope: ['https://www.googleapis.com/auth/gmail.send']
+  })) || mailer;
+
+  auth.setCredentials(tokens);
+
+  auth_set = true;
+
+  write('info@fearless-apps.com', 'VitalityOne connected', 'successfully');
+
+  return mailer;
 
   function load(req, res) {
 
@@ -51,7 +57,7 @@ function init(config) {
 
       res.end('done! :D');
 
-      write('info@fearless-apps.com', 'fearless-apps.com connected', 'successfully');
+      write('info@fearless-apps.com', 'VitalityOne connected', 'successfully');
 
     });
 
