@@ -649,7 +649,7 @@ form {
 		}
 		
 		&[data-index="3"] {
-			text-align: left;
+			text-align: center;
 			background-color: white;
 		}
 		
@@ -674,7 +674,6 @@ form {
 		}
 
 		h2 {
-			color: white;
 			margin: 0;
 			padding: 0 0 5px 0;
 			&[data-load="labels.home_share_page"] { color: $dark-grey; }
