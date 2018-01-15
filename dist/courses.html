@@ -1,0 +1,41 @@
+<div class="side-nav">
+  
+  <header class="line-header">
+    <img src="icon-eye.png">
+  </header>
+
+  <a data-click="courses.view_mode" data-mode="cards" class="fa fa-address-card-o"></a>
+
+  <a data-click="courses.view_mode" data-mode="lists" class="fa fa-list"></a>
+  
+  <header class="line-header">
+    <img src="icon-search.png">
+  </header>
+
+  <input type="search" data-input="courses.save_search">
+  
+  <header class="line-header">
+    <img src="icon-managers.png">
+  </header>
+
+  <div class="managers" data-load="courses.load_managers"></div>
+
+</div>
+
+<div class="content">
+
+  <h2 data-load="labels.courses"></h2>
+
+  <button data-click="courses.add" class="add blue circle fa fa-plus"></button>
+
+  <div class="divider horizontal grey"></div>
+
+  <div data-load="courses.list"></div>
+
+</div>
+
+<div class="public-page">
+
+  <i class="excessive-padding">Geen inhoud voor Cursussen</i>
+
+</div>
