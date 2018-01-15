@@ -69,6 +69,7 @@ let labels = {
     sign_in_input: [value('Inloggen', value('Sign in'))],
     sign_out: ['Uitloggen', 'Sign out'],
     courses: ['Cursussen', 'Courses'],
+    add_course: ['Maak een cursus aan', 'Create a course'],
     invitations: ['Uitnodigingen', 'Invitations'],
     stats: ['Statistieken', 'Statistics'],
     confirm_delete: ['Bevestig verwijdering', 'Confirm deletion'],
