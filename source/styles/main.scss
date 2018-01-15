@@ -91,6 +91,31 @@ body.stats-page [data-page="stats"] {
     color: $cyan;
 }
 
+
+
+.line-header {
+	border-bottom: 1px solid white;
+	position: relative;
+	display: block;
+	margin: 30px 0 0 0;
+
+	img {
+		width: 50px;
+		height: 30px;
+		overflow: hidden;
+		padding: 0 10px;
+		display: inline-block;
+		transform: translateX(-50%);
+		position: absolute;
+		left: 50%;
+		overflow: hidden;
+		bottom: -10px;
+		border-radius: 4px;
+		background-color: $dark-grey;
+		background-image: url("/pattern-twill.png");
+	}
+}
+
 a.ticket-client {
 	display: none;
 }
@@ -352,33 +377,24 @@ body.authenticated.courses-page, body.authenticated.invites-page {
   position: absolute;
   display: none;
   left: 0;
-  top: 30px;
+  top: 23px;
   width: 200px;
   text-align: center;
   padding: 0 15px;
-  h3 {
-  	background-color: $blue;
-  	color: white;
-  	text-align: center;
-  	font-family: $changa;
-  	font-size: 14px;
-  	font-weight: 500;
-  	display: block;
-  	margin: 20px 0 0 0;
-  	text-transform: uppercase;
-  	&.no-margin { margin: 0; }
+  > header  {
+  	margin: 40px 0 15px;
   }
   a { 
   	padding: 8px;
   	border-bottom: 2px solid transparent;
-  	color: $dark-grey;
+  	color: white;
   	&:hover {
   		border-bottom: 2px solid $blue;
   	}
   	&[data-mode="cards"] { border-bottom: 2px solid $blue; }
   }
   input {
-  	background-color: $light-grey;
+  	background-color: rgba(255, 255, 255, 0.9);
   	width: 100%;
   	padding: 0 8px;
   	line-height: 40px;
@@ -408,14 +424,19 @@ body.authenticated.courses-page, body.authenticated.invites-page {
 		  border-radius: 50%;
 		  margin-right: 2px;
 		  display: inline-block;
-		  margin-top: 5px;
+		  margin: 5px 5px 0 0;
+		  border: 1px solid white;
 	    }
 	    span {
   		  vertical-align: top;
   		  display: inline-block;
+  		  color: white;
 	    }
+  		&:hover {
+  			border-bottom: 1px solid $cyan;
+  		}
   		&.active {
-  			background-color: $grey;
+  			border-bottom: 1px solid $cyan;
   		}
   	}
   }
@@ -446,6 +467,8 @@ main {
     padding: 20px 20px 20px 200px;
   }
   &[data-load="invites.html"] {
+	background-color: $dark-grey;
+	background-image: url("/pattern-twill.png");
     padding: 0;
   }
   > input {
@@ -521,6 +544,7 @@ form {
 	}
 	input, textarea {
 		width: 100%;
+		opacity: 0.9;
 	}
 	input {
 		height: 40px;
@@ -709,29 +733,6 @@ form {
 		background-color: $dark-grey;
 		background-image: url("/pattern-twill.png");
 		padding: 10px 0 30px 0;
-	}
-
-	header {
-		border-bottom: 1px solid white;
-		position: relative;
-		display: block;
-		margin: 30px 0 0 0;
-
-		img {
-			width: 50px;
-			height: 30px;
-			overflow: hidden;
-			padding: 0 10px;
-			display: inline-block;
-			transform: translateX(-50%);
-			position: absolute;
-			left: 50%;
-			overflow: hidden;
-			bottom: -10px;
-			border-radius: 4px;
-			background-color: $dark-grey;
-			background-image: url("/pattern-twill.png");
-		}
 	}
 
 	.info, .contact {
