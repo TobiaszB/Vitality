@@ -34,7 +34,7 @@ let contact = module.exports = {
       <label data-load="labels.contact_message"></label>
       <textarea data-input="contact.save" type="text" data-contact="message"></textarea><br>
 
-      <button data-click="contact.send" data-click="contact.send" data-load="labels.send"></button>
+      <button class="cyan" data-click="contact.send" data-click="contact.send" data-load="labels.send"></button>
     `;
 
     form.innerHTML = html;

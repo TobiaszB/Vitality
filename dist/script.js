@@ -1549,7 +1549,7 @@ var contact = module.exports = {
         contact.data = {};
 
         var form = document.createElement('form'),
-            html = '\n      <label data-load="labels.contact_name"></label>\n      <input data-input="contact.save" type="text" data-contact="name"><br>\n\n      <label data-load="labels.contact_email"></label>\n      <input data-input="contact.save" type="text" data-contact="email"><br>\n\n      <label data-load="labels.contact_message"></label>\n      <textarea data-input="contact.save" type="text" data-contact="message"></textarea><br>\n\n      <button data-click="contact.send" data-click="contact.send" data-load="labels.send"></button>\n    ';
+            html = '\n      <label data-load="labels.contact_name"></label>\n      <input data-input="contact.save" type="text" data-contact="name"><br>\n\n      <label data-load="labels.contact_email"></label>\n      <input data-input="contact.save" type="text" data-contact="email"><br>\n\n      <label data-load="labels.contact_message"></label>\n      <textarea data-input="contact.save" type="text" data-contact="message"></textarea><br>\n\n      <button class="cyan" data-click="contact.send" data-click="contact.send" data-load="labels.send"></button>\n    ';
 
         form.innerHTML = html;
 
