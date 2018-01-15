@@ -24,9 +24,9 @@
     "babel-brunch": "*",
     "babel-preset-latest": "*",
     "brunch": "*",
-    "sass-brunch": "*",
-    "uglify-js-brunch": "*",
     "google-auth-library": "^0.10.0",
-    "googleapis": "^20.1.0"
+    "googleapis": "^20.2.0",
+    "sass-brunch": "*",
+    "uglify-js-brunch": "*"
   }
 }
