@@ -1,0 +1,29 @@
+@media(max-width: 800px) {
+
+  .info, .contact {
+    padding: 0 10px 30px 10px;
+    width: 100%;
+    img { width: 100%; }
+  }
+
+  .text {
+    text-align: middle;
+  }
+
+  form {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  [data-load="contact.html"] {
+    section {
+      width: 100%;
+    }
+  }
+
+  [data-load="contact.render"] {
+      display: inline-block;
+      width: 100%;
+  }
+
+}

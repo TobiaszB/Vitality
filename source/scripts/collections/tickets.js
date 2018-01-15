@@ -182,30 +182,31 @@ let tickets = module.exports = {
   load_courses: (element) => {
 
     element.innerHTML = Object.keys(root.courses.memory).reduce((html, key) => {
-
+      
       return html + `<div data-click="tickets.toggle_course" data-key="${ key }">
         <span data-load="courses.memory.${ key }.name"></span>
       </div>`;
-
+      
     }, '');
 
   },
 
   render_one: (element) => {
-
-    let ticket = tickets.memory[element.dataset.ticket];
-
-    if(!ticket.client) return;
     
+    let ticket = tickets.memory[element.dataset.ticket];
+   
+    
+    if(!ticket.client) return ;
     element.innerHTML = `
-
+    
       <div>
         ${ ticket.name }, 
         ${ ticket.client },
         <a href="/ticket/code/${ ticket.code }">Link</a>
       </div>
 
-    `;
+    `
+    ;
 
   },
 

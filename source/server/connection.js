@@ -31,6 +31,32 @@ function handler(request) {
 
     },
 
+    save_ticket: (ws, msg, session) => {
+      
+      let key = msg.ticket.key;
+
+      delete msg.ticket.key;
+      
+      delete msg.ticket._id;
+
+      db.collection('tickets').findAndModify({
+        key: key
+      }, [], {
+        $set: msg.ticket
+      }, {
+        new: true
+      }, (err, updated) => {
+
+        if(err) return console.log(err);
+
+        updated.value.callback = msg.callback;
+
+        ws.send(JSON.stringify(updated.value));
+
+      });
+        
+    },
+
     load_ticket: (ws, msg, session) => {
 
       db.collection('tickets').findOne({ code: msg.code }, (err, ticket) => {

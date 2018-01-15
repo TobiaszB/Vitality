@@ -413,7 +413,7 @@ var courses = module.exports = {
 
     element.dataset.key = element.dataset.course;
 
-    element.innerHTML = courses.mode == 'lists' ? '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div data-key="' + course.key + '" data-load="upload.render" class="upload thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <img src="' + root.users.memory[course.admin].avatar + '">\n      <input data-load="labels.name" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n    ';
+    element.innerHTML = courses.mode == 'list' ? '\n      <input placeholder="Naam" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n      <pre>' + JSON.stringify(course, null, 2) + '</pre>\n    ' : '\n      <div data-key="' + course.key + '" data-load="upload.render" class="upload thumbnail" style="background-image:url(' + course.thumbnail + ')"></div>\n      ' + courses.course_nav(element) + '\n      <img src="' + root.users.memory[course.admin].avatar + '">\n      <input data-load="labels.name" data-property="name" data-course="' + course.key + '" data-input="courses.edit" type="text" value="' + course.name + '">\n    ';
 
     if (!course.name) element.querySelector('input').focus();
 
@@ -480,7 +480,7 @@ var sessions = module.exports = {
 
     default_page: 'home',
 
-    public_pages: ['home', 'courses', 'login', 'about', 'team', 'services', 'contact'],
+    public_pages: ['home', 'courses', 'login', 'about', 'team', 'services', 'contact', 'ticket'],
 
     memory: {},
 
@@ -641,6 +641,11 @@ var templates = module.exports = {
 				});
 		},
 
+		load_client: function load_client(element) {
+
+				templates.client_element = element;
+		},
+
 		load_courses: function load_courses(element) {
 
 				var html = '',
@@ -714,194 +719,193 @@ require.register("source/scripts/collections/tickets.js", function(exports, requ
 
 var tickets = module.exports = {
 
-    // here we save all tickets in client memory
-    // { [key]: OBJECT }
-    memory: {},
+  // here we save all tickets in client memory
+  // { [key]: OBJECT }
+  memory: {},
 
-    change_language: function change_language(element) {
+  change_language: function change_language(element) {
 
-        var block = document.querySelector('#invite-block');
+    var block = document.querySelector('#invite-block');
 
-        block.dataset.language = element.dataset.language;
-    },
+    block.dataset.language = element.dataset.language;
+  },
 
-    open_invite_block: function open_invite_block(element) {
+  open_invite_block: function open_invite_block(element) {
 
-        var block = document.querySelector('#invite-block');
+    var block = document.querySelector('#invite-block');
 
-        block.classList.toggle('open');
-    },
+    block.classList.toggle('open');
+  },
 
-    // button is placed to the right of the title of the page
-    add: function add(element) {
+  // button is placed to the right of the title of the page
+  add: function add(element) {
 
-        // root.send is used to talk to the server
-        root.send({ request: 'new_ticket' });
-    },
+    // root.send is used to talk to the server
+    root.send({ request: 'new_ticket' });
+  },
 
-    // anytime the user triggers the data-input of the search field, we execute this
-    save_search: function save_search(element) {
+  // anytime the user triggers the data-input of the search field, we execute this
+  save_search: function save_search(element) {
 
-        // used inside of tickets.render()
-        tickets.search_query = String(element.value || '').toLowerCase();
+    // used inside of tickets.render()
+    tickets.search_query = String(element.value || '').toLowerCase();
 
-        // see update loop at the bottom of this file
-        tickets.updated = true;
-    },
+    // see update loop at the bottom of this file
+    tickets.updated = true;
+  },
 
-    // goes off anytime ticket-related data-input is fired
-    edit: function edit(element, options) {
+  // goes off anytime ticket-related data-input is fired
+  edit: function edit(element, options) {
 
-        // we always need to provide a request string and the key of the object we are editing
-        var request = {
-            request: 'edit',
-            key: element.dataset.ticket
-        };
+    // we always need to provide a request string and the key of the object we are editing
+    var request = {
+      request: 'edit',
+      key: element.dataset.ticket
+    };
 
-        // but the value we are changing shall be added dynamically,
-        // so we can use this edit function straight from the HTML
-        // <input data-input="tickets.edit" data-key="[KEY]">
-        var v = options ? options.value : element.value;
+    // but the value we are changing shall be added dynamically,
+    // so we can use this edit function straight from the HTML
+    // <input data-input="tickets.edit" data-key="[KEY]">
+    var v = options ? options.value : element.value;
 
-        request[element.dataset.property] = v;
+    request[element.dataset.property] = v;
 
-        // options.callback can only be used when this function is fired manually in Javascript
-        // since we cannot write a function inside of the HTML tag
-        root.send(request, options ? options.callback : null);
-    },
+    // options.callback can only be used when this function is fired manually in Javascript
+    // since we cannot write a function inside of the HTML tag
+    root.send(request, options ? options.callback : null);
+  },
 
-    list: function list(element) {
+  list: function list(element) {
 
-        // we are lazy developers that do not want to select the list over and over
-        // whenever we use this list function manually
-        if (!element) element = document.querySelector('[data-load="tickets.list"]');
+    // we are lazy developers that do not want to select the list over and over
+    // whenever we use this list function manually
+    if (!element) element = document.querySelector('[data-load="tickets.list"]');
 
-        // element still not found?! we must stop this madness
-        if (!element) return;
+    // element still not found?! we must stop this madness
+    if (!element) return;
 
-        // we clean out the old HTML should this function be fired after the list already rendered
-        element.innerHTML = '';
+    // we clean out the old HTML should this function be fired after the list already rendered
+    element.innerHTML = '';
 
-        // we show a loading text
-        root.labels.loading(element);
+    // we show a loading text
+    root.labels.loading(element);
 
-        // and start the render loop!
-        tickets.render(element);
-    },
+    // and start the render loop!
+    tickets.render(element);
+  },
 
-    render: function render(element, keys, iteration) {
+  render: function render(element, keys, iteration) {
 
-        // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
-        if (!element) return;
+    // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
+    if (!element) return;
 
-        // we need to make sure we only run 1 loop at the same time
-        // every time render is called outside of its own loop, iteration will be undefined
-        // so we use this condition to also update the dataset of the element
-        // in order for the old loop to kill itself...
-        if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
+    // we need to make sure we only run 1 loop at the same time
+    // every time render is called outside of its own loop, iteration will be undefined
+    // so we use this condition to also update the dataset of the element
+    // in order for the old loop to kill itself...
+    if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
 
-        // if it turns out this execution is an outdated iteration,
-        // the element has updated its dataset.iteration outside of this loop
-        // we have to bring this loop to the white shores
-        // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
-        if (element.dataset.iteration != iteration) return;
+    // if it turns out this execution is an outdated iteration,
+    // the element has updated its dataset.iteration outside of this loop
+    // we have to bring this loop to the white shores
+    // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
+    if (element.dataset.iteration != iteration) return;
 
-        // every time render is called outside of its own loop, keys will be undefined
-        if (!keys) keys = Object.keys(tickets.memory);
+    // every time render is called outside of its own loop, keys will be undefined
+    if (!keys) keys = Object.keys(tickets.memory);
 
-        // the loop has finished
-        if (!keys.length) {
+    // the loop has finished
+    if (!keys.length) {
 
-            // sadly, no children are found inside of the element
-            // this can only mean there were no results
-            if (!element.children.length) return root.labels.no_results(element);
+      // sadly, no children are found inside of the element
+      // this can only mean there were no results
+      if (!element.children.length) return root.labels.no_results(element);
 
-            // we had results, and are no longer loading, so lets clear that loading message
-            return element.dataset.message = '';
-        }
-
-        var search = tickets.search_query,
-            // search value is changed by tickets.save_search()
-        ticket = tickets.memory[keys.shift()];
-
-        if (!ticket || ticket.archived || search && String(ticket.name).toLowerCase().indexOf(search) == -1 || tickets.manager_filter.length && tickets.manager_filter.indexOf(ticket.admin) == -1) {
-
-            if (keys.length % 100 == 0) return requestAnimationFrame(function () {
-
-                tickets.render(element, keys, iteration);
-            });
-
-            return tickets.render(element, keys, iteration);
-        }
-
-        requestAnimationFrame(function () {
-
-            tickets.render(element, keys, iteration);
-        });
-
-        var elem = document.createElement('div');
-
-        elem.dataset.load = 'tickets.render_one';
-
-        elem.dataset.ticket = ticket.key;
-
-        element.appendChild(elem);
-    },
-
-    archive: function archive(element) {
-
-        var ticket = tickets.memory[element.dataset.key];
-
-        root.send({ request: 'archive', key: ticket.key }, function () {
-
-            // see update loop at the bottom of this file
-            tickets.updated = true;
-        });
-    },
-
-    manager_filter: [],
-
-    toggle_course: function toggle_course(element) {
-
-        var key = element.dataset.key,
-            filter = tickets.manager_filter,
-            index = filter.indexOf(key);
-
-        element.classList.toggle('active');
-
-        if (index > -1) filter.splice(index, 1);else filter.push(key);
-
-        tickets.updated = true;
-    },
-
-    load_courses: function load_courses(element) {
-
-        element.innerHTML = Object.keys(root.courses.memory).reduce(function (html, key) {
-
-            return html + ('<div data-click="tickets.toggle_course" data-key="' + key + '">\n        <span data-load="courses.memory.' + key + '.name"></span>\n      </div>');
-        }, '');
-    },
-
-    render_one: function render_one(element) {
-
-        var ticket = tickets.memory[element.dataset.ticket];
-
-        if (!ticket.client) return;
-
-        element.innerHTML = '\n\n      <div>\n        ' + ticket.name + ', \n        ' + ticket.client + ',\n        <a href="/ticket/code/' + ticket.code + '">Link</a>\n      </div>\n\n    ';
+      // we had results, and are no longer loading, so lets clear that loading message
+      return element.dataset.message = '';
     }
+
+    var search = tickets.search_query,
+        // search value is changed by tickets.save_search()
+    ticket = tickets.memory[keys.shift()];
+
+    if (!ticket || ticket.archived || search && String(ticket.name).toLowerCase().indexOf(search) == -1 || tickets.manager_filter.length && tickets.manager_filter.indexOf(ticket.admin) == -1) {
+
+      if (keys.length % 100 == 0) return requestAnimationFrame(function () {
+
+        tickets.render(element, keys, iteration);
+      });
+
+      return tickets.render(element, keys, iteration);
+    }
+
+    requestAnimationFrame(function () {
+
+      tickets.render(element, keys, iteration);
+    });
+
+    var elem = document.createElement('div');
+
+    elem.dataset.load = 'tickets.render_one';
+
+    elem.dataset.ticket = ticket.key;
+
+    element.appendChild(elem);
+  },
+
+  archive: function archive(element) {
+
+    var ticket = tickets.memory[element.dataset.key];
+
+    root.send({ request: 'archive', key: ticket.key }, function () {
+
+      // see update loop at the bottom of this file
+      tickets.updated = true;
+    });
+  },
+
+  manager_filter: [],
+
+  toggle_course: function toggle_course(element) {
+
+    var key = element.dataset.key,
+        filter = tickets.manager_filter,
+        index = filter.indexOf(key);
+
+    element.classList.toggle('active');
+
+    if (index > -1) filter.splice(index, 1);else filter.push(key);
+
+    tickets.updated = true;
+  },
+
+  load_courses: function load_courses(element) {
+
+    element.innerHTML = Object.keys(root.courses.memory).reduce(function (html, key) {
+
+      return html + ('<div data-click="tickets.toggle_course" data-key="' + key + '">\n        <span data-load="courses.memory.' + key + '.name"></span>\n      </div>');
+    }, '');
+  },
+
+  render_one: function render_one(element) {
+
+    var ticket = tickets.memory[element.dataset.ticket];
+
+    if (!ticket.client) return;
+    element.innerHTML = '\n    \n      <div>\n        ' + ticket.name + ', \n        ' + ticket.client + ',\n        <a href="/ticket/code/' + ticket.code + '">Link</a>\n      </div>\n\n    ';
+  }
 
 };
 
 (function updater() {
 
-    if (!tickets.updated) return setTimeout(updater, 300);
+  if (!tickets.updated) return setTimeout(updater, 300);
 
-    tickets.updated = false;
+  tickets.updated = false;
 
-    tickets.list();
+  tickets.list();
 
-    updater();
+  updater();
 })();
 });
 
@@ -1520,6 +1524,31 @@ var calender = module.exports = {
 };
 });
 
+require.register("source/scripts/components/contact.js", function(exports, require, module) {
+'use strict';
+
+var contact = module.exports = {
+
+    render: function render(element) {
+
+        element.innerHTML = '';
+
+        var form = document.createElement('form'),
+            html = '\n      <label data-load="labels.contact_name"></label>\n      <input type="text"><br>\n\n      <label data-load="labels.contact_email"></label>\n      <input type="text"><br>\n\n      <label data-load="labels.contact_message"></label>\n      <textarea type="text"></textarea><br>\n\n      <button data-click="contact.send" data-load="labels.send"></button>\n    ';
+
+        form.innerHTML = html;
+
+        element.appendChild(form);
+    },
+
+    send: function send(element) {
+
+        console.log('send', element);
+    }
+
+};
+});
+
 require.register("source/scripts/components/editor.js", function(exports, require, module) {
 'use strict';
 
@@ -1559,15 +1588,25 @@ var editor = module.exports = {
         });
     },
 
+    save_block_element: function save_block_element(element) {
+
+        editor.block_elements[parseInt(element.dataset.index, 10)] = element;
+    },
+
     load_course: function load_course(element) {
 
         if (history.state.page != 'ticket') editor.ticket = false;else if (!history.state.course) return editor.load_ticket(element);
 
         var key = history.state.course,
-            course = root.courses.memory[key],
+            course = editor.ticket || root.courses.memory[key],
             colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
 
-        if (editor.ticket) root.main.classList.add('ticket-mode');
+        if (editor.ticket) {
+
+            root.main.classList.add('ticket-mode');
+
+            root.templates.client_element.dataset.load = 'editor.ticket.client';
+        }
 
         editor.looping = Math.random();
 
@@ -1583,13 +1622,15 @@ var editor = module.exports = {
 
         if (!course.blocks) course.blocks = [];
 
+        editor.block_elements = [];
+
         element.innerHTML = course.blocks.reduce(function (html, block, index) {
 
             var options = Object.keys(block.options).reduce(function (html, option) {
                 return html + ' data-' + option + '="' + block.options[option].value + '"';
             }, '');
 
-            return html + '<div class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
+            return html + '<div data-load="editor.save_block_element" data-answer="' + (block.answer || '') + '" class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
                 return '<b style="background-color:#' + c + ';"></b>';
             }).join('') + '</div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-index="' + index + '" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-index="' + index + '" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div class="block-config">' + Object.keys(block.options).reduce(function (html, option, id) {
 
@@ -1789,6 +1830,21 @@ var editor = module.exports = {
         element.dataset.load = 'editor.load_' + key;
     },
 
+    give_answer: function give_answer(element) {
+
+        var index = parseInt(element.dataset.index, 10),
+            count = parseInt(element.dataset.count, 10);
+
+        editor.block_elements[index].dataset.answer = count;
+
+        editor.ticket.blocks[index].answer = count;
+
+        root.send({
+            request: 'save_ticket',
+            ticket: editor.ticket
+        });
+    },
+
     load_button_group: function load_button_group(element) {
 
         var index = parseInt(element.dataset.index, 10),
@@ -1801,7 +1857,7 @@ var editor = module.exports = {
 
             var options = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-            return '\n      <div class="option" data-option="' + string + '">\n        <label>' + options[count] + '</label><br>\n        <textarea ' + (editor.ticket ? 'disabled' : '') + ' data-input="editor.save" data-count="' + count + '" data-element="button_group" data-index="' + index + '">' + string + '</textarea>\n      </div>\n      ';
+            return '\n      <div class="option" ' + (editor.ticket ? 'data-index="' + index + '" data-count="' + count + '" data-click="editor.give_answer"' : '') + ' data-option="' + string + '">\n        <label>' + options[count] + '</label><br>\n        <textarea ' + (editor.ticket ? 'disabled' : '') + ' data-input="editor.save" data-count="' + count + '" data-element="button_group" data-index="' + index + '">' + string + '</textarea>\n      </div>\n      ';
         }).join('');
     },
 
@@ -1929,24 +1985,29 @@ var labels = {
     team_intro_1: ["Joris Boon en Merel Witkamp, beiden met een jarenlange ervaring in de sportbranche, bundelen hun krachten om jou een training op maat te kunnen bieden. Joris Boon is een zeer ervaren trainer op het gebied van vechtsport en krachttraining. Met zijn 25 jaar ervaring als sportinstructeur weet hij deze technieken perfect toe te passen bij personal training. Merel Witkamp is thuis in de wereld van personal training, yoga en pilates. Daarnaast is ze gespecialiseerd in revalidatietraining en revalidatietraining voor ex-kankerpatiënten.", "Joris Boon and Merel Witkamp, both with years of experience in the sports industry, join forces to offer you a tailor-made training. Joris Boon is a very experienced trainer in the field of martial arts and strength training. With his 25 years of experience as a sports instructor he knows how to perfectly apply these techniques to personal training. Merel Witkamp is at home in the world of personal training, yoga and pilates. She is also specialized in rehabilitation training and rehabilitation training for ex-cancer patients."],
     team_intro_2: ["Afgelopen jaar besloten wij om samen een privéstudio te openen in een eigen luxe stijl. Een privéstudio waar je in alle rust ook echt privé traint! Jij alleen samen met een van ons. We willen jou door onze persoonlijke begeleiding helpen om op een snelle en effectieve wijze je doelen te verwezenlijken. Door het brede aanbod van krachttraining, conditietraining, revalidatietraining, bokstraining, yoga en pilates kunnen we jou de training bieden die op je lijf geschreven is. Durf jij nu de stap te nemen?", "Last year we decided to open a private studio together in our own luxury style. A private studio where you can practice private training in peace! You alone with one of us. We want to help you through our personal guidance to realize your goals in a fast and effective way. Through the wide range of strength training, fitness training, rehabilitation training, boxing training, yoga and pilates we can offer you the training that is right for you. Do you dare to take the step now?"],
 
-    services_personal_training_title: ['Persoonlijke training', 'Personal training'],
+    services_personal_training_title: ['Personal training', 'Personal training'],
     services_personal_training_text_1: ['We weten allemaal dat gezonde voeding en beweging goed voor ons is. Maar hoe ga je dat aanpakken? Waar begin je en wat moet je doen om het juiste resultaat te behalen? Daar zijn wij voor!', 'We all know that healthy food and exercise is good for us. But how are you going to deal with that? Where do you start and what do you have to do to achieve the right result? That is what we are for!'],
     services_personal_training_text_2: ['Door het geven van persoonlijke aandacht en de juiste fysieke training zijn wij een stok achter de deur en helpen wij je bij het behalen van jouw doelstellingen. Meer energie, een fitter en sterker lichaam, meer zelfvertrouwen en minder stress.', 'By giving personal attention and the right physical training, we are behind the door and we help you achieve your goals. More energy, a fitter and stronger body, more self-confidence and less stress.'],
     services_personal_training_text_3: ['VitalityOne geeft je resultaat, een fysieke basis. Kortom: fit,sterk en in balans.', 'VitalityOne geeft je resultaat, een fysieke basis. Kortom: fit,sterk en in balans.'],
     services_personal_training_text_4: ['Daarnaast train je in een luxe omgeving waar je in alle rust en privacy aan je doelen kunt werken. Door de individuele begeleiding kun je de training afstemmen op jouw wensen, in de tijd die jou uitkomt.', 'By giving personal attention and the right physical training, we are behind the door and we help you achieve your goals. More energy, a fitter and stronger body, more self-confidence and less stress.'],
-    services_personal_boxing_title: ['Persoonlijke boxing', 'Personal training'],
-    services_personal_boxing_text_1: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus. Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus. Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.'],
 
-    services_personal_yoga_and_pilates_title: ['Persoonlijk yoga en Pilates', 'Personal yoga and Pilates'],
+    services_personal_boxing_title: ['Personal boxing', 'Personal training'],
+    services_personal_boxing_text_1: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus. Ut eu dictum orci.'],
+    services_personal_boxing_text_2: ['Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.', 'Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.'],
+
+    services_personal_yoga_and_pilates_title: ['Personal yoga en Pilates', 'Personal yoga and Pilates'],
     services_personal_yoga_and_pilates_text_1: ['Met personal yoga en pilates laat ik u ervaren wat deze techniek met je lijf en je gedachten doen. Ik creëer rust juist in deze tijd waarin we het al zo druk hebben. Het een kan niet zonder het ander.', 'With personal yoga and pilates I let you experience what this technique does to your body and your thoughts. I create peace in this time where we are already so busy. The one can not do without the other.'],
     services_personal_yoga_and_pilates_text_2: ['Aenean arcu mi, facilisis quis neque nec, pulvinar congue ipsum. In aliquam dictum maximus. Sed ipsum metus, vulputate maximus porta ac, convallis vitae mi.', 'Aenean arcu mi, facilisis quis neque nec, pulvinar congue ipsum. In aliquam dictum maximus. Sed ipsum metus, vulputate maximus porta ac, convallis vitae mi.'],
 
-    onco_personal_training_title: ['Onco Persoonlijke Training', 'Onco Personal Training'],
+    services_duo_training_title: ['Duo training', 'Duo training'],
+    services_duo_training_text_1: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus. Ut eu dictum orci.'],
+    services_duo_training_text_2: ['Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.', 'Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.'],
+
+    onco_personal_training_title: ['Onco Personal Training', 'Onco Personal Training'],
     onco_personal_training_sub: ['Persoonlijke Fysieke training na kanker.', 'Personal Physical training after cancer.'],
     onco_personal_training_text_1: ['Onco Personal Training is erop gericht om de kwaliteit van leven van ex kankerpatiënten te verbeteren.', 'Onco Personal Training is aimed at improving the quality of life of ex cancer patients.'],
-    onco_personal_training_text_2: ['', ''],
-    onco_personal_training_text_3: ['', ''],
-    onco_personal_training_text_4: ['', ''],
+    onco_personal_training_text_2: ['Als u te maken krijgt met kanker is dit zeer ingrijpend. Tijdens maar ook nog na de behandeling kunt u allerlei klachten krijgen. Dat maakt het dagelijkse leven er niet makkelijker op. Lichamelijke beweging kan helpen om uw klachten te voorkomen en/of te verminderen. Door te bewegen voelt u zich lichamelijk en psychisch fitter en zit lekkerder in uw vel.', 'If you have to deal with cancer this is very drastic. During and after the treatment you can get all sorts of complaints. That does not make everyday life easier. Physical movement can help to prevent and / or reduce your symptoms. By moving you will feel physically and psychically fitter and feel better in your skin.'],
+    onco_personal_training_text_3: ['VitalityOne biedt patiënten die hun behandeling al hebben afgerond een trainingsprogramma aan: persoonlijke fysieke training na kanker. Door deel te nemen aan een Onco Personal trainingstraject kunt u in een rustige en veilige omgeving en onder deskundige begeleiding van Merel Witkamp in beweging blijven of (weer) beginnen met bewegen. Tijdens het trainen leert u op een verantwoorde en veilige manier uw fysieke grenzen kennen en verleggen, zodat u ook thuis beter in beweging kunt blijven en uw dagelijkse bezigheden kunt voortzetten.', 'VitalityOne offers patients who have already completed their treatment a training program: personal physical training after cancer. By participating in an Onco Personal training program, you can keep moving or start moving again in a quiet and safe environment and under the expert guidance of Merel Witkamp. During training you will learn to know and shift your physical limits in a responsible and safe way, so that you can keep moving at home and continue your daily activities.'],
 
     contact_name: ['Naam', 'Name'],
     contact_email: ['Email', 'Email'],
@@ -2713,6 +2774,8 @@ window.root = {
 
   upload: require('./components/upload.js'),
 
+  contact: require('./components/contact.js'),
+
   editor: require('./components/editor.js'),
 
   prefill: require('./components/prefill.js'),
@@ -2816,6 +2879,8 @@ function incoming(message, callbacks) {
   }
 
   if (typeof message.token == 'undefined') return;
+
+  if (!message.token && history.state.code) return root.sessions.load_page(null, { prevent_url: true });
 
   root.me = Object.assign(root.me || {}, message);
 

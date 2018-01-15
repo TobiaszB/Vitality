@@ -24,23 +24,25 @@ $black: black;
 
 @import "partials/reset";
 @import "partials/aos";
-@import "partials/upload";
 
 // general
 html {
   height: 100%;
-  background-color: white;
+  background-image: url("/white2.png");
 }
 
 body {
   padding: 70px 0 0 0;
-  background-color: white;
+  background-image: url("/white2.png");
   position: relative;
   height: 100%;
   transition: 200ms padding ease;
   &.home-page main { background-color: $dark-grey; }
   &.notified .notification { max-height: 40px; }
   &.authenticated {
+  	&.ticket-page > nav a.ticket-client {
+  		display: none;
+  	}
     > nav a {
    	  margin: 0 30px 0 0;
 	  &.auth-only {
@@ -52,6 +54,14 @@ body {
 	  }
     } 
     .introduction { border: none !important; } 	
+  }
+  &.ticket-page > nav {
+  	a[data-page="login"] {
+	  display: none;
+    }
+    a.ticket-client {
+    	display: inline-block;
+    }
   }
   &.modal-open {
 	text-align: center;
@@ -79,6 +89,10 @@ body.invites-page [data-page="invites"],
 body.contact-page [data-page="contact"],
 body.stats-page [data-page="stats"] {
     text-decoration: underline;
+}
+
+a.ticket-client {
+	display: none;
 }
 
 [data-modal="profile.html"] {
@@ -236,6 +250,13 @@ h2 {
   margin: 0 10px 0 0;
 }
 
+h3 {
+	font-family: $os;
+	font-size: 14px;
+	color: $dark-grey;
+	display: inline-block;
+}
+
 label {
   font-family: $changa;
   font-weight: 500;
@@ -315,7 +336,6 @@ input {
   }
 }
 
-
 body.authenticated.courses-page, body.authenticated.invites-page {
 	.side-nav, main > .content { display: block; }
     .public-page { display: none; }
@@ -338,6 +358,7 @@ body.authenticated.courses-page, body.authenticated.invites-page {
   	font-family: $changa;
   	font-size: 14px;
   	font-weight: 500;
+  	display: block;
   	margin: 20px 0 0 0;
   	text-transform: uppercase;
   	&.no-margin { margin: 0; }
@@ -445,33 +466,72 @@ main {
 }
 
 [data-load="services.html"] {
-	section {
-		padding: 50px;
-		min-height: 300px;
-		&[data-index="0"] {
-			img { float: left; }
-		}
-		&[data-index="1"] {
-			background-color: $cyan;
-			img { float: right; }
-			h3, p { color: white; }
-		}
-		&[data-index="2"] {
-			img { float: left; }
-		}
-		&[data-index="3"] {
-			background-color: $cyan;
-			img { float: right; }
-			h3, p { color: white; }
-		}
-	}
 	p {
 		padding: 10px 0;
+		font-family: $raleway;
+		font-size: 14px;
+  		line-height: 24px;
 	}
 
 	img {
 		max-height: 200px;
-		margin: 0 30px 30px 30px;
+		margin: 0;
+	}
+	section {
+		padding: 40px 20%;
+		overflow: hidden;
+		&[data-index="0"], &[data-index="2"], &[data-index="4"] {
+			img { float: left; margin: 0 20px 20px 0; }
+		}
+		&[data-index="1"], &[data-index="3"] {
+			background-image: url("/cyan5.png");
+			img { float: right; margin: 0 0 20px 20px; }
+			h2, h3, p { color: white; }
+		}
+	}
+}
+
+form {
+	text-align: left;
+	display: inline-block;
+	label {
+		width: 50px;
+		display: inline-block;
+		vertical-align: top;
+		padding: 0;
+		margin: 20px 0 0 0;
+		font-family: $raleway;
+		color: white;
+		text-transform: uppercase;
+	}
+	input, textarea {
+		width: 100%;
+	}
+	input {
+		height: 40px;
+	}
+	textarea {
+		height: 200px;
+	}
+}
+
+.social {
+	background-color: #3e5b98;
+	width: 60px;
+	height: 60px;
+	display: inline-block;
+	text-align: center;
+	line-height: 60px;
+	margin: 0 0 0 20px;
+	&:hover {
+		background-color: lighten(#3e5b98, 5);
+	}
+
+	&:before {
+		content: "\f09a";
+		font-family: FontAwesome;
+		color: white;
+		font-size: 26px;
 	}
 }
 
@@ -479,33 +539,6 @@ main {
 [data-load="home.html"], [data-load="team.html"] {
 	positon: relative;
 	padding: 0;
-
-	form {
-		text-align: left;
-		max-width: 600px;
-		width: 100%;
-		padding: 20px;
-		display: inline-block;
-		label {
-			width: 50px;
-			display: inline-block;
-			vertical-align: top;
-			padding: 0;
-			margin: 20px 0 0 0;
-			font-family: $raleway;
-			color: white;
-			text-transform: uppercase;
-		}
-		input, textarea {
-			width: 100%;
-		}
-		input {
-			height: 40px;
-		}
-		textarea {
-			height: 200px;
-		}
-	}
 
 	.point {
 		max-width: 33%;
@@ -643,32 +676,75 @@ main {
 			margin: 0 auto;
 		}
 
-		.social {
-			background-color: #3e5b98;
-			width: 60px;
-			height: 60px;
-			display: inline-block;
-			text-align: center;
-			line-height: 60px;
-			margin: 0 0 0 20px;
-			&:hover {
-				background-color: lighten(#3e5b98, 5);
-			}
-
-			&:before {
-				content: "\f09a";
-   				font-family: FontAwesome;
-   				color: white;
-   				font-size: 26px;
-			}
-		}
-		
 		&.home { background-image: url('/photo-gym.jpg'); min-height: 100vh; }
 		&.team { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh;}
 
 	}	
 
 }
+
+[data-load="contact.html"] {
+	background-color: $cyan;
+	padding: 20px 0;
+	text-align: center;
+
+	header {
+		border-bottom: 1px solid white;
+		position: relative;
+		display: block;
+		margin: 30px 0 0 0;
+		img {
+			width: 50px;
+			height: 30px;
+			overflow: hidden;
+			background-color: $cyan;
+			padding: 0 10px;
+			display: inline-block;
+			transform: translateX(-50%);
+			position: absolute;
+			left: 50%;
+			bottom: -10px;
+		}
+	}
+
+	.info, .contact {
+		background-color: $cyan;
+		img { margin: 20px 0 0 0;}
+	}
+
+	section {
+		display: inline-block;
+		vertical-align: top;
+		text-align: center;
+		position: relative;
+	}
+ 
+	.part {
+		display: inline-block;
+		width: 49%;
+		position: relative;
+	}
+
+	.text {
+		padding: 10px 5px 0 5px;
+	}
+
+	small {
+		font-family: $raleway;
+		font-size: 14px;
+		line-height: 28px;
+		color: white;
+	}
+
+	.social-container {
+		background-color: white;
+		padding: 30px 50px;
+		margin: 30px 0;
+		text-align: left;
+	}
+
+}
+
 
 // ticket
 main.ticket-mode {
@@ -1235,6 +1311,12 @@ main.dropzone[data-load="edit.html"] {
 .block {
 	position: relative;
 	min-height: 500px;
+	&[data-answer="0"] .option[data-count="0"],
+	&[data-answer="1"] .option[data-count="1"],
+	&[data-answer="2"] .option[data-count="2"],
+	&[data-answer="3"] .option[data-count="3"] {
+		background-color: red;
+	}
 	.fa-cog:hover + .block-config,
 	.block-config:hover {
 		max-height: 400px;
@@ -1384,7 +1466,6 @@ main.dropzone[data-load="edit.html"] {
 		padding: 50px;
 		h2 {
 			color: $dark-grey;
-			font-family: $raleway;
 			font-size: 40px;
 			padding-right: 150px;
 		}
@@ -1399,6 +1480,7 @@ main.dropzone[data-load="edit.html"] {
 			font-size: 40px;
 			line-height: 50px;
 			text-align: center;
+			cursor: pointer;
 			color: red;
 			font-family: $cyan;
 			vertical-align: top;
@@ -1716,5 +1798,7 @@ main.dropzone[data-load="edit.html"] {
 
 
 }
-
 // END EDITOR
+
+@import "desktop";
+@import "mobile";

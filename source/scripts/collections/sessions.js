@@ -2,7 +2,7 @@ let sessions = module.exports = {
 
   default_page: 'home',
 
-  public_pages: ['home', 'courses', 'login', 'about', 'team', 'services', 'contact'],
+  public_pages: ['home', 'courses', 'login', 'about', 'team', 'services', 'contact', 'ticket'],
 
   memory: {},
   
