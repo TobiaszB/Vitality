@@ -397,8 +397,8 @@ body.authenticated.courses-page, body.authenticated.invites-page {
   	background-color: rgba(255, 255, 255, 0.9);
   	width: 100%;
   	padding: 0 8px;
-  	line-height: 40px;
-  	height: 40px;
+  	line-height: 30px;
+  	height: 30px;
   	font-size: 12px;
   	font-family: $raleway;
   	font-weight: 400;
@@ -532,11 +532,14 @@ main {
 		&[data-index="0"], &[data-index="2"], &[data-index="4"] {
 			img { float: left; margin: 0 20px 20px 0; }
 		}
-		&[data-index="1"], &[data-index="3"] {
+		&[data-index="1"], &[data-index="3"], &[data-index="5"] {
 			background-color: $dark-grey;
 			background-image: url("/pattern-twill.png");
 			img { float: right; margin: 0 0 20px 20px; }
 			h2, h3, p { color: white; }
+		}
+		&[data-index="5"] {
+			text-align: center;
 		}
 	}
 }
@@ -656,6 +659,7 @@ form {
 		&[data-index="4"] {
 			background-color: $dark-grey;
 			background-image: url("/pattern-twill.png");
+			padding: 20px 0 60px;
 		}
 
 		.text {
@@ -681,7 +685,6 @@ form {
 
 		p {
 			text-align: left;
-			color: white;
 			font-family: $raleway;
 			font-size: 14px;
 			line-height: 24px;
