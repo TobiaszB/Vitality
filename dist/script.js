@@ -2057,7 +2057,7 @@ var labels = {
     contact_name: ['Naam', 'Name'],
     contact_email: ['Email', 'Email'],
 
-    like_fb_page: ['Like de FB page', 'Like the FB page'],
+    like_fb_page: ['Like onze FB page', 'Like our FB page'],
 
     add: ['Toevoegen', 'Add'],
     delete: ['Verwijder', 'Delete'],
