@@ -1,0 +1,42 @@
+<div class="side-nav">
+  
+  <header class="line-header white">
+    <img src="icon-search.png">
+  </header>
+
+  <input type="search" data-input="tickets.save_search">
+  
+  <header class="line-header white">
+    <img src="icon-course.png">
+  </header>
+
+  <div data-load="courses.load_courses"></div>
+
+</div>
+
+<div class="content invites">
+
+  <section id="invite-block">
+
+    <button data-click="templates.send_ticket" data-load="labels.send_invite"></button>
+
+    <input data-input="templates.save_name" type="text" data-load="labels.name">
+
+    <div class="courses-container" data-load="templates.load_courses"></div>
+
+  </section>
+
+  <section>
+
+    <header class="line-header grey">
+      <div class="action" data-click="tickets.open_invite_block">
+        <span data-load="labels.invite"></span>
+        <img src="/icon-add.png">
+      </div>
+    </header><br>
+
+  </section>
+
+  <div class="clients" data-load="tickets.list"></div>
+
+</div>

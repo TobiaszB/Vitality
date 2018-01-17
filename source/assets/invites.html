@@ -16,13 +16,7 @@
 
 <div class="content invites">
 
-  <nav>
-
-    <a data-click="tickets.open_invite_block" data-load="labels.invite"></a>
-  
-  </nav>
-
-  <div id="invite-block" data-language="nl">
+  <section id="invite-block">
 
     <button data-click="templates.send_ticket" data-load="labels.send_invite"></button>
 
@@ -30,7 +24,18 @@
 
     <div class="courses-container" data-load="templates.load_courses"></div>
 
-  </div>
+  </section>
+
+  <section>
+
+    <header class="line-header grey">
+      <div class="action" data-click="tickets.open_invite_block">
+        <span data-load="labels.invite"></span>
+        <img src="/icon-add.png">
+      </div>
+    </header><br>
+
+  </section>
 
   <div class="clients" data-load="tickets.list"></div>
 
