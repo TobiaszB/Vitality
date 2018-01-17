@@ -124,6 +124,20 @@ body.stats-page [data-page="stats"] {
 		background-color: $dark-grey;
 		background-image: url("/pattern-twill.png");
 	}
+
+	.toggle {
+		display: inline-block;
+		position: absolute;
+		bottom: -22px;
+		left: 0;
+		background-color: white;
+		padding: 0 10px;
+		cursor: pointer;
+		img {
+		  width: 35px;
+		  height: 35px;
+		}
+	}
 	
 	.action {
 		font-family: $changa;
@@ -412,17 +426,29 @@ input {
 body.authenticated.courses-page, body.authenticated.invites-page {
 	.side-nav, main > .content { display: block; }
     .public-page { display: none; }
-    main { padding: 0 0 0 200px; }
+    main { 
+    	padding: 0 0 0 0; 
+		transition: 100ms all linear;
+    	.side-nav {
+    		width: 0;
+    		padding: 0;
+    	}
+    	&.open {
+    		padding: 0 0 0 200px; 
+    		.side-nav {
+    			width: 200px;
+  				padding: 0 15px;
+    		}
+    	}
+    }
 }
 
 .side-nav {
   position: absolute;
-  display: none;
   left: 0;
   top: 10px;
-  width: 200px;
+  overflow: hidden;
   text-align: center;
-  padding: 0 15px;
   > header  {
   	margin: 40px 0 15px;
   }
@@ -1108,7 +1134,6 @@ main.ticket-mode {
 	}
 
 	&.open {
-		max-height: 150px;
 		padding: 10px;
 		overflow: visible;
 	}
@@ -1131,14 +1156,13 @@ main.ticket-mode {
 	}
 	
 	// fields
-	.input-container {
+	.name-container {
 		border: 1px solid $cyan;
 		margin: 30px 10px 0 0;
 	}
 	
 	.courses-container {
 		margin: 30px 10px 0 0;
-		width: auto;
 	}
 
 	.send-container {

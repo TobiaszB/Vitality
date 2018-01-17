@@ -21,7 +21,20 @@
 	padding: 0 10px 0 10px;
   }
 
-  .input-container {
+
+  #invite-block {
+
+	&.open {
+		max-height: 150px;
+	}
+
+  }
+
+  .courses-container {
+	width: auto;
+  }
+
+  .name-container {
 	width: 300px;
   }
   

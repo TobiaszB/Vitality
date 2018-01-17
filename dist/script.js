@@ -615,110 +615,119 @@ require.register("source/scripts/collections/templates.js", function(exports, re
 
 var templates = module.exports = {
 
-  ticket: {},
+		ticket: {},
 
-  select_course: function select_course(element) {
+		select_course: function select_course(element) {
 
-    templates.ticket.course = element.id;
-  },
+				templates.ticket.course = element.id;
+		},
 
-  save_name: function save_name(element) {
+		toggle_side: function toggle_side(element) {
 
-    templates.ticket.client = element.value;
-  },
+				var main = root.main;
 
-  scroll_down: function scroll_down(element) {
+				main.classList.toggle('open');
 
-    window.scrollTo(0, document.body.scrollHeight);
-  },
+				element.children[0].setAttribute('src', '/icon-' + (main.classList.contains('open') ? 'left.png' : 'right.png'));
+		},
 
-  send_ticket: function send_ticket(element) {
+		save_name: function save_name(element) {
 
-    if (!templates.ticket.client || !templates.ticket.course) return;
+				templates.ticket.client = element.value;
+		},
 
-    root.send({
-      request: 'create_ticket',
-      client: templates.ticket.client,
-      course: templates.ticket.course
-    }, function (res) {
+		scroll_down: function scroll_down(element) {
 
-      console.log(res);
+				window.scrollTo(0, document.body.scrollHeight);
+		},
 
-      templates.ticket = {};
+		send_ticket: function send_ticket(element) {
 
-      root.main.dataset.load = root.main.dataset.load;
-    });
-  },
+				if (!templates.ticket.client || !templates.ticket.course) return;
 
-  load_client: function load_client(element) {
+				root.send({
+						request: 'create_ticket',
+						client: templates.ticket.client,
+						course: templates.ticket.course
+				}, function (res) {
 
-    templates.client_element = element;
-  },
+						console.log(res);
 
-  load_courses: function load_courses(element) {
+						templates.ticket = {};
 
-    var html = '',
-        keys = Object.keys(root.courses.memory);
+						root.main.dataset.load = root.main.dataset.load;
+				});
+		},
 
-    for (var i = 0; i < keys.length; i++) {
+		load_client: function load_client(element) {
 
-      var course = root.courses.memory[keys[i]];
+				templates.client_element = element;
+		},
 
-      if (!course.published_at) continue;
+		load_courses: function load_courses(element) {
 
-      html += '\n      \t\t<img src="icon-course.png">\n\t\t    <input data-change="templates.select_course" id="' + course.key + '" type="radio" name="course_list" value="' + course.key + '">\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t\t<label for="' + course.key + '"></label>\n\n\t\t\t</div>\n\t\t';
-    };
+				var html = '',
+				    keys = Object.keys(root.courses.memory);
 
-    element.innerHTML = html;
-  },
+				for (var i = 0; i < keys.length; i++) {
 
-  load_calender: function load_calender(element) {
+						var course = root.courses.memory[keys[i]];
 
-    element.innerHTML = '\n\t\t\n\t\t\n\t\t\n\t';
-  },
+						if (!course.published_at) continue;
 
-  change_language: function change_language(element) {
+						html += '\n      \t\t<img src="icon-course.png">\n\t\t    <input data-change="templates.select_course" id="' + course.key + '" type="radio" name="course_list" value="' + course.key + '">\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t\t<label for="' + course.key + '"></label>\n\n\t\t\t</div>\n\t\t';
+				};
 
-    localStorage.setItem('language', element.dataset.language);
+				element.innerHTML = html;
+		},
 
-    location.reload();
-  },
+		load_calender: function load_calender(element) {
 
-  highlight_lang: function highlight_lang(element) {
+				element.innerHTML = '\n\t\t\n\t\t\n\t\t\n\t';
+		},
 
-    if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
+		change_language: function change_language(element) {
 
-    element.classList.add('active');
-  },
+				localStorage.setItem('language', element.dataset.language);
 
-  format_date: function format_date(element) {
+				location.reload();
+		},
 
-    var date = new Date(element.dataset.date),
-        months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+		highlight_lang: function highlight_lang(element) {
 
-    if (!date || String(date).toLowerCase() == 'invalid date') return;
+				if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
 
-    element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
-  },
+				element.classList.add('active');
+		},
 
-  format_time: function format_time(element) {
+		format_date: function format_date(element) {
 
-    var date = new Date(element.dataset.date);
+				var date = new Date(element.dataset.date),
+				    months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
-    if (!date || String(date).toLowerCase() == 'invalid date') return;
+				if (!date || String(date).toLowerCase() == 'invalid date') return;
 
-    element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
-  },
+				element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+		},
 
-  start: function start(element) {
+		format_time: function format_time(element) {
 
-    console.log('e', element);
-  },
+				var date = new Date(element.dataset.date);
 
-  hide_notification: function hide_notification(element) {
+				if (!date || String(date).toLowerCase() == 'invalid date') return;
 
-    document.querySelector('body').classList.remove('notified');
-  }
+				element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
+		},
+
+		start: function start(element) {
+
+				console.log('e', element);
+		},
+
+		hide_notification: function hide_notification(element) {
+
+				document.querySelector('body').classList.remove('notified');
+		}
 
 };
 });
@@ -1521,16 +1530,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-    load: function load(element) {
+  load: function load(element) {
 
-        root.calender = element;
+    root.calender = element;
 
-        var a = moment('2016-01-01');
-        var b = a.add(1, 'week');
-        a.format();
+    var a = moment('2016-01-01');
+    var b = a.add(1, 'week');
+    a.format();
 
-        console.log(a);
-    }
+    console.log(a);
+  }
 
 };
 });

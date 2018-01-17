@@ -8,6 +8,16 @@ let templates = module.exports = {
 
   },
 
+  toggle_side: (element) => {
+
+	let main = root.main;
+
+	main.classList.toggle('open');
+
+	element.children[0].setAttribute('src', `/icon-${ main.classList.contains('open') ? 'left.png' : 'right.png' }`);
+
+  },
+
   save_name: (element) =>{
 
   	templates.ticket.client = element.value;
