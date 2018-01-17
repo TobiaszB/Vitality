@@ -76,7 +76,9 @@ function upload(req, res) {
 
   req.on('end', ()=>{
 
-    let url = `/uploads/${ Math.round(Math.random() * 9999999) }.jpg`;
+    let ext = path.extname(req.url),
+        basename = path.basename(req.url, ext),
+        url = `/uploads/${ basename == 'upload' ? Math.round(Math.random() * 9999999) : basename }${ ext }`;
     
     fs.writeFile(path.resolve(__dirname, `../../dist${ url }`), Buffer.concat(data), (err)=>{
       

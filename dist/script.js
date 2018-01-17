@@ -1516,16 +1516,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-  load: function load(element) {
+    load: function load(element) {
 
-    root.calender = element;
+        root.calender = element;
 
-    var a = moment('2016-01-01');
-    var b = a.add(1, 'week');
-    a.format();
+        var a = moment('2016-01-01');
+        var b = a.add(1, 'week');
+        a.format();
 
-    console.log(a);
-  }
+        console.log(a);
+    }
 
 };
 });
@@ -1604,6 +1604,40 @@ var editor = module.exports = {
         });
     },
 
+    upload: function upload(element) {
+
+        element.addEventListener('change', function (e) {
+
+            e.stopPropagation();
+
+            var reader = new FileReader();
+
+            reader.onloadend = loaded;
+
+            if (!e.target.files[0]) return;
+
+            reader.readAsBinaryString(e.target.files[0]);
+
+            function loaded() {
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('PUT', '/upload/' + e.target.files[0].name, true);
+
+                xhr.addEventListener('load', function (e) {
+
+                    if (!xhr.responseText) return;
+
+                    var res = JSON.parse(xhr.responseText);
+
+                    editor.set_link({ value: res.url });
+                });
+
+                xhr.send(reader.result);
+            }
+        });
+    },
+
     save_block_element: function save_block_element(element) {
 
         var key = history.state.course,
@@ -1616,7 +1650,7 @@ var editor = module.exports = {
 
         element.innerHTML = '\n      ' + block.html + '\n      <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n        <div class="inner">\n         <div class="color-picker">' + colors.map(function (c) {
             return '<b data-click="editor.save_color" data-color="' + c + '" style="background-color:#' + c + ';"></b>';
-        }).join('') + '</div>\n         <div class="set-link"><button>set link</button></div>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n         <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="correct" class="fa fa-check"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n        </div>\n      </div>\n      <div class="block-options">\n        <a data-index="' + index + '" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n        <a data-index="' + index + '" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n        <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n        <div data-load="editor.clear_style" class="block-config"' + (editor.ticket ? '' : ' style="max-height: 1000px;"') + '>' + Object.keys(block.options).reduce(function (html, option, id) {
+        }).join('') + '</div>\n         <div class="set-link"><input data-input="editor.set_link" type="url" placeholder="https://"></div>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="upload" class="fa fa-upload"><input data-load="editor.upload" type="file"></i>\n         <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="correct" class="fa fa-check"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n        </div>\n      </div>\n      <div class="block-options">\n        <a data-index="' + index + '" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n        <a data-index="' + index + '" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n        <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n        <div data-load="editor.clear_style" class="block-config"' + (editor.ticket ? '' : ' style="max-height: 1000px;"') + '>' + Object.keys(block.options).reduce(function (html, option, id) {
 
             var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
 
@@ -1633,6 +1667,18 @@ var editor = module.exports = {
         editor.course.blocks[index].options[editor.focus.dataset.element].color = '#' + element.dataset.color;
 
         editor.reload_block();
+    },
+
+    set_link: function set_link(element) {
+
+        if (!editor.focus) return;
+
+        var index = parseInt(editor.focus.dataset.index, 10),
+            options = editor.course.blocks[index].options[editor.focus.dataset.element];
+
+        options.link = element.value;
+
+        console.log(options);
     },
 
     reload_block: function reload_block() {
@@ -1710,6 +1756,14 @@ var editor = module.exports = {
         element.parentElement.dataset.tab = element.dataset.tab;
 
         switch (element.dataset.tab) {
+
+            case 'link':
+
+                options = editor.course.blocks[index].options[data.element];
+
+                if (options.link) element.parentNode.querySelector('[data-input="editor.set_link"]').value = options.link;
+
+                break;
 
             case 'add':
 
@@ -2490,7 +2544,7 @@ function upload(e, props) {
         indicator = elem.querySelector('.progress'),
         xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', '/upload', true);
+    xhr.open('PUT', '/upload.jpg', true);
 
     xhr.upload.addEventListener('progress', progress);
 

@@ -1269,7 +1269,7 @@ main.ticket-mode {
 		margin-left: -8px;
 	  }
 	  &[data-tab="color"] {
-	  	padding-top: 50px;
+	  	padding-top: 60px;
 	  	.color-picker { display: block; }
 	  	[data-tab="color"] { background: rgba(0,0,0,0.1); }
 	  }
@@ -1278,12 +1278,8 @@ main.ticket-mode {
 	  	&:after { border-top-color: #ddd; }
 	  	[data-tab="link"], &:after { background: rgba(0,0,0,0.1); }
 	  }
-	  .set-link button {
-	  	width: 100%;
-	  	&:hover {
-	  		background: #ccc;
-	  		color: black;
-	  	}
+	  .set-link {
+	  	display: none;
 	  }
 	  .color-picker {
 	  	width: 100%;
@@ -1294,8 +1290,8 @@ main.ticket-mode {
 	  	display: none;
 	  	b {
 	  		display: inline-block;
-			width: 15px;
-			height: 15px;
+		    width: 14.25%;
+			height: 17px;
 			cursor: pointer;
 			border-radius: 1px;
 			&:hover {
@@ -1308,8 +1304,7 @@ main.ticket-mode {
 	  [data-tab="add"], [data-tab="correct"], [data-tab="delete"] {
 	  	display: none;
 	  }
-	  &
-	  .set-link {
+	  &.set-link {
 	  	display: none;
 	  }
 	  > i, span {
@@ -1321,6 +1316,24 @@ main.ticket-mode {
 			color: black;
 			i { color: white; }
 		}
+
+	    &[data-tab="upload"] {
+	    	position: relative;
+	    	input {
+	  		  position: absolute;
+	  	  	  left: 0;
+	  		  top: 0;
+	  		  width: 100%;
+	  		  height: 100%;
+	  		  overflow: hidden;
+	  		  box-sizing: border-box;
+	  		  opacity: 0;
+	  		  appearance: none;
+	  		  cursor: pointer;
+	  		  z-index: 3;
+	  	  }
+
+	    }
 	  }
 	  .color i {
 		background-color: #b28f8f;
@@ -1815,7 +1828,7 @@ main.dropzone[data-load="edit.html"] {
 		user-select: none;
 		z-index: 6;
 		font-size: 0;
-  		padding-top: 70px;
+  		padding-top: 74px;
 	}
 	
 	[data-load="blocks.load"] {

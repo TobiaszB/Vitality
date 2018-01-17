@@ -37,6 +37,44 @@ let editor = module.exports = {
     
   },
 
+  upload: (element) => {
+
+    element.addEventListener('change', (e)=>{
+
+      e.stopPropagation();
+
+      let reader = new FileReader();
+
+      reader.onloadend = loaded;
+
+      if(!e.target.files[0]) return;
+
+      reader.readAsBinaryString(e.target.files[0]);
+
+      function loaded() {
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('PUT', `/upload/${ e.target.files[0].name }`, true);
+
+        xhr.addEventListener('load', (e) => {
+
+          if(!xhr.responseText) return;
+
+          let res = JSON.parse(xhr.responseText);
+
+          editor.set_link({ value: res.url });
+
+        });
+
+        xhr.send(reader.result);
+
+      }
+
+    });
+
+  },
+
   save_block_element: (element) => {
     
     let key = history.state.course,
@@ -56,8 +94,9 @@ let editor = module.exports = {
          <div class="color-picker">${
            colors.map((c)=>`<b data-click="editor.save_color" data-color="${ c }" style="background-color:#${ c };"></b>`).join('')
          }</div>
-         <div class="set-link"><button>set link</button></div>
+         <div class="set-link"><input data-input="editor.set_link" type="url" placeholder="https://"></div>
          <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>
+         <i data-click="editor.toggle_tooltip_submenu" data-tab="upload" class="fa fa-upload"><input data-load="editor.upload" type="file"></i>
          <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>
          <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>
          <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>
@@ -92,6 +131,19 @@ let editor = module.exports = {
     editor.course.blocks[index].options[editor.focus.dataset.element].color = `#${ element.dataset.color }`;
 
     editor.reload_block();
+
+  },
+
+  set_link: (element) => {
+    
+    if(!editor.focus) return;
+
+    let index = parseInt(editor.focus.dataset.index, 10),
+        options = editor.course.blocks[index].options[editor.focus.dataset.element];
+
+    options.link = element.value;
+
+    console.log(options);
 
   },
 
@@ -184,6 +236,14 @@ let editor = module.exports = {
     element.parentElement.dataset.tab = element.dataset.tab;
 
     switch(element.dataset.tab) {
+
+      case 'link':
+        
+        options = editor.course.blocks[index].options[data.element];
+
+        if(options.link) element.parentNode.querySelector('[data-input="editor.set_link"]').value = options.link;
+
+        break;        
 
       case 'add':
 

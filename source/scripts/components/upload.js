@@ -172,7 +172,7 @@ function upload(e, props) {
         indicator = elem.querySelector('.progress'),
         xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', '/upload', true);
+    xhr.open('PUT', '/upload.jpg', true);
 
     xhr.upload.addEventListener('progress', progress);
 
