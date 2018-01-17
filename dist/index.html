@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+
+		<meta charset="UTF-8">
+
+		<meta name="viewport" content="width=device-width">
+
+		<meta property="og:title" content="Vitality One">
+
+		<title>Vitality One</title>
+
+		<link rel="icon" href="/favicon.ico">
+		
+		<link href="/style.css" rel="stylesheet" type="text/css" />
+
+    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	</head>
+
+	<body>
+
+		<div data-load="modal.load" id="modal-container"></div>
+
+		<div class="black-layer" data-click="modal.close"></div>
+
+		<nav>
+
+			<div class="logo" data-click="sessions.load_page" data-page="home"></div><!----><div class="divider vertical"></div>
+
+		    <a data-load="labels.home" data-click="sessions.load_page" data-page="home"></a>
+
+		    <a data-load="labels.team" data-click="sessions.load_page" data-page="team"></a>
+
+		    <a data-load="labels.services" data-click="sessions.load_page" data-page="services"></a>
+			
+		    <a data-load="labels.courses" data-click="sessions.load_page" data-page="courses"></a>
+		    
+			<a data-click="sessions.load_page" data-page="invites" class="auth-only" data-load="labels.invitations"></a>
+			
+		    <a data-click="sessions.load_page" data-page="contact">Contact</a>
+			
+			<div class="container">
+
+				<div class="divider vertical"></div>
+				
+				<span data-click="templates.change_language" data-language="nl" data-load="templates.highlight_lang" class="flag nl"></span>
+
+				<span data-click="templates.change_language" data-language="en" data-load="templates.highlight_lang" class="flag en"></span>
+
+				<div class="divider vertical"></div>
+
+		    	<a data-load="labels.sign_in_link" data-modal="login.html" data-click="modal.open" data-page="login"></a>
+
+		    	<a data-load="templates.load_client" class="ticket-client"></a>
+
+		    	<a class="auth-only" data-modal="profile.html" data-click="modal.open" data-load="users.load_profile_link"></a>
+
+			</div>
+
+		</nav>
+	
+		<main></main>
+		
+		<script src="/script.js"></script>
+
+	</body>
+
+</html>
