@@ -1112,6 +1112,7 @@ main.ticket-mode {
 	}
 
 	.invite-course {
+  		max-width: 400px;
 		white-space: nowrap;
 		padding: 0 0 0 40px;
 		line-height: 30px;
@@ -1214,7 +1215,8 @@ main.ticket-mode {
 		opacity: 0;
 		z-index: -1;
 		&:checked + div {
-			background-color: red;
+			background-color: $cyan;
+			color: white;
 		}
 	}
 
@@ -1223,7 +1225,8 @@ main.ticket-mode {
 		font-family: $raleway;
 		font-size: 12px;
 		color: $dark-grey;
-		width: 200px;
+		width: 100%;
+		max-width: 400px;
 	}
 
 	.flag-container {
