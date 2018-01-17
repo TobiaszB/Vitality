@@ -1126,6 +1126,8 @@ main.ticket-mode {
 	transition: 250ms all linear;
 	position: relative;
 	overflow: hidden;
+	padding: 0 10px;
+	text-align: center;
 	&[data-language="nl"] {
 		.flag-container .nl { border-bottom: 2px solid $blue; }
 	}
@@ -1134,7 +1136,7 @@ main.ticket-mode {
 	}
 
 	&.open {
-		padding: 10px;
+		padding: 20px 10px;
 		overflow: visible;
 	}
 
