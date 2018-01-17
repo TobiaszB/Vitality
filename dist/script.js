@@ -499,7 +499,7 @@ var sessions = module.exports = {
 
         if (!root.me || !root.me.session) return;
 
-        sessions.url('/courses');
+        sessions.url('/courses', { replace: true });
 
         sessions.load_page(null, { prevent_url: true });
     },
@@ -604,6 +604,10 @@ var sessions = module.exports = {
     }
 
 };
+
+addEventListener('popstate', function (e) {
+    return sessions.load_page(null, { prevent_url: true });
+});
 });
 
 require.register("source/scripts/collections/templates.js", function(exports, require, module) {
@@ -1600,7 +1604,48 @@ var editor = module.exports = {
 
     save_block_element: function save_block_element(element) {
 
-        editor.block_elements[parseInt(element.dataset.index, 10)] = element;
+        var key = history.state.course,
+            index = parseInt(element.dataset.index, 10),
+            course = editor.ticket || root.courses.memory[key],
+            block = course.blocks[index],
+            colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
+
+        editor.block_elements[index] = element;
+
+        element.innerHTML = '\n      ' + block.html + '\n      <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n        <div class="inner">\n         <div class="color-picker">' + colors.map(function (c) {
+            return '<b data-click="editor.save_color" data-color="' + c + '" style="background-color:#' + c + ';"></b>';
+        }).join('') + '</div>\n         <div class="set-link"><button>set link</button></div>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n         <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="correct" class="fa fa-check"></i>\n         <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n        </div>\n      </div>\n      <div class="block-options">\n        <a data-index="' + index + '" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n        <a data-index="' + index + '" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n        <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n        <div data-load="editor.clear_style" class="block-config"' + (editor.ticket ? '' : ' style="max-height: 1000px;"') + '>' + Object.keys(block.options).reduce(function (html, option, id) {
+
+            var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
+
+            if (block.options[option].type == 'boolean') element = '<input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element;
+
+            return '' + html + element;
+        }, '') + '</div>\n        <a data-action="delete" data-index="' + index + '" data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>\n      </div>\n    ';
+    },
+
+    save_color: function save_color(element) {
+
+        var index = parseInt(editor.focus.dataset.index, 10);
+
+        editor.course.blocks[index].options[editor.focus.dataset.element].color = '#' + element.dataset.color;
+
+        editor.reload_block();
+    },
+
+    reload_block: function reload_block() {
+
+        if (!editor.focus) return;
+
+        var index = parseInt(editor.focus.dataset.index, 10);
+
+        var selector = '[data-index="' + index + '"][data-element="' + editor.focus.dataset.element + '"]';
+
+        editor.block_elements[index].dataset.load = editor.block_elements[index].dataset.load;
+
+        setTimeout(function () {
+            document.querySelector(selector).focus();
+        }, 100);
     },
 
     load_course: function load_course(element) {
@@ -1608,8 +1653,7 @@ var editor = module.exports = {
         if (history.state.page != 'ticket') editor.ticket = false;else if (!history.state.course) return editor.load_ticket(element);
 
         var key = history.state.course,
-            course = editor.ticket || root.courses.memory[key],
-            colors = ['7ac673', '1abc9c', '27aae0', '2c82c9', '9365b8', '4c6972', 'ffffff', '41a85f', '00a885', '3d8eb9', '2969b0', '553982', '475577', 'efefef', 'f7da64', 'faaf40', 'eb6b56', 'e25041', 'a38f84', '28324e', 'cccccc', 'fac51c', 'f97352', 'd14841', 'b8312f', '7c706b', '000000', 'c1c1c1'];
+            course = editor.ticket || root.courses.memory[key];
 
         if (editor.ticket) {
 
@@ -1640,16 +1684,7 @@ var editor = module.exports = {
                 return html + ' data-' + option + '="' + block.options[option].value + '"';
             }, '');
 
-            return html + '<div data-load="editor.save_block_element" data-answer="' + (block.answer || '') + '" class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '">\n        ' + block.html + '\n        <div class="block-tooltip" data-index="' + index + '" data-load="editor.load_tooltip">\n          <div class="inner">\n           <div class="color-picker">' + colors.map(function (c) {
-                return '<b style="background-color:#' + c + ';"></b>';
-            }).join('') + '</div>\n           <div class="set-link"><button>set link</button></div>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>\n           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="correct" class="fa fa-check"></i>\n           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>\n          </div>\n        </div>\n        <div class="block-options">\n          <a data-index="' + index + '" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>\n          <a data-index="' + index + '" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>\n          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>\n          <div data-load="editor.clear_style" class="block-config"' + (editor.ticket ? '' : ' style="max-height: 1000px;"') + '>' + Object.keys(block.options).reduce(function (html, option, id) {
-
-                var element = '<label for="input-' + id + '" data-load="labels.' + option + '"></label><br>';
-
-                if (block.options[option].type == 'boolean') element = '<input data-option="' + option + '" data-index="' + index + '" data-change="editor.input_save" ' + (block.options[option].value ? 'checked' : '') + ' id="input-' + id + '" type="checkbox">' + element;
-
-                return '' + html + element;
-            }, '') + '</div>\n          <a data-action="delete" data-index="' + index + '" data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>\n        </div>\n      </div>';
+            return html + '<div data-load="editor.save_block_element" data-answer="' + (block.answer || '') + '" class="block" ' + options + ' data-key="' + block.key + '" data-index="' + index + '"></div>';
         }, '\n      <div class="control-editor">\n        <a data-load="labels.title_save" data-click="editor.update" class="control-btn fa fa-save"></a>\n        <a data-load="labels.title_online" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>\n        <a data-load="labels.title_offline" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-download"></a>\n        <a data-load="labels.title_preview" data-click="editor.preview" class="control-btn fa fa-eye"></a>\n        <a data-load="labels.title_mobile_view" data-click="editor.toggle_view" class="control-btn fa fa-mobile"></a>\n        <a data-load="labels.title_desktop_view" data-click="editor.toggle_view" class="control-btn fa fa-desktop"></a>\n        <div data-load="blocks.load"></div>\n      </div>\n    ');
     },
 
@@ -1667,6 +1702,8 @@ var editor = module.exports = {
             index = parseInt(data.index, 10),
             count = parseInt(data.count, 10),
             options = void 0;
+
+        var opt = editor.course.blocks[index].options[data.element];
 
         element.parentElement.dataset.tab = element.dataset.tab;
 
@@ -1692,17 +1729,27 @@ var editor = module.exports = {
 
                 break;
 
-            case 'correct':
+            case 'align':
 
-                var opt = editor.course.blocks[index].options[data.element];
+                opt.align = opt.align || 'left';
+
+                var aligns = ['left', 'center', 'right'];
+
+                opt.align = aligns[(aligns.indexOf(opt.align) + 1) % aligns.length];
+
+                editor.focus.style.textAlign = opt.align;
+
+                element.className = 'fa fa-align-' + opt.align;
+
+                break;
+
+            case 'correct':
 
                 if (opt.correct == count) count = null;
 
                 opt.correct = count;
 
                 document.querySelector('[data-load="editor.load_button_group"][data-index="' + index + '"]').dataset.correct = count;
-
-                console.log(editor.course.blocks[index].options);
 
                 break;
 
@@ -1860,6 +1907,10 @@ var editor = module.exports = {
 
         if (!block.options[key].content) block.options[key].content = key;
 
+        if (block.options[key].color) element.style.color = block.options[key].color;
+
+        if (block.options[key].align) element.style.textAlign = block.options[key].align;
+
         if (element.tagName.toLowerCase() == 'textarea') {
 
             element.value = block.options[key].content;
@@ -1894,8 +1945,6 @@ var editor = module.exports = {
             options = block.options[element.dataset.element];
 
         element.dataset.correct = block.options.button_group.correct;
-
-        console.log('options', options);
 
         element.innerHTML = options.content.map(function (string, count) {
 
@@ -2035,7 +2084,7 @@ var labels = {
     services_personal_training_text_3: ['VitalityOne geeft je resultaat, een fysieke basis. Kortom: fit,sterk en in balans.', 'VitalityOne geeft je resultaat, een fysieke basis. Kortom: fit,sterk en in balans.'],
     services_personal_training_text_4: ['Daarnaast train je in een luxe omgeving waar je in alle rust en privacy aan je doelen kunt werken. Door de individuele begeleiding kun je de training afstemmen op jouw wensen, in de tijd die jou uitkomt.', 'By giving personal attention and the right physical training, we are behind the door and we help you achieve your goals. More energy, a fitter and stronger body, more self-confidence and less stress.'],
 
-    services_personal_boxing_title: ['Personal boxing', 'Personal training'],
+    services_personal_boxing_title: ['Personal boxing', 'Personal boxing'],
     services_personal_boxing_text_1: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit varius risus, eu egestas dolor congue aliquam. In ac aliquet leo. Nam porttitor bibendum nunc ut faucibus. Ut eu dictum orci.'],
     services_personal_boxing_text_2: ['Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.', 'Ut eu dictum orci. Proin a neque commodo mi pulvinar dictum a non turpis. Quisque nec molestie arcu, imperdiet faucibus enim. Integer fermentum elit ipsum. Integer consectetur mauris volutpat neque tempor malesuada. Nunc finibus odio eros, in aliquet nulla bibendum a.'],
 
@@ -2511,7 +2560,6 @@ function init() {
   bind();
 
   addEventListener('scroll', function (e) {
-    console.log(scrollY);
     root.scroll_distance = scrollY;
   });
 
@@ -2945,7 +2993,7 @@ function incoming(message, callbacks) {
 
   localStorage.setItem('authenticated', message.token || '');
 
-  if (history.state.page == 'home') root.sessions.url('/courses');
+  if (history.state.page == 'home') root.sessions.url('/courses', { replace: true });
 
   root.sessions.load_page(null, { prevent_url: true });
 }

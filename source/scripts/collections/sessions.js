@@ -22,7 +22,7 @@ let sessions = module.exports = {
 
     if(!root.me || !root.me.session) return;
 
-    sessions.url('/courses');
+    sessions.url('/courses', { replace: true });
 
     sessions.load_page(null, { prevent_url: true });
 
@@ -144,3 +144,5 @@ let sessions = module.exports = {
   }
 
 };
+
+addEventListener('popstate', (e) => sessions.load_page(null, { prevent_url: true }));

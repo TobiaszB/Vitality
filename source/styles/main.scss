@@ -1259,7 +1259,7 @@ main.ticket-mode {
 		margin-left: -8px;
 	  }
 	  &[data-tab="color"] {
-	  	padding-top: 110px;
+	  	padding-top: 50px;
 	  	.color-picker { display: block; }
 	  	[data-tab="color"] { background: rgba(0,0,0,0.1); }
 	  }
@@ -1284,8 +1284,15 @@ main.ticket-mode {
 	  	display: none;
 	  	b {
 	  		display: inline-block;
-			width: 14.28%;
-			height: 30px;
+			width: 15px;
+			height: 15px;
+			cursor: pointer;
+			border-radius: 1px;
+			&:hover {
+				outline: 2px solid white;
+				z-index: 1;
+				position: relative;
+			}
 	  	}
 	  }
 	  [data-tab="add"], [data-tab="correct"], [data-tab="delete"] {
@@ -1306,7 +1313,7 @@ main.ticket-mode {
 		}
 	  }
 	  .color i {
-		background-color: red;
+		background-color: #b28f8f;
 		border-radius: 50%;
 		display: inline-block;
 		width: 18px;
