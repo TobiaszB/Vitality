@@ -59,7 +59,7 @@ let labels = {
     contact_name: ['Naam', 'Name'],
     contact_email: ['Email', 'Email'],
 
-    like_fb_page: ['Like onze FB page', 'Like our FB page'],
+    like_fb_page: ['Like onze pagina', 'Like our page'],
 
     add: ['Toevoegen', 'Add'],
     delete: ['Verwijder', 'Delete'],

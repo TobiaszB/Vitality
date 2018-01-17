@@ -16,6 +16,33 @@
     width: 100%;
   }
 
+  .point {
+	max-width: 100%;
+	width: 100%;
+	padding: 20px 0;
+  }
+
+  [data-load="team.html"], [data-load="home.html"] {
+  	img { width: 100%; margin: 20px 0 10px 0; }
+  	p { text-align: justify; }
+  }
+
+  [data-load="contact.render"] {
+  	padding: 0 10px;
+  }
+
+  [data-load="services.html"] {
+
+	section {
+		padding: 40px 10px;
+		> img {
+		  width: 100%;
+		  max-height: auto;
+		}
+	}
+	
+  }
+
   [data-load="contact.html"] {
     section {
       width: 100%;
