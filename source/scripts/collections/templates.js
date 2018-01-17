@@ -58,6 +58,7 @@ let templates = module.exports = {
 		if(!course.published_at) continue;
 
 		html += `
+      		<img src="icon-course.png">
 		    <input data-change="templates.select_course" id="${ course.key }" type="radio" name="course_list" value="${course.key}">
 			<div class="invite-course" data-key="${ keys[i] }">
 

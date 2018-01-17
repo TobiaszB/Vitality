@@ -22,6 +22,14 @@
 	padding: 20px 0;
   }
 
+  .input-container {
+	width: 100%;
+  }
+
+  .field {
+	width: 100%;
+  }
+
   [data-load="team.html"], [data-load="home.html"] {
   	img { width: 100%; margin: 20px 0 10px 0; }
   	p { text-align: justify; }

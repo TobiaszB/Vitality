@@ -861,6 +861,7 @@ main.ticket-mode {
 	position: relative;
 	display: inline-block;
 	white-space: nowrap;
+  	vertical-align: top;
 	input[type="text"] {
 		background-color: $light-grey;
 		display: block;
@@ -1106,22 +1107,64 @@ main.ticket-mode {
 	}
 
 	&.open {
-		max-height: 120px;
-		padding: 20px;
+		max-height: 150px;
+		padding: 10px;
 		overflow: visible;
 	}
 
+	.field {
+		position: relative;
+		border: 1px solid $cyan;
+		display: inline-block;
+		vertical-align: top;
+		padding: 20px 10px 10px 10px;
+		
+		> img {
+			width: 30px;
+			height: 30px;
+			position: absolute;
+			top: -20px;
+			left: 50%;
+			background-color: white;
+		}
+	}
+	
+	// fields
+	.input-container {
+		border: 1px solid $cyan;
+		margin: 30px 10px 0 0;
+	}
+	
+	.courses-container {
+		margin: 30px 10px 0 0;
+		width: auto;
+	}
+
+	.send-container {
+		margin: 30px 0 0 0;
+
+		button {
+			background-color: $blue;
+			color: white;
+			&:hover {
+				background-color: lighten($blue, 5);
+			}
+		}
+
+	}
+	// end fields
+
 	.invite-course {
-  		max-width: 400px;
+  		width: 150px;
 		white-space: nowrap;
+		display: inline-block;
 		padding: 0 0 0 40px;
 		line-height: 30px;
 		font-family: $raleway;
 		background-color: $grey;
 		font-size: 12px;
-		margin: 10px 0 0 0;
 		position: relative;
-		height: 36px;
+		height: 40px;
 		cursor: pointer;
 		&:hover {
 			background-color: lighten($grey, 5);
@@ -1143,17 +1186,6 @@ main.ticket-mode {
 			display: inline-block;
 			background-size: contain;
 
-		}
-	}
-
-	button {
-		position: absolute;
-		top: -50px;
-		right: 0;
-		background-color: $blue;
-		color: white;
-		&:hover {
-			background-color: lighten($blue, 5);
 		}
 	}
 

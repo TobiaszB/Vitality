@@ -17,12 +17,24 @@
 <div class="content invites">
 
   <section id="invite-block">
+    
+    <div class="field input-container">
 
-    <button data-click="templates.send_ticket" data-load="labels.send_invite"></button>
+      <img src="icon-user.png">
 
-    <input data-input="templates.save_name" type="text" data-load="labels.name">
+      <input data-input="templates.save_name" type="text" data-load="labels.name">
 
-    <div class="courses-container" data-load="templates.load_courses"></div>
+    </div>
+
+    <div class="field courses-container" data-load="templates.load_courses"></div>
+
+    <div class="field send-container">
+
+      <img src="icon-down.png">
+
+      <button data-click="templates.send_ticket" data-load="labels.send_invite"></button>
+
+    </div>
 
   </section>
 
