@@ -828,7 +828,9 @@ form {
 	text-align: center;
 	position: relative;
 	background-image: url('/photo-gym.jpg');
-	background-size: contain;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
 
 	.info {
 		height: auto;
@@ -1021,6 +1023,12 @@ main.ticket-mode {
 	padding-bottom: 12px;
 	width: calc(100vw - 24px);
 	pointer-events: none;
+	label {	
+		color: $dark-grey;
+		font-weight: 500;
+		font-size: 14px;
+		margin: 0;
+	}
 }
 	
 .modal {
