@@ -66,8 +66,6 @@ let users = module.exports = {
 
         <input type="input" value="${ user.name }"><br>
 
-        <a data-load="labels.sign_out" data-click="sessions.sign_out"></a>
-
     `;
 
   },

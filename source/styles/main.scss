@@ -418,6 +418,7 @@ input {
   	background-color: $green;
   	color: white;
   	width: 100%;
+  	font-size: 14px;
   	cursor: pointer;
   	&:hover { background-color: lighten($green, 5); }
   }
@@ -1066,7 +1067,9 @@ main.ticket-mode {
 		position: relative;
 		text-align: left;
 		background: #fff;
-		padding: 20px;
+		padding: 20px 20px 50px 20px;
+		border-radius: 2px;
+		overflow: hidden;
 		p {margin-bottom: 16px;}
 	}
 
@@ -1087,11 +1090,18 @@ main.ticket-mode {
 		background-color: $red;
 		color: white;
 		padding: 0 8px;
-		line-height: 30px;
-		margin-top: 20px;
+		line-height: 40px;
 		font-family: $changa;
-		font-size: 12px;
-		border-radius: 4px;
+		font-size: 14px;
+		position: absolute;
+		bottom: 0;
+		height: 40px;
+		left: 0;
+		width: 100%;
+		z-index: 1;
+		&:hover {
+			background-color: lighten($red, 5);
+		}
 	}
 
 	h1 {

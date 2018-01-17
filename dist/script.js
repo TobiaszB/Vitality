@@ -988,7 +988,7 @@ var users = module.exports = {
 
         var user = root.users.memory[root.me.user];
 
-        element.innerHTML = '\n\n        <img class="avatar" src="' + user.avatar + '"><br>\n\n        <div class="divider horizontal grey"></div>\n\n        <input type="input" value="' + user.name + '"><br>\n\n        <a data-load="labels.sign_out" data-click="sessions.sign_out"></a>\n\n    ';
+        element.innerHTML = '\n\n        <img class="avatar" src="' + user.avatar + '"><br>\n\n        <div class="divider horizontal grey"></div>\n\n        <input type="input" value="' + user.name + '"><br>\n\n    ';
     },
 
     load_profile_link: function load_profile_link(element) {
