@@ -34,6 +34,10 @@
 	width: auto;
   }
 
+  .social-container {
+	top: -50px;
+  }
+
   .name-container {
 	width: 300px;
   }
@@ -56,15 +60,6 @@
 		}
 	}
 
-  }
-
-  [data-load="contact.html"] {
-    .container {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-    }
   }
 
 }

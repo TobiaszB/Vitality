@@ -7,6 +7,10 @@
     > img { width: 100%; }
   }
 
+  .info {
+  	padding: 60px 10px 0;
+  }
+
   .text {
     text-align: middle;
   }
@@ -30,9 +34,16 @@
 	
   }
 
+  .photo-viewer {
+  	display: none;
+  }
 
   .name-container {
 	width: 100%;
+  }
+
+  .social-container {
+	top: 0;
   }
 
   .field {
@@ -42,10 +53,6 @@
   [data-load="team.html"], [data-load="home.html"] {
   	img { width: 100%; margin: 20px 0 10px 0; }
   	p { text-align: justify; }
-  }
-
-  [data-load="contact.render"] {
-  	padding: 0 10px;
   }
 
   [data-load="services.html"] {
