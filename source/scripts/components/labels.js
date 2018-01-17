@@ -60,7 +60,7 @@ let labels = {
     contact_email: ['Email', 'Email'],
 
     like_fb_page: ['Like onze pagina', 'Like our page'],
-
+    create_ticket: ['Maak ticket aan', 'Create ticket'],
     add: ['Toevoegen', 'Add'],
     delete: ['Verwijder', 'Delete'],
     invite: ['Maak een ticket aan', 'Create a ticket'],
@@ -102,6 +102,8 @@ let labels = {
     clients: ['Klanten', 'Clients'],
     app_settings: ['App instellingen', 'App settings'],
     name: [placeholder('Naam'), placeholder('Name')],
+    plain_name: ['NAAM', 'NAME'],
+    course: ['CURSUS', 'COURSE'],
     password: [placeholder('Wachtwoord'), placeholder('Password')],
     send_invite: ['Verstuur uitnodiging', 'Send invite'],
     events: ['Evenementen', 'Events'],

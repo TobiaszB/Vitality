@@ -906,7 +906,7 @@ main.ticket-mode {
 		padding: 0 10px;
 		font-size: 14px;
 		position: absolute;
-		bottom: 0;
+		bottom: -35px;
 		height: 40px;
 		line-height: 40px;
 		color: $dark-grey;
@@ -938,7 +938,7 @@ main.ticket-mode {
 		position: absolute;
 		border-radius: 50%;
 		border: 1px solid $grey;
-		bottom: 5px;
+		bottom: -28px;
 		right: 5px;
 		z-index: 1;
 	}
@@ -1127,21 +1127,52 @@ main.ticket-mode {
 	}
 }
 
+.tickets-nav {
+	white-space: nowrap;
+	position: relative;
+	display: block;
+	label {
+		padding: 0 10px;
+		position: relative;
+	}
+	.name { width: 150px; }
+	.course { width: 100%; }
+	.link {
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 200px;
+		text-align: left;
+	}
+}
+
 // ticket
 [data-load="tickets.render_one"] {
-	display: inline-block;
+	display: block;
 	vertical-align: top;
-	width: 200px;
-	height: 100px;
 	line-height: 40px;
-	background-color: $grey;
+	background-color: $light-grey;
 	margin: 10px;
-	text-align: center;
+	text-align: left;
 	position: relative;
-	span {
+	span, small {
 		font-family: $changa;
+		display: inline-block;
+		color: $dark-grey;
+		text-transform: uppercase;
+	}
+	span {
+		background-color: $cyan;
+		color: white;
+		padding: 0 10px;
+		font-size: 16px;
+		width: 150px;
+		text-align: right;
+	}
+	small {
 		font-size: 14px;
-		display: block;
+		padding: 0 5px;
+		text-align: left;
 	}
 }
 
