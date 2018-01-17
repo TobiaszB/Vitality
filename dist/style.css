@@ -1300,7 +1300,7 @@ form {
     [data-load="home.html"] section[data-index="4"], [data-load="team.html"] section[data-index="4"] {
       background-color: #444;
       background-image: url("/pattern-twill.png");
-      padding: 20px 0 60px; }
+      padding: 20px 0 30px; }
     [data-load="home.html"] section .text, [data-load="team.html"] section .text {
       position: absolute;
       bottom: 30%;
