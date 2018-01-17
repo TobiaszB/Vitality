@@ -223,7 +223,7 @@ function handler(request) {
         $set: {
           name: '',
           admin: session.user,
-          thumbnail: '/default-course.jpg',
+          thumbnail: '/default-course.png',
           created_at: new Date(),
           language: 'nl'
         }

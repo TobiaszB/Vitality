@@ -28,16 +28,16 @@ module.exports = (provide) => {
       }
     }, { upsert: true }, ()=>{});
 
-    db.collection('courses').findAndModify({ key: 'courses_test' }, [], {
-      $set: {
-        name: 'Test',
-        thumbnail: '/default-course.jpg',
-        admin: 'users_joris',
-        language: 'nl',
-        published_at: new Date(),
-        created_at: new Date()
-      }
-    }, { upsert: true }, ()=>{});
+//     db.collection('courses').findAndModify({ key: 'courses_test' }, [], {
+//       $set: {
+//         name: 'Test',
+//         thumbnail: '/default-course.png',
+//         admin: 'users_joris',
+//         language: 'nl',
+//         published_at: new Date(),
+//         created_at: new Date()
+//       }
+//     }, { upsert: true }, ()=>{});
 
     db.collection('blocks').findAndModify({ key: 'blocks_test' }, [], {
       $set: {
