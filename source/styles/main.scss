@@ -1098,7 +1098,6 @@ main.ticket-mode {
 	transition: 250ms all linear;
 	position: relative;
 	overflow: hidden;
-	background-color: red;
 	&[data-language="nl"] {
 		.flag-container .nl { border-bottom: 2px solid $blue; }
 	}
