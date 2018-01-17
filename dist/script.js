@@ -620,6 +620,13 @@ var templates = module.exports = {
   select_course: function select_course(element) {
 
     templates.ticket.course = element.id;
+
+    templates.validate_invite();
+  },
+
+  validate_invite: function validate_invite(element) {
+
+    if (templates.ticket.course && templates.ticket.client) root.main.classList.add('validated');
   },
 
   check_side: function check_side(element) {
@@ -639,6 +646,8 @@ var templates = module.exports = {
   save_name: function save_name(element) {
 
     templates.ticket.client = element.value;
+
+    templates.validate_invite();
   },
 
   scroll_down: function scroll_down(element) {
@@ -661,6 +670,8 @@ var templates = module.exports = {
       templates.ticket = {};
 
       root.main.dataset.load = root.main.dataset.load;
+
+      root.main.classList.remove('validated');
     });
   },
 

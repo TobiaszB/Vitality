@@ -6,6 +6,14 @@ let templates = module.exports = {
 
   	templates.ticket.course = element.id;
 
+  	templates.validate_invite();
+
+  },
+
+  validate_invite: (element) => {
+
+	if(templates.ticket.course && templates.ticket.client) root.main.classList.add('validated');
+
   },
 
   check_side: (element) => {
@@ -27,6 +35,8 @@ let templates = module.exports = {
   save_name: (element) =>{
 
   	templates.ticket.client = element.value;
+
+  	templates.validate_invite();
 
   },
 
@@ -51,6 +61,8 @@ let templates = module.exports = {
 		templates.ticket = {};
 
         root.main.dataset.load = root.main.dataset.load;
+
+        root.main.classList.remove('validated');
 
 	});
 

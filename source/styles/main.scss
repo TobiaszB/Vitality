@@ -546,6 +546,13 @@ main {
 	background-image: url("/pattern-twill.png");
     padding: 0;
   }
+  &.validated {
+  	[data-click="templates.send_ticket"] {
+  		background-color: $cyan !important;
+		opacity: 1 !important;
+		color: white !important;
+  	}
+  }
   > input {
     width: 100%;
     background-color: darken($blue, 10);
@@ -1175,10 +1182,10 @@ main.ticket-mode {
 		margin: 30px 0 0 0;
 
 		button {
-			background-color: $blue;
-			color: white;
+			background-color: $light-grey;
+			opacity: 0.5;
 			&:hover {
-				background-color: lighten($blue, 5);
+				background-color: $grey;
 			}
 		}
 
@@ -1192,15 +1199,16 @@ main.ticket-mode {
 		padding: 0 0 0 40px;
 		line-height: 30px;
 		font-family: $raleway;
-		background-color: $grey;
+		background-color: $light-grey;
 		font-size: 12px;
 		position: relative;
 		height: 40px;
 		cursor: pointer;
+		text-align: left;
 		&:hover {
 			background-color: lighten($grey, 5);
 		}
-		.lang{ width: 30px; position: absolute; right: 0; top: 0; display: inline-block; }
+		.lang{ width: 30px; position: absolute; right: 0; top: 5px; display: inline-block; }
 		.thumbnail-container {
 			height: 36px;
 			width: 36px;
@@ -1209,14 +1217,13 @@ main.ticket-mode {
 			left: 0;
 			top: 0;
 		}
-		span { line-height: 36px; }
+		span { line-height: 40px; padding: 0 0 0 5px; }
 		img {
 			height: 100%;
 			width: 100%;
-			padding: 5px;
+			margin: 2px 0 0 2px;
 			display: inline-block;
-			background-size: contain;
-
+			background-size: cover;
 		}
 	}
 
@@ -1284,7 +1291,7 @@ main.ticket-mode {
 	}
 
 	input[type="text"] {
-		background-color: $grey;
+		background-color: $light-grey;
 		font-family: $raleway;
 		font-size: 12px;
 		color: $dark-grey;
