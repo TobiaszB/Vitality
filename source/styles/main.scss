@@ -429,6 +429,12 @@ body.authenticated.courses-page, body.authenticated.invites-page {
   	border-bottom: 2px solid transparent;
   	color: white;
   	margin: 0 10px 0 0;
+
+	&:before {
+		font-family: FontAwesome;
+		color: white;
+	}
+
   	&:hover {
   		border-bottom: 2px solid $blue;
   	}
@@ -683,6 +689,7 @@ form {
 		position: relative;
 		overflow: hidden;
 		height: auto;
+		padding: 0 10px;
 		text-align: center;
 		background-color: white;
 		
