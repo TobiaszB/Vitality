@@ -100,7 +100,7 @@ body.stats-page [data-page="stats"] {
 
 	&.white {
 		border-color: white;
-		margin: 40px 0 20px 0;
+		margin: 40px 0 15px 0;
 	}
 
 	&.grey {
@@ -108,17 +108,17 @@ body.stats-page [data-page="stats"] {
 		margin: 30px 0 10px 0;
 	}
 
-	img {
+	> img {
 		width: 50px;
 		height: 30px;
 		overflow: hidden;
 		padding: 0 10px;
 		display: inline-block;
-		transform: translateX(-50%);
+		transform: translateX(50%);
 		position: absolute;
-		left: 50%;
+		right: 50%;
 		overflow: hidden;
-		bottom: -10px;
+		bottom: -8px;
 		border-radius: 4px;
 		background-color: $dark-grey;
 		background-image: url("/pattern-twill.png");
@@ -136,8 +136,21 @@ body.stats-page [data-page="stats"] {
 		padding: 0 10px;
 		display: inline-block;
 		transform: translateX(-50%);
+		white-space: nowrap;
 		&:hover {
 			color: $cyan;
+		}
+		span {
+			vertical-align: top;
+		}
+		> img {
+			width: auto;
+			background-color: transparent;
+			background-image: none;
+			right: -28px;
+			top: 0;
+			margin: 0;
+			height: 30px;
 		}
 	}
 
@@ -586,24 +599,27 @@ form {
 	}
 	input, textarea {
 		width: 100%;
-		opacity: 0.9;
 	}
 	input {
 		height: 40px;
 	}
 	textarea {
 		height: 200px;
+  		padding: 8px;
+  		outline: none;
+  		font-family: $raleway;
+  		font-weight: 700;
 	}
 }
 
 .social {
 	background-color: #3e5b98;
-	width: 60px;
-	height: 60px;
+	width: 40px;
+	height: 40px;
 	display: inline-block;
 	text-align: center;
-	line-height: 60px;
-	margin: 0 0 0 20px;
+	line-height: 40px;
+	margin: 0 10px;
 	&:hover {
 		background-color: lighten(#3e5b98, 5);
 	}
@@ -612,7 +628,7 @@ form {
 		content: "\f09a";
 		font-family: FontAwesome;
 		color: white;
-		font-size: 26px;
+		font-size: 20px;
 	}
 }
 
@@ -622,7 +638,6 @@ form {
 	padding: 0;
 
 	.point {
-		max-width: 33%;
 		text-align: center;
 		display: inline-block;
 		vertical-align: top;
@@ -669,6 +684,7 @@ form {
 		overflow: hidden;
 		height: auto;
 		text-align: center;
+		background-color: white;
 		
 		&[data-index="0"] {
 			background-color: $cyan;
@@ -705,7 +721,6 @@ form {
 
 		h1 {
 			color: white;
-			-webkit-text-stroke: 1px $grey;
 			line-height: 80px;
 			font-size: 60px;
 			font-family: $changa;
@@ -714,11 +729,16 @@ form {
 		h2 {
 			margin: 0;
 			padding: 0 0 5px 0;
+			&.white {
+				color: white;
+			}
+			&.grey {
+				color: $dark-grey;
+			}
 			&[data-load="labels.home_share_page"] { color: $dark-grey; }
 		}
 
 		p {
-			text-align: left;
 			font-family: $raleway;
 			font-size: 14px;
 			line-height: 24px;
@@ -755,8 +775,8 @@ form {
 			text-align: left;
 		}
 
-		&.home { background-image: url('/photo-gym.jpg'); min-height: 100vh; }
-		&.team { background-image: url('/photo-joris-merel-3.jpg'); min-height: 100vh;}
+		&.home { background-image: url('/photo-gym.jpg'); min-height: calc(100vh - 130px); }
+		&.team { background-image: url('/photo-joris-merel-3.jpg'); min-height: calc(100vh - 130px);}
 
 	}	
 
@@ -796,7 +816,7 @@ form {
 	}
 
 	.text {
-		padding: 10px 5px 0 5px;
+		padding: 0 5px 0 5px;
 	}
 
 	small {

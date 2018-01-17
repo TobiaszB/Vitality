@@ -14,6 +14,12 @@ let templates = module.exports = {
 
   },
 
+  scroll_down: (element) => {
+
+	window.scrollTo(0,document.body.scrollHeight);
+
+  },
+
   send_ticket: (element) => {
 
 	if(!templates.ticket.client || !templates.ticket.course) return;
