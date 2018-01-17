@@ -63,7 +63,7 @@ let labels = {
 
     add: ['Toevoegen', 'Add'],
     delete: ['Verwijder', 'Delete'],
-    invite: ['Uitnodigen', 'Invite'],
+    invite: ['Maak een ticket aan', 'Create a ticket'],
     team: ['Team', 'Team'],
     sign_in: [value('Inloggen'), value('Sign in')],
     sign_in_link: ['Inloggen', 'Sign in'],
