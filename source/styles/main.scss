@@ -94,10 +94,19 @@ body.stats-page [data-page="stats"] {
 
 
 .line-header {
-	border-bottom: 1px solid white;
+	border-bottom: 1px solid transparent;
 	position: relative;
 	display: block;
-	margin: 30px 0 0 0;
+
+	&.white {
+		border-color: white;
+		margin: 40px 0 20px 0;
+	}
+
+	&.grey {
+		border-color: $grey;
+		margin: 30px 0 10px 0;
+	}
 
 	img {
 		width: 50px;
@@ -114,6 +123,24 @@ body.stats-page [data-page="stats"] {
 		background-color: $dark-grey;
 		background-image: url("/pattern-twill.png");
 	}
+	
+	.action {
+		font-family: $changa;
+		font-size: 20px;
+		cursor: pointer;
+		position: absolute;
+		bottom: -20px;
+		left: 50%;
+		height: 40px;
+		background-color: white;
+		padding: 0 10px;
+		display: inline-block;
+		transform: translateX(-50%);
+		&:hover {
+			color: $cyan;
+		}
+	}
+
 }
 
 a.ticket-client {
@@ -388,6 +415,7 @@ body.authenticated.courses-page, body.authenticated.invites-page {
   	padding: 8px;
   	border-bottom: 2px solid transparent;
   	color: white;
+  	margin: 0 10px 0 0;
   	&:hover {
   		border-bottom: 2px solid $blue;
   	}
@@ -523,11 +551,9 @@ main {
 	}
 
 	img {
-		max-height: 200px;
 		margin: 0;
 	}
 	section {
-		padding: 40px 20%;
 		overflow: hidden;
 		&[data-index="0"], &[data-index="2"], &[data-index="4"] {
 			img { float: left; margin: 0 20px 20px 0; }
@@ -620,14 +646,11 @@ form {
 	}
 
 	img {
-		width: 400px;
 		background-size: contain;
 		display: inline-block;
-		margin: 20px;
 		
 		&.team {
 			float: left;
-			margin: 35px 20px 20px 20px;
 		}
 		
 		&.merel {
@@ -648,9 +671,12 @@ form {
 		text-align: center;
 		
 		&[data-index="0"] {
-			padding: 10px 0 30px 0;
 			background-color: $cyan;
 			background-image: url("/pattern-tile.png");
+		}
+		
+		&[data-index="1"] {
+			padding: 0 10px 30px;
 		}
 		
 		&[data-index="2"] {
@@ -687,7 +713,6 @@ form {
 
 		h2 {
 			margin: 0;
-			color: white;
 			padding: 0 0 5px 0;
 			&[data-load="labels.home_share_page"] { color: $dark-grey; }
 		}
@@ -717,11 +742,6 @@ form {
 			background-color: $cyan;
 			cursor: pointer;
 			display: inline-block;
-			&.team {
-				position: absolute;
-				left: 210px;
-				top: 20px;
-			}
 			&:hover {
 				background-color: lighten($cyan, 5);
 			}
@@ -730,9 +750,9 @@ form {
 		.content {
 			position: relative;
 			overflow: hidden;
-			padding: 50px;
 			max-width: 1400px;
 			margin: 0 auto;
+			text-align: left;
 		}
 
 		&.home { background-image: url('/photo-gym.jpg'); min-height: 100vh; }
