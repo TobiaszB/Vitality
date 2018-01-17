@@ -138,7 +138,7 @@ let tickets = module.exports = {
 
     });
 
-    let elem = document.createElement('a');
+    let elem = document.createElement('div');
 
     elem.dataset.load = 'tickets.render_one';
 
@@ -199,10 +199,9 @@ let tickets = module.exports = {
     element.innerHTML = `
         <span>${ ticket.client }</span>
         <small>${ ticket.name }</small>
+        <input value="/ticket/code/${ ticket.code }">
     `
     ;
-
-    element.setAttribute('href', `/ticket/code/${ ticket.code }`);
 
   },
 

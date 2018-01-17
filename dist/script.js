@@ -878,7 +878,7 @@ var tickets = module.exports = {
             tickets.render(element, keys, iteration);
         });
 
-        var elem = document.createElement('a');
+        var elem = document.createElement('div');
 
         elem.dataset.load = 'tickets.render_one';
 
@@ -926,9 +926,7 @@ var tickets = module.exports = {
         var ticket = tickets.memory[element.dataset.ticket];
 
         if (!ticket.client) return;
-        element.innerHTML = '\n        <span>' + ticket.client + '</span>\n        <small>' + ticket.name + '</small>\n    ';
-
-        element.setAttribute('href', '/ticket/code/' + ticket.code);
+        element.innerHTML = '\n        <span>' + ticket.client + '</span>\n        <small>' + ticket.name + '</small>\n        <input value="/ticket/code/' + ticket.code + '">\n    ';
     }
 
 };

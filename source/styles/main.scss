@@ -1131,17 +1131,17 @@ main.ticket-mode {
 	white-space: nowrap;
 	position: relative;
 	display: block;
+	padding: 0 10px;
 	label {
-		padding: 0 10px;
 		position: relative;
 	}
-	.name { width: 150px; }
+	.name { width: 135px; }
 	.course { width: 100%; }
 	.link {
 		position: absolute;
 		right: 0;
 		top: 0;
-		width: 200px;
+		width: 350px;
 		text-align: left;
 	}
 }
@@ -1155,11 +1155,10 @@ main.ticket-mode {
 	margin: 10px;
 	text-align: left;
 	position: relative;
-	span, small {
+	span, small, input {
 		font-family: $changa;
 		display: inline-block;
 		color: $dark-grey;
-		text-transform: uppercase;
 	}
 	span {
 		background-color: $cyan;
@@ -1168,11 +1167,18 @@ main.ticket-mode {
 		font-size: 16px;
 		width: 150px;
 		text-align: right;
+		text-transform: uppercase;
 	}
 	small {
 		font-size: 14px;
 		padding: 0 5px;
 		text-align: left;
+		text-transform: uppercase;
+	}
+	input {
+		width: 350px;
+		float: right;
+		font-weight: 400;
 	}
 }
 
