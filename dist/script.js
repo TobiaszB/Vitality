@@ -926,7 +926,7 @@ var tickets = module.exports = {
         var ticket = tickets.memory[element.dataset.ticket];
 
         if (!ticket.client) return;
-        element.innerHTML = '\n        <span>' + ticket.client + '</span>\n        <small>' + ticket.name + '</small>\n        <input value="/ticket/code/' + ticket.code + '">\n    ';
+        element.innerHTML = '\n        <span>' + ticket.client + '</span>\n        <small>' + ticket.name + '</small>\n        <input readonly="readonly" value="/ticket/code/' + ticket.code + '">\n    ';
     }
 
 };

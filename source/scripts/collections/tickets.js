@@ -199,7 +199,7 @@ let tickets = module.exports = {
     element.innerHTML = `
         <span>${ ticket.client }</span>
         <small>${ ticket.name }</small>
-        <input value="/ticket/code/${ ticket.code }">
+        <input readonly="readonly" value="/ticket/code/${ ticket.code }">
     `
     ;
 
