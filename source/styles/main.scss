@@ -1155,6 +1155,9 @@ main.ticket-mode {
 			left: 50%;
 			transform: translateX(-50%);
 			background-color: white;
+			&[src="icon-down.png"] {
+				width: 22px;
+			}
 		}
 	}
 	

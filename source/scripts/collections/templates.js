@@ -8,6 +8,12 @@ let templates = module.exports = {
 
   },
 
+  check_side: (element) => {
+
+	element.setAttribute('src', root.main.classList.contains('open') ? '/icon-left.png' : 'icon-right.png');
+
+  },
+
   toggle_side: (element) => {
 
 	let main = root.main;

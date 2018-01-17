@@ -615,119 +615,124 @@ require.register("source/scripts/collections/templates.js", function(exports, re
 
 var templates = module.exports = {
 
-		ticket: {},
+  ticket: {},
 
-		select_course: function select_course(element) {
+  select_course: function select_course(element) {
 
-				templates.ticket.course = element.id;
-		},
+    templates.ticket.course = element.id;
+  },
 
-		toggle_side: function toggle_side(element) {
+  check_side: function check_side(element) {
 
-				var main = root.main;
+    element.setAttribute('src', root.main.classList.contains('open') ? '/icon-left.png' : 'icon-right.png');
+  },
 
-				main.classList.toggle('open');
+  toggle_side: function toggle_side(element) {
 
-				element.children[0].setAttribute('src', '/icon-' + (main.classList.contains('open') ? 'left.png' : 'right.png'));
-		},
+    var main = root.main;
 
-		save_name: function save_name(element) {
+    main.classList.toggle('open');
 
-				templates.ticket.client = element.value;
-		},
+    element.children[0].setAttribute('src', '/icon-' + (main.classList.contains('open') ? 'left.png' : 'right.png'));
+  },
 
-		scroll_down: function scroll_down(element) {
+  save_name: function save_name(element) {
 
-				window.scrollTo(0, document.body.scrollHeight);
-		},
+    templates.ticket.client = element.value;
+  },
 
-		send_ticket: function send_ticket(element) {
+  scroll_down: function scroll_down(element) {
 
-				if (!templates.ticket.client || !templates.ticket.course) return;
+    window.scrollTo(0, document.body.scrollHeight);
+  },
 
-				root.send({
-						request: 'create_ticket',
-						client: templates.ticket.client,
-						course: templates.ticket.course
-				}, function (res) {
+  send_ticket: function send_ticket(element) {
 
-						console.log(res);
+    if (!templates.ticket.client || !templates.ticket.course) return;
 
-						templates.ticket = {};
+    root.send({
+      request: 'create_ticket',
+      client: templates.ticket.client,
+      course: templates.ticket.course
+    }, function (res) {
 
-						root.main.dataset.load = root.main.dataset.load;
-				});
-		},
+      console.log(res);
 
-		load_client: function load_client(element) {
+      templates.ticket = {};
 
-				templates.client_element = element;
-		},
+      root.main.dataset.load = root.main.dataset.load;
+    });
+  },
 
-		load_courses: function load_courses(element) {
+  load_client: function load_client(element) {
 
-				var html = '',
-				    keys = Object.keys(root.courses.memory);
+    templates.client_element = element;
+  },
 
-				for (var i = 0; i < keys.length; i++) {
+  load_courses: function load_courses(element) {
 
-						var course = root.courses.memory[keys[i]];
+    var html = '',
+        keys = Object.keys(root.courses.memory);
 
-						if (!course.published_at) continue;
+    for (var i = 0; i < keys.length; i++) {
 
-						html += '\n      \t\t<img src="icon-course.png">\n\t\t    <input data-change="templates.select_course" id="' + course.key + '" type="radio" name="course_list" value="' + course.key + '">\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t\t<label for="' + course.key + '"></label>\n\n\t\t\t</div>\n\t\t';
-				};
+      var course = root.courses.memory[keys[i]];
 
-				element.innerHTML = html;
-		},
+      if (!course.published_at) continue;
 
-		load_calender: function load_calender(element) {
+      html += '\n      \t\t<img src="icon-course.png">\n\t\t    <input data-change="templates.select_course" id="' + course.key + '" type="radio" name="course_list" value="' + course.key + '">\n\t\t\t<div class="invite-course" data-key="' + keys[i] + '">\n\n\t\t\t\t<div class="thumbnail-container"><img src="' + course.thumbnail + '"></div>\n\n\t\t\t\t<span>' + course.name + '</span>\n\n\t\t\t\t<small class="lang ' + course.language + '"></small>\n\n\t\t\t\t<label for="' + course.key + '"></label>\n\n\t\t\t</div>\n\t\t';
+    };
 
-				element.innerHTML = '\n\t\t\n\t\t\n\t\t\n\t';
-		},
+    element.innerHTML = html;
+  },
 
-		change_language: function change_language(element) {
+  load_calender: function load_calender(element) {
 
-				localStorage.setItem('language', element.dataset.language);
+    element.innerHTML = '\n\t\t\n\t\t\n\t\t\n\t';
+  },
 
-				location.reload();
-		},
+  change_language: function change_language(element) {
 
-		highlight_lang: function highlight_lang(element) {
+    localStorage.setItem('language', element.dataset.language);
 
-				if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
+    location.reload();
+  },
 
-				element.classList.add('active');
-		},
+  highlight_lang: function highlight_lang(element) {
 
-		format_date: function format_date(element) {
+    if (!element.classList.contains(localStorage.getItem('language') || 'nl')) return;
 
-				var date = new Date(element.dataset.date),
-				    months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+    element.classList.add('active');
+  },
 
-				if (!date || String(date).toLowerCase() == 'invalid date') return;
+  format_date: function format_date(element) {
 
-				element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
-		},
+    var date = new Date(element.dataset.date),
+        months = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
 
-		format_time: function format_time(element) {
+    if (!date || String(date).toLowerCase() == 'invalid date') return;
 
-				var date = new Date(element.dataset.date);
+    element.innerHTML = date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear();
+  },
 
-				if (!date || String(date).toLowerCase() == 'invalid date') return;
+  format_time: function format_time(element) {
 
-				element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
-		},
+    var date = new Date(element.dataset.date);
 
-		start: function start(element) {
+    if (!date || String(date).toLowerCase() == 'invalid date') return;
 
-				console.log('e', element);
-		},
+    element.innerHTML = date.getHours() + ':' + (String(date.getMinutes()).length > 1 ? '' : 0) + date.getMinutes();
+  },
 
-		hide_notification: function hide_notification(element) {
+  start: function start(element) {
 
-				document.querySelector('body').classList.remove('notified');
-		}
+    console.log('e', element);
+  },
+
+  hide_notification: function hide_notification(element) {
+
+    document.querySelector('body').classList.remove('notified');
+  }
 
 };
 });
