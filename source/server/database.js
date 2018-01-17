@@ -39,14 +39,6 @@ module.exports = (provide) => {
       }
     }, { upsert: true }, ()=>{});
 
-    db.collection('tickets').findAndModify({ key: 'tickets_test' }, [], {
-      $set: {
-        course: 'courses_test',
-        user: 'users_peter',
-        admin: 'users_joris'
-      }
-    }, { upsert: true }, ()=>{});
-
     db.collection('blocks').findAndModify({ key: 'blocks_test' }, [], {
       $set: {
         html: `

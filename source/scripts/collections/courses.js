@@ -267,9 +267,6 @@ let courses = module.exports = {
    return `<div class="course-nav">
         ${ course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>' }<br>
         <a data-key="${ element.dataset.key }" data-click="courses.view" data-load="labels.view"></a>
-        <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>
-        <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>
-        <a data-key="${ element.dataset.key }" data-click="modal.open" data-modal="courses.delete" data-load="labels.delete"></a>
       </div>`;
       
   },

@@ -25,7 +25,6 @@ let labels = {
     home_training_description: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
     home_lifestyle: ['Lifestyle', 'Lifestyle'],
     home_lifestyle_description: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
-    home_share_page: ['Deel deze pagina', 'Share this page'],
     home_joris_merel: ['Joris Boon en Merel Witkamp', 'Joris Boon and Merel Witkamp'],
     home_joris_merel_description: ["Mogen we ons even aan u voorstellen. Wij zijn Joris Boon en Merel Witkamp. We zijn beiden fanatieke sporttrainers waarbij we weten dat individuele training allereerst tot resultaat moet leiden bijvoorbeeld afvallen, vitaler of gewoon \'je beter voelen\'. Maar we weten ook dat training alleen vaak niet voldoende is. Vandaar dat we een uniek coachingprogramma hebben geïntroduceerd onder de noemer \'Managers Vitality: for a work - life balance that boosts your management performance'. Het gaat dan om een programma om een betere werk - privé balans te vinden (ook in relatie tot fitness) alsmede omveel betere resultaten op het werk te behalen. Het focust zich op de '7th habit' van managementgoeroe Stephan Covey waar hij heeft over 'het scherp houden van de zaag'. Inmiddels hebben al vele managers zich voor dit programma ingeschreven.", "May we introduce ourselves to you, we are Joris Boon and Merel Witkamp We are both fanatical sports trainers where we know that individual training should lead to results first, for example losing weight, being more vital or just 'feeling better'. also that training alone is often not sufficient, which is why we have introduced a unique coaching program under the heading 'Managers Vitality: for a work - life balance that boosts your management performance' - a program for a better work - private life. To find a balance (also in relation to fitness) as well as to achieve much better results at work, it focuses on the '7th habit' of management guru Stephan Covey, who talks about 'keeping the saw sharp'. managers registered for this program."],
    
@@ -60,6 +59,8 @@ let labels = {
     contact_name: ['Naam', 'Name'],
     contact_email: ['Email', 'Email'],
 
+    like_fb_page: ['Like onze FB page', 'Like our FB page'],
+
     add: ['Toevoegen', 'Add'],
     delete: ['Verwijder', 'Delete'],
     invite: ['Uitnodigen', 'Invite'],
@@ -69,6 +70,7 @@ let labels = {
     sign_in_input: [value('Inloggen', value('Sign in'))],
     sign_out: ['Uitloggen', 'Sign out'],
     courses: ['Cursussen', 'Courses'],
+    add_course: ['Maak een cursus aan', 'Create a course'],
     invitations: ['Uitnodigingen', 'Invitations'],
     stats: ['Statistieken', 'Statistics'],
     confirm_delete: ['Bevestig verwijdering', 'Confirm deletion'],

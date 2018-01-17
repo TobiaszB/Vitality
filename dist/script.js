@@ -433,7 +433,7 @@ var courses = module.exports = {
 
     var course = root.courses.memory[element.dataset.key];
 
-    return '<div class="course-nav">\n        ' + (course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>') + '<br>\n        <a data-key="' + element.dataset.key + '" data-click="courses.view" data-load="labels.view"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.invite" data-load="labels.invite"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.stats" data-load="labels.stats_short"></a>\n        <a data-key="' + element.dataset.key + '" data-click="modal.open" data-modal="courses.delete" data-load="labels.delete"></a>\n      </div>';
+    return '<div class="course-nav">\n        ' + (course.published_at ? '<span class="published">PUBLISHED</span>' : '<span class="unpublished">UNPUBLISHED</span>') + '<br>\n        <a data-key="' + element.dataset.key + '" data-click="courses.view" data-load="labels.view"></a>\n      </div>';
   },
 
   view: function view(element) {
@@ -723,193 +723,195 @@ require.register("source/scripts/collections/tickets.js", function(exports, requ
 
 var tickets = module.exports = {
 
-  // here we save all tickets in client memory
-  // { [key]: OBJECT }
-  memory: {},
+    // here we save all tickets in client memory
+    // { [key]: OBJECT }
+    memory: {},
 
-  change_language: function change_language(element) {
+    change_language: function change_language(element) {
 
-    var block = document.querySelector('#invite-block');
+        var block = document.querySelector('#invite-block');
 
-    block.dataset.language = element.dataset.language;
-  },
+        block.dataset.language = element.dataset.language;
+    },
 
-  open_invite_block: function open_invite_block(element) {
+    open_invite_block: function open_invite_block(element) {
 
-    var block = document.querySelector('#invite-block');
+        var block = document.querySelector('#invite-block');
 
-    block.classList.toggle('open');
-  },
+        block.classList.toggle('open');
+    },
 
-  // button is placed to the right of the title of the page
-  add: function add(element) {
+    // button is placed to the right of the title of the page
+    add: function add(element) {
 
-    // root.send is used to talk to the server
-    root.send({ request: 'new_ticket' });
-  },
+        // root.send is used to talk to the server
+        root.send({ request: 'new_ticket' });
+    },
 
-  // anytime the user triggers the data-input of the search field, we execute this
-  save_search: function save_search(element) {
+    // anytime the user triggers the data-input of the search field, we execute this
+    save_search: function save_search(element) {
 
-    // used inside of tickets.render()
-    tickets.search_query = String(element.value || '').toLowerCase();
+        // used inside of tickets.render()
+        tickets.search_query = String(element.value || '').toLowerCase();
 
-    // see update loop at the bottom of this file
-    tickets.updated = true;
-  },
+        // see update loop at the bottom of this file
+        tickets.updated = true;
+    },
 
-  // goes off anytime ticket-related data-input is fired
-  edit: function edit(element, options) {
+    // goes off anytime ticket-related data-input is fired
+    edit: function edit(element, options) {
 
-    // we always need to provide a request string and the key of the object we are editing
-    var request = {
-      request: 'edit',
-      key: element.dataset.ticket
-    };
+        // we always need to provide a request string and the key of the object we are editing
+        var request = {
+            request: 'edit',
+            key: element.dataset.ticket
+        };
 
-    // but the value we are changing shall be added dynamically,
-    // so we can use this edit function straight from the HTML
-    // <input data-input="tickets.edit" data-key="[KEY]">
-    var v = options ? options.value : element.value;
+        // but the value we are changing shall be added dynamically,
+        // so we can use this edit function straight from the HTML
+        // <input data-input="tickets.edit" data-key="[KEY]">
+        var v = options ? options.value : element.value;
 
-    request[element.dataset.property] = v;
+        request[element.dataset.property] = v;
 
-    // options.callback can only be used when this function is fired manually in Javascript
-    // since we cannot write a function inside of the HTML tag
-    root.send(request, options ? options.callback : null);
-  },
+        // options.callback can only be used when this function is fired manually in Javascript
+        // since we cannot write a function inside of the HTML tag
+        root.send(request, options ? options.callback : null);
+    },
 
-  list: function list(element) {
+    list: function list(element) {
 
-    // we are lazy developers that do not want to select the list over and over
-    // whenever we use this list function manually
-    if (!element) element = document.querySelector('[data-load="tickets.list"]');
+        // we are lazy developers that do not want to select the list over and over
+        // whenever we use this list function manually
+        if (!element) element = document.querySelector('[data-load="tickets.list"]');
 
-    // element still not found?! we must stop this madness
-    if (!element) return;
+        // element still not found?! we must stop this madness
+        if (!element) return;
 
-    // we clean out the old HTML should this function be fired after the list already rendered
-    element.innerHTML = '';
+        // we clean out the old HTML should this function be fired after the list already rendered
+        element.innerHTML = '';
 
-    // we show a loading text
-    root.labels.loading(element);
+        // we show a loading text
+        root.labels.loading(element);
 
-    // and start the render loop!
-    tickets.render(element);
-  },
+        // and start the render loop!
+        tickets.render(element);
+    },
 
-  render: function render(element, keys, iteration) {
+    render: function render(element, keys, iteration) {
 
-    // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
-    if (!element) return;
+        // maybe the user navigated away? Somehow the element is gone, RIP loop :'(
+        if (!element) return;
 
-    // we need to make sure we only run 1 loop at the same time
-    // every time render is called outside of its own loop, iteration will be undefined
-    // so we use this condition to also update the dataset of the element
-    // in order for the old loop to kill itself...
-    if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
+        // we need to make sure we only run 1 loop at the same time
+        // every time render is called outside of its own loop, iteration will be undefined
+        // so we use this condition to also update the dataset of the element
+        // in order for the old loop to kill itself...
+        if (!iteration) iteration = element.dataset.iteration = 'i' + Math.floor(Math.random() * 1000);
 
-    // if it turns out this execution is an outdated iteration,
-    // the element has updated its dataset.iteration outside of this loop
-    // we have to bring this loop to the white shores
-    // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
-    if (element.dataset.iteration != iteration) return;
+        // if it turns out this execution is an outdated iteration,
+        // the element has updated its dataset.iteration outside of this loop
+        // we have to bring this loop to the white shores
+        // I offer this line of comment in dedication to the loop whos life will be cut before the natural end
+        if (element.dataset.iteration != iteration) return;
 
-    // every time render is called outside of its own loop, keys will be undefined
-    if (!keys) keys = Object.keys(tickets.memory);
+        // every time render is called outside of its own loop, keys will be undefined
+        if (!keys) keys = Object.keys(tickets.memory);
 
-    // the loop has finished
-    if (!keys.length) {
+        // the loop has finished
+        if (!keys.length) {
 
-      // sadly, no children are found inside of the element
-      // this can only mean there were no results
-      if (!element.children.length) return root.labels.no_results(element);
+            // sadly, no children are found inside of the element
+            // this can only mean there were no results
+            if (!element.children.length) return root.labels.no_results(element);
 
-      // we had results, and are no longer loading, so lets clear that loading message
-      return element.dataset.message = '';
+            // we had results, and are no longer loading, so lets clear that loading message
+            return element.dataset.message = '';
+        }
+
+        var search = tickets.search_query,
+            // search value is changed by tickets.save_search()
+        ticket = tickets.memory[keys.shift()];
+
+        if (!ticket || ticket.archived || search && String(ticket.name).toLowerCase().indexOf(search) == -1 || tickets.manager_filter.length && tickets.manager_filter.indexOf(ticket.admin) == -1) {
+
+            if (keys.length % 100 == 0) return requestAnimationFrame(function () {
+
+                tickets.render(element, keys, iteration);
+            });
+
+            return tickets.render(element, keys, iteration);
+        }
+
+        requestAnimationFrame(function () {
+
+            tickets.render(element, keys, iteration);
+        });
+
+        var elem = document.createElement('a');
+
+        elem.dataset.load = 'tickets.render_one';
+
+        elem.dataset.ticket = ticket.key;
+
+        element.appendChild(elem);
+    },
+
+    archive: function archive(element) {
+
+        var ticket = tickets.memory[element.dataset.key];
+
+        root.send({ request: 'archive', key: ticket.key }, function () {
+
+            // see update loop at the bottom of this file
+            tickets.updated = true;
+        });
+    },
+
+    manager_filter: [],
+
+    toggle_course: function toggle_course(element) {
+
+        var key = element.dataset.key,
+            filter = tickets.manager_filter,
+            index = filter.indexOf(key);
+
+        element.classList.toggle('active');
+
+        if (index > -1) filter.splice(index, 1);else filter.push(key);
+
+        tickets.updated = true;
+    },
+
+    load_courses: function load_courses(element) {
+
+        element.innerHTML = Object.keys(root.courses.memory).reduce(function (html, key) {
+
+            return html + ('<div data-click="tickets.toggle_course" data-key="' + key + '">\n        <span data-load="courses.memory.' + key + '.name"></span>\n      </div>');
+        }, '');
+    },
+
+    render_one: function render_one(element) {
+
+        var ticket = tickets.memory[element.dataset.ticket];
+
+        if (!ticket.client) return;
+        element.innerHTML = '\n        <span>' + ticket.client + '</span>\n        <small>' + ticket.name + '</small>\n    ';
+
+        element.setAttribute('href', '/ticket/code/' + ticket.code);
     }
-
-    var search = tickets.search_query,
-        // search value is changed by tickets.save_search()
-    ticket = tickets.memory[keys.shift()];
-
-    if (!ticket || ticket.archived || search && String(ticket.name).toLowerCase().indexOf(search) == -1 || tickets.manager_filter.length && tickets.manager_filter.indexOf(ticket.admin) == -1) {
-
-      if (keys.length % 100 == 0) return requestAnimationFrame(function () {
-
-        tickets.render(element, keys, iteration);
-      });
-
-      return tickets.render(element, keys, iteration);
-    }
-
-    requestAnimationFrame(function () {
-
-      tickets.render(element, keys, iteration);
-    });
-
-    var elem = document.createElement('div');
-
-    elem.dataset.load = 'tickets.render_one';
-
-    elem.dataset.ticket = ticket.key;
-
-    element.appendChild(elem);
-  },
-
-  archive: function archive(element) {
-
-    var ticket = tickets.memory[element.dataset.key];
-
-    root.send({ request: 'archive', key: ticket.key }, function () {
-
-      // see update loop at the bottom of this file
-      tickets.updated = true;
-    });
-  },
-
-  manager_filter: [],
-
-  toggle_course: function toggle_course(element) {
-
-    var key = element.dataset.key,
-        filter = tickets.manager_filter,
-        index = filter.indexOf(key);
-
-    element.classList.toggle('active');
-
-    if (index > -1) filter.splice(index, 1);else filter.push(key);
-
-    tickets.updated = true;
-  },
-
-  load_courses: function load_courses(element) {
-
-    element.innerHTML = Object.keys(root.courses.memory).reduce(function (html, key) {
-
-      return html + ('<div data-click="tickets.toggle_course" data-key="' + key + '">\n        <span data-load="courses.memory.' + key + '.name"></span>\n      </div>');
-    }, '');
-  },
-
-  render_one: function render_one(element) {
-
-    var ticket = tickets.memory[element.dataset.ticket];
-
-    if (!ticket.client) return;
-    element.innerHTML = '\n    \n      <div>\n        ' + ticket.name + ', \n        ' + ticket.client + ',\n        <a href="/ticket/code/' + ticket.code + '">Link</a>\n      </div>\n\n    ';
-  }
 
 };
 
 (function updater() {
 
-  if (!tickets.updated) return setTimeout(updater, 300);
+    if (!tickets.updated) return setTimeout(updater, 300);
 
-  tickets.updated = false;
+    tickets.updated = false;
 
-  tickets.list();
+    tickets.list();
 
-  updater();
+    updater();
 })();
 });
 
@@ -1514,16 +1516,16 @@ require.register("source/scripts/components/calender.js", function(exports, requ
 
 var calender = module.exports = {
 
-    load: function load(element) {
+  load: function load(element) {
 
-        root.calender = element;
+    root.calender = element;
 
-        var a = moment('2016-01-01');
-        var b = a.add(1, 'week');
-        a.format();
+    var a = moment('2016-01-01');
+    var b = a.add(1, 'week');
+    a.format();
 
-        console.log(a);
-    }
+    console.log(a);
+  }
 
 };
 });
@@ -2070,7 +2072,6 @@ var labels = {
     home_training_description: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
     home_lifestyle: ['Lifestyle', 'Lifestyle'],
     home_lifestyle_description: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'],
-    home_share_page: ['Deel deze pagina', 'Share this page'],
     home_joris_merel: ['Joris Boon en Merel Witkamp', 'Joris Boon and Merel Witkamp'],
     home_joris_merel_description: ["Mogen we ons even aan u voorstellen. Wij zijn Joris Boon en Merel Witkamp. We zijn beiden fanatieke sporttrainers waarbij we weten dat individuele training allereerst tot resultaat moet leiden bijvoorbeeld afvallen, vitaler of gewoon \'je beter voelen\'. Maar we weten ook dat training alleen vaak niet voldoende is. Vandaar dat we een uniek coachingprogramma hebben geïntroduceerd onder de noemer \'Managers Vitality: for a work - life balance that boosts your management performance'. Het gaat dan om een programma om een betere werk - privé balans te vinden (ook in relatie tot fitness) alsmede omveel betere resultaten op het werk te behalen. Het focust zich op de '7th habit' van managementgoeroe Stephan Covey waar hij heeft over 'het scherp houden van de zaag'. Inmiddels hebben al vele managers zich voor dit programma ingeschreven.", "May we introduce ourselves to you, we are Joris Boon and Merel Witkamp We are both fanatical sports trainers where we know that individual training should lead to results first, for example losing weight, being more vital or just 'feeling better'. also that training alone is often not sufficient, which is why we have introduced a unique coaching program under the heading 'Managers Vitality: for a work - life balance that boosts your management performance' - a program for a better work - private life. To find a balance (also in relation to fitness) as well as to achieve much better results at work, it focuses on the '7th habit' of management guru Stephan Covey, who talks about 'keeping the saw sharp'. managers registered for this program."],
 
@@ -2105,6 +2106,8 @@ var labels = {
     contact_name: ['Naam', 'Name'],
     contact_email: ['Email', 'Email'],
 
+    like_fb_page: ['Like onze FB page', 'Like our FB page'],
+
     add: ['Toevoegen', 'Add'],
     delete: ['Verwijder', 'Delete'],
     invite: ['Uitnodigen', 'Invite'],
@@ -2114,6 +2117,7 @@ var labels = {
     sign_in_input: [value('Inloggen', value('Sign in'))],
     sign_out: ['Uitloggen', 'Sign out'],
     courses: ['Cursussen', 'Courses'],
+    add_course: ['Maak een cursus aan', 'Create a course'],
     invitations: ['Uitnodigingen', 'Invitations'],
     stats: ['Statistieken', 'Statistics'],
     confirm_delete: ['Bevestig verwijdering', 'Confirm deletion'],
