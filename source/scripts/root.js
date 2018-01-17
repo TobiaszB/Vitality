@@ -152,7 +152,7 @@ function incoming(message, callbacks){
 
   localStorage.setItem('authenticated', message.token || '');
   
-  if(history.state.page == 'home') root.sessions.url('/courses');
+  if(history.state.page == 'home') root.sessions.url('/courses', { replace: true });
   
   root.sessions.load_page(null, { prevent_url: true });
 

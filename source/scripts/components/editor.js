@@ -38,9 +38,75 @@ let editor = module.exports = {
   },
 
   save_block_element: (element) => {
+    
+    let key = history.state.course,
+        index = parseInt(element.dataset.index, 10),
+        course = editor.ticket || root.courses.memory[key],
+        block = course.blocks[index],
+        colors = ['7ac673','1abc9c','27aae0','2c82c9','9365b8','4c6972','ffffff','41a85f','00a885','3d8eb9',
+                  '2969b0','553982','475577','efefef','f7da64','faaf40','eb6b56','e25041','a38f84','28324e',
+                  'cccccc','fac51c','f97352','d14841','b8312f','7c706b','000000','c1c1c1'];
 
-    editor.block_elements[parseInt(element.dataset.index, 10)] = element;
+    editor.block_elements[index] = element;
+   
+    element.innerHTML = `
+      ${block.html}
+      <div class="block-tooltip" data-index="${index}" data-load="editor.load_tooltip">
+        <div class="inner">
+         <div class="color-picker">${
+           colors.map((c)=>`<b data-click="editor.save_color" data-color="${ c }" style="background-color:#${ c };"></b>`).join('')
+         }</div>
+         <div class="set-link"><button>set link</button></div>
+         <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>
+         <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>
+         <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>
+         <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>
+         <i data-click="editor.toggle_tooltip_submenu" data-tab="correct" class="fa fa-check"></i>
+         <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>
+        </div>
+      </div>
+      <div class="block-options">
+        <a data-index="${ index }" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
+        <a data-index="${ index }" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
+        <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>
+        <div data-load="editor.clear_style" class="block-config"${ editor.ticket ? '' : ` style="max-height: 1000px;"` }>${Object.keys(block.options).reduce((html,option,id)=>{
 
+      let element = `<label for="input-${id}" data-load="labels.${option}"></label><br>`;
+
+      if (block.options[option].type == 'boolean') element = `<input data-option="${ option }" data-index="${ index }" data-change="editor.input_save" ${block.options[option].value ? 'checked' : ''} id="input-${id}" type="checkbox">${element}`;
+
+      return `${html}${element}`;
+
+    }
+    , '')}</div>
+        <a data-action="delete" data-index="${ index }" data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>
+      </div>
+    `;
+
+  },
+
+  save_color: (element) => {
+
+    let index = parseInt(editor.focus.dataset.index, 10);
+
+    editor.course.blocks[index].options[editor.focus.dataset.element].color = `#${ element.dataset.color }`;
+
+    editor.reload_block();
+
+  },
+
+  reload_block: () => {
+
+    if(!editor.focus) return;
+
+    let index = parseInt(editor.focus.dataset.index, 10);
+
+    let selector = `[data-index="${ index }"][data-element="${ editor.focus.dataset.element }"]`;
+
+    editor.block_elements[index].dataset.load = editor.block_elements[index].dataset.load;
+
+    setTimeout(()=>{ document.querySelector(selector).focus(); }, 100);
+   
   },
 
   load_course: (element)=>{
@@ -50,11 +116,7 @@ let editor = module.exports = {
     else if(!history.state.course) return editor.load_ticket(element);
 
     let key = history.state.course,
-        course = editor.ticket || root.courses.memory[key],
-        colors = ['7ac673','1abc9c','27aae0','2c82c9','9365b8','4c6972','ffffff','41a85f','00a885','3d8eb9',
-                  '2969b0','553982','475577','efefef','f7da64','faaf40','eb6b56','e25041','a38f84','28324e',
-                  'cccccc','fac51c','f97352','d14841','b8312f','7c706b','000000','c1c1c1'];
-
+        course = editor.ticket || root.courses.memory[key];
 
     if(editor.ticket) {
 
@@ -84,42 +146,9 @@ let editor = module.exports = {
 
       let options = Object.keys(block.options).reduce((html,option)=>`${html} data-${option}="${block.options[option].value}"`, '');
 
-      return `${html}<div data-load="editor.save_block_element" data-answer="${ block.answer || '' }" class="block" ${options} data-key="${block.key}" data-index="${index}">
-        ${block.html}
-        <div class="block-tooltip" data-index="${index}" data-load="editor.load_tooltip">
-          <div class="inner">
-           <div class="color-picker">${
-             colors.map((c)=>`<b style="background-color:#${ c };"></b>`).join('')
-           }</div>
-           <div class="set-link"><button>set link</button></div>
-           <i data-click="editor.toggle_tooltip_submenu" data-tab="link" class="fa fa-link"></i>
-           <span data-click="editor.toggle_tooltip_submenu" data-tab="color" class="color"><i class="fa fa-paint-brush"></i></span>
-           <i data-click="editor.toggle_tooltip_submenu" data-tab="align" class="fa fa-align-left"></i>
-           <i data-click="editor.toggle_tooltip_submenu" data-tab="add" class="fa fa-plus"></i>
-           <i data-click="editor.toggle_tooltip_submenu" data-tab="correct" class="fa fa-check"></i>
-           <i data-click="editor.toggle_tooltip_submenu" data-tab="delete" class="fa fa-trash"></i>
-          </div>
-        </div>
-        <div class="block-options">
-          <a data-index="${ index }" data-action="move-up" data-load="labels.title_move_up" data-click="editor.update" class="control-btn fa fa-arrow-up"></a>
-          <a data-index="${ index }" data-action="move-down" data-load="labels.title_move_down" data-click="editor.update" class="control-btn fa fa-arrow-down"></a>
-          <a data-load="labels.title_options" class="control-btn fa fa-cog"></a>
-          <div data-load="editor.clear_style" class="block-config"${ editor.ticket ? '' : ` style="max-height: 1000px;"` }>${Object.keys(block.options).reduce((html,option,id)=>{
+      return `${html}<div data-load="editor.save_block_element" data-answer="${ block.answer || '' }" class="block" ${options} data-key="${block.key}" data-index="${index}"></div>`;
 
-        let element = `<label for="input-${id}" data-load="labels.${option}"></label><br>`;
-
-        if (block.options[option].type == 'boolean') element = `<input data-option="${ option }" data-index="${ index }" data-change="editor.input_save" ${block.options[option].value ? 'checked' : ''} id="input-${id}" type="checkbox">${element}`;
-
-        return `${html}${element}`;
-
-      }
-      , '')}</div>
-          <a data-action="delete" data-index="${ index }" data-load="labels.title_delete" data-click="editor.update" class="control-btn fa fa-trash"></a>
-        </div>
-      </div>`;
-
-    }
-    , `
+    }, `
       <div class="control-editor">
         <a data-load="labels.title_save" data-click="editor.update" class="control-btn fa fa-save"></a>
         <a data-load="labels.title_online" data-click="editor.toggle_publish" class="control-btn fa fa-cloud-upload"></a>
@@ -149,6 +178,8 @@ let editor = module.exports = {
         index = parseInt(data.index, 10),
         count = parseInt(data.count, 10),
         options;
+        
+    let opt = editor.course.blocks[index].options[data.element];
 
     element.parentElement.dataset.tab = element.dataset.tab;
 
@@ -175,20 +206,28 @@ let editor = module.exports = {
         root.main.dataset.load = root.main.dataset.load;
 
         break;
-        
-      case 'correct':
 
-        let opt = editor.course.blocks[index].options[data.element];
+      case 'align':
+
+        opt.align = opt.align || 'left';
+
+        let aligns = ['left', 'center', 'right'];
+
+        opt.align = aligns[(aligns.indexOf(opt.align) + 1) % aligns.length];
+
+        editor.focus.style.textAlign = opt.align;
+
+        element.className = `fa fa-align-${ opt.align }`;
+
+        break;
+
+      case 'correct':
 
         if(opt.correct == count) count = null;
 
         opt.correct = count;
 
         document.querySelector(`[data-load="editor.load_button_group"][data-index="${ index }"]`).dataset.correct = count;
-
-        console.log(editor.course.blocks[index].options)
-
-
 
         break;
 
@@ -373,6 +412,10 @@ let editor = module.exports = {
 
     if(!block.options[key].content) block.options[key].content = key;
 
+    if(block.options[key].color) element.style.color = block.options[key].color;
+
+    if(block.options[key].align) element.style.textAlign = block.options[key].align;
+
     if(element.tagName.toLowerCase() == 'textarea') {
 
       element.value = block.options[key].content;
@@ -410,8 +453,6 @@ let editor = module.exports = {
         options = block.options[element.dataset.element];
 
     element.dataset.correct = block.options.button_group.correct;
-
-    console.log('options', options);
 
     element.innerHTML = options.content.map((string, count) => {
 

@@ -6,10 +6,7 @@ function init() {
 
   bind();
 
-  addEventListener('scroll', (e)=>{
-    console.log(scrollY);
-    root.scroll_distance = scrollY;
-    });
+  addEventListener('scroll', (e)=>{ root.scroll_distance = scrollY; });
 
   document.documentElement.addEventListener('click', listener);
 
