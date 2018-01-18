@@ -153,11 +153,12 @@ body.stats-page [data-page="stats"] {
 		transform: translateX(-50%);
 		white-space: nowrap;
 		&:hover {
-			color: $cyan;
+			span { color: $cyan; }
 		}
 		span {
 			vertical-align: top;
   			line-height: 40px;
+  			color: $dark-grey;
 		}
 		> img {
 			width: auto;
